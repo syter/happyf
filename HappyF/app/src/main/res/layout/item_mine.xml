@@ -99,6 +99,7 @@
                     android:text="海老王"
                     />
                 <ImageView
+                    android:id="@+id/iv_vip"
                     android:layout_width="10dp"
                     android:layout_height="10dp"
                     android:layout_marginLeft="10dp"
@@ -145,6 +146,7 @@
         android:layout_height="1dp"></LinearLayout>
 
     <RelativeLayout
+        android:id="@+id/rl_edit"
         android:layout_width="match_parent"
         android:layout_height="50dp"
 
@@ -165,6 +167,7 @@
         android:layout_height="1dp"></LinearLayout>
 
     <RelativeLayout
+        android:id="@+id/rl_order"
         android:layout_width="match_parent"
         android:layout_height="50dp"
 
@@ -185,6 +188,7 @@
         android:layout_height="1dp"></LinearLayout>
 
     <RelativeLayout
+        android:id="@+id/rl_cart"
         android:layout_width="match_parent"
         android:layout_height="50dp"
 
@@ -205,6 +209,7 @@
         android:layout_height="1dp"></LinearLayout>
 
     <RelativeLayout
+        android:id="@+id/rl_happy"
         android:layout_width="match_parent"
         android:layout_height="50dp"
 
@@ -225,6 +230,7 @@
         android:layout_height="1dp"></LinearLayout>
 
     <RelativeLayout
+        android:id="@+id/rl_rank"
         android:layout_width="match_parent"
         android:layout_height="50dp"
 
@@ -245,6 +251,7 @@
         android:layout_height="1dp"></LinearLayout>
 
     <RelativeLayout
+        android:id="@+id/rl_set"
         android:layout_width="match_parent"
         android:layout_height="50dp"
 

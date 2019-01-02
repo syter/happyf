@@ -19,7 +19,6 @@
         android:theme="@style/AppTheme">
         <activity android:name=".activity.MainActivity"
             android:screenOrientation="portrait">
-
         </activity>
         <activity android:name=".activity.SplashActivity"
             android:screenOrientation="portrait">
@@ -31,11 +30,30 @@
         </activity>
         <activity android:name=".activity.LoginActivity"
             android:screenOrientation="portrait">
-
         </activity>
         <activity android:name=".activity.RegisterActivity"
             android:screenOrientation="portrait">
-
+        </activity>
+        <activity android:name=".activity.EditUserActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".activity.CartListActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".activity.HappyListActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".activity.OrderListActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".activity.RankListActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".activity.SetActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".activity.VipActivity"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 
