@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">HappyF</string>
+
+    <!-- 启动页 -->
+    <string name="jump">跳过</string>
+
+    <!-- 登录页 -->
+    <string name="login_phone">手机号</string>
+    <string name="login_pwd">密码</string>
+    <string name="login_login">登录</string>
+    <string name="login_reg">注册</string>
+
+    <!-- 注册页 -->
+    <string name="reg_phone">手机号</string>
+    <string name="reg_pwd">密码</string>
+    <string name="reg_conpwd">确认密码</string>
+    <string name="reg_login">返回登录</string>
+    <string name="reg_reg">注册</string>
+    <string name="reg_code">验证码</string>
+    <string name="reg_sendcode">发送验证码</string>
+
+    <!-- 启动页 -->
+    <string name="main_first">商城</string>
+    <string name="main_second">出海</string>
+    <string name="main_third">首页</string>
+    <string name="main_forth">热点</string>
+    <string name="main_fifth">我的</string>
+
+    <!-- 启动页 -->
+    <string name="mine_name">昵称：</string>
+    <string name="mine_phone">电话：</string>
+    <string name="mine_money">贝壳：</string>
+    <string name="mine_level">头衔：</string>
+    <string name="mine_exp">经验值</string>
+    <string name="mine_edit">编辑资料</string>
+    <string name="mine_order">购买订单</string>
+    <string name="mine_cart">购物车</string>
+    <string name="mine_record">出海记录</string>
+    <string name="mine_rank">排行榜</string>
+    <string name="mine_set">设置</string>
+
+</resources>
