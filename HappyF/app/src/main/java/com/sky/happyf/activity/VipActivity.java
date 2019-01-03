@@ -6,19 +6,24 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.sky.happyf.R;
+import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 
-public class VipActivity extends AppCompatActivity {
-    private EditText etPhone;
-    private EditText etPwd;
-    private Button btnLogin;
-    private Button btnReg;
+public class VipActivity extends BaseActivity {
+    private CommonTitleBar titleBar;
+    private LinearLayout llOne, llTwo, llThree;
+    private Button btnBevip;
+    private int selectIndex = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vip);
+
+        getSupportActionBar().hide();//隐藏标题栏
 
         initView();
 
@@ -28,28 +33,66 @@ public class VipActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        etPhone = (EditText) findViewById(R.id.et_phone);
-        etPwd = (EditText) findViewById(R.id.et_pwd);
-        btnLogin = (Button) findViewById(R.id.btn_login);
-        btnReg = (Button) findViewById(R.id.btn_reg);
+        titleBar = (CommonTitleBar) findViewById(R.id.titlebar);
+        llOne = (LinearLayout) findViewById(R.id.ll_one);
+        llTwo = (LinearLayout) findViewById(R.id.ll_two);
+        llThree = (LinearLayout) findViewById(R.id.ll_three);
+        btnBevip = (Button) findViewById(R.id.btn_bevip);
     }
 
     private void initListener() {
-        btnLogin.setOnClickListener(new View.OnClickListener() {
+        titleBar.setListener(new CommonTitleBar.OnTitleBarListener() {
             @Override
-            public void onClick(View view) {
-                finish();
+            public void onClicked(View v, int action, String extra) {
+                if (action == CommonTitleBar.ACTION_LEFT_TEXT) {
+                    finish();
+                }
             }
         });
+        llOne.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectIndex = 0;
+                processSelectIndexView();
+            }
+        });
+        llTwo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectIndex = 1;
+                processSelectIndexView();
+            }
+        });
+        llThree.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectIndex = 2;
+                processSelectIndexView();
+            }
+        });
+        btnBevip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(VipActivity.this, PayActivity.class));
+                overridePendingTransition(R.anim.anim_enter, R.anim.bottom_silent);
+            }
+        });
+    }
 
-        btnReg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent it = new Intent(getApplicationContext(), RegisterActivity.class);
-                startActivity(it);
-                finish();
-            }
-        });
+    private void processSelectIndexView() {
+        if (selectIndex == 0) {
+            llOne.setBackgroundColor(getColor(R.color.skyblue));
+            llTwo.setBackgroundColor(getColor(R.color.white));
+            llThree.setBackgroundColor(getColor(R.color.white));
+        } else if (selectIndex == 1) {
+            llOne.setBackgroundColor(getColor(R.color.white));
+            llTwo.setBackgroundColor(getColor(R.color.skyblue));
+            llThree.setBackgroundColor(getColor(R.color.white));
+        } else if (selectIndex == 2) {
+            llOne.setBackgroundColor(getColor(R.color.white));
+            llTwo.setBackgroundColor(getColor(R.color.white));
+            llThree.setBackgroundColor(getColor(R.color.skyblue));
+        }
     }
 
     @Override

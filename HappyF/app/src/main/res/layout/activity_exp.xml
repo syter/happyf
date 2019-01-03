@@ -10,16 +10,20 @@
         android:id="@+id/titlebar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        titlebar:centerText="@string/set_title"
+        titlebar:centerText="@string/exp_title"
         titlebar:centerType="textView"
         titlebar:leftDrawable="@drawable/comm_titlebar_back_normal"
         titlebar:leftDrawablePadding="0dp"
         titlebar:leftText="@string/back"
         titlebar:leftType="textView"
-        titlebar:rightText="@string/save"
-        titlebar:rightType="textView"
         titlebar:statusBarColor="@color/skyblue"
         titlebar:statusBarMode="light" />
+
+    <WebView
+        android:id="@+id/webview"
+        android:layout_below="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 
 </RelativeLayout>

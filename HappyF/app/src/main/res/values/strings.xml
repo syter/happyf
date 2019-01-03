@@ -1,6 +1,13 @@
 <resources>
     <string name="app_name">HappyF</string>
 
+    <!-- 通用 -->
+    <string name="save">保存</string>
+    <string name="back">返回</string>
+    <string name="yes">是</string>
+    <string name="no">否</string>
+    <string name="confirm">确认</string>
+
     <!-- 启动页 -->
     <string name="jump">跳过</string>
 
@@ -19,14 +26,14 @@
     <string name="reg_code">验证码</string>
     <string name="reg_sendcode">发送验证码</string>
 
-    <!-- 启动页 -->
+    <!-- 首页 -->
     <string name="main_first">商城</string>
     <string name="main_second">出海</string>
     <string name="main_third">首页</string>
     <string name="main_forth">热点</string>
     <string name="main_fifth">我的</string>
 
-    <!-- 启动页 -->
+    <!-- 我的 -->
     <string name="mine_name">昵称：</string>
     <string name="mine_phone">电话：</string>
     <string name="mine_money">贝壳：</string>
@@ -38,5 +45,36 @@
     <string name="mine_record">出海记录</string>
     <string name="mine_rank">排行榜</string>
     <string name="mine_set">设置</string>
+
+    <!-- 修改用户资料 -->
+    <string name="edit_title">编辑资料</string>
+    <string name="edit_name_hint">请输入昵称...</string>
+
+    <!-- 历史订单 -->
+    <string name="order_title">历史订单</string>
+    <string name="order_state_all">全部</string>
+    <string name="order_state_1">已付款</string>
+    <string name="order_state_2">未付款</string>
+
+    <!-- vip -->
+    <string name="vip_title">历史订单</string>
+
+    <!-- 出海记录 -->
+    <string name="happylist_title">出海记录</string>
+    <string name="happylist_state_all">全部</string>
+    <string name="happylist_state_1">已评价</string>
+    <string name="happylist_state_2">未评价</string>
+
+    <!-- 经验值 -->
+    <string name="exp_title">经验值</string>
+
+    <!-- 排行榜 -->
+    <string name="rank_title">排行榜</string>
+    <string name="rank_state_1">鱼排行</string>
+    <string name="rank_state_2">贝壳排行</string>
+
+    <!-- 设置 -->
+    <string name="set_title">排行榜</string>
+
 
 </resources>

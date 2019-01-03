@@ -1,48 +1,42 @@
 package com.sky.happyf.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
+import android.webkit.WebView;
 
 import com.sky.happyf.R;
+import com.sky.happyf.utils.Constants;
 import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 
-public class EditUserActivity extends BaseActivity {
+public class ExpActivity extends BaseActivity {
     private CommonTitleBar titleBar;
-    private EditText etName;
-
+    private WebView webview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_user);
+        setContentView(R.layout.activity_exp);
 
         getSupportActionBar().hide();//隐藏标题栏
 
         initView();
 
         initListener();
-
-
     }
 
     private void initView() {
-        etName = (EditText) findViewById(R.id.et_name);
         titleBar = (CommonTitleBar) findViewById(R.id.titlebar);
+
+        webview = (WebView) findViewById(R.id.webview);
+        webview.loadUrl(Constants.EXP_URL);
+
     }
 
     private void initListener() {
-//        titleBar.setBackgroundResource(R.drawable.shape_gradient);
         titleBar.setListener(new CommonTitleBar.OnTitleBarListener() {
             @Override
             public void onClicked(View v, int action, String extra) {
                 if (action == CommonTitleBar.ACTION_LEFT_TEXT) {
-                    finish();
-                } else if (action == CommonTitleBar.ACTION_RIGHT_TEXT) {
-                    // TODO save
                     finish();
                 }
             }

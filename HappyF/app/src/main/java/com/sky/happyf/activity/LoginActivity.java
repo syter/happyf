@@ -10,7 +10,7 @@ import android.widget.EditText;
 
 import com.sky.happyf.R;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
     private EditText etPhone;
     private EditText etPwd;
     private Button btnLogin;

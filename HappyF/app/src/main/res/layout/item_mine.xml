@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              xmlns:custom="http://schemas.android.com/apk/res-auto"
-              android:orientation="vertical">
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,99 +12,100 @@
         android:layout_marginRight="20dp"
         android:orientation="horizontal">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            xmlns:circleimageview="http://schemas.android.com/apk/res-auto"
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:circleimageview="http://schemas.android.com/apk/res-auto"
             android:id="@+id/iv_user_photo"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_marginTop="20dp"
-            android:src="@drawable/default_user"/>
+            android:src="@drawable/default_user" />
 
         <RelativeLayout
             android:layout_width="fill_parent"
-            android:layout_marginTop="20dp"
+            android:layout_height="120dp"
             android:layout_marginLeft="10dp"
-            android:layout_height="120dp">
+            android:layout_marginTop="20dp">
+
             <LinearLayout
                 android:id="@+id/ll_name"
                 android:layout_width="fill_parent"
-                android:orientation="horizontal"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/mine_name"
-                    />
+                    android:text="@string/mine_name" />
+
                 <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="匿名(33012520)"
-                    />
+                    android:text="匿名(33012520)" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/ll_phone"
-                android:layout_below="@id/ll_name"
                 android:layout_width="fill_parent"
-                android:orientation="horizontal"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ll_name"
+                android:orientation="horizontal">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/mine_phone"
-                    />
+                    android:text="@string/mine_phone" />
+
                 <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="18612250711"
-                    />
+                    android:text="18612250711" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/ll_money"
-                android:layout_below="@id/ll_phone"
                 android:layout_width="fill_parent"
-                android:orientation="horizontal"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ll_phone"
+                android:orientation="horizontal">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/mine_money"
-                    />
+                    android:text="@string/mine_money" />
+
                 <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="553"
-                    />
+                    android:text="553" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/ll_level"
-                android:layout_below="@id/ll_money"
                 android:layout_width="fill_parent"
-                android:orientation="horizontal"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ll_money"
+                android:orientation="horizontal">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/mine_level"
-                    />
+                    android:text="@string/mine_level" />
+
                 <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="海老王"
-                    />
+                    android:text="海老王" />
+
                 <ImageView
                     android:id="@+id/iv_vip"
                     android:layout_width="10dp"
                     android:layout_height="10dp"
-                    android:layout_marginLeft="10dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_fourth"/>
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/ic_fourth" />
             </LinearLayout>
 
         </RelativeLayout>
@@ -113,37 +114,33 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/mine_exp"
         android:layout_gravity="center_horizontal"
-        />
+        android:text="@string/mine_exp" />
+
     <com.daimajia.numberprogressbar.NumberProgressBar
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:id="@+id/bar_exp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
-        custom:progress_unreached_color="#CCCCCC"
-        custom:progress_reached_color="#3498DB"
-
-        custom:progress_unreached_bar_height="0.75dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        custom:progress_current="80"
+        custom:progress_max="100"
         custom:progress_reached_bar_height="1.5dp"
-
-        custom:progress_text_size="10sp"
+        custom:progress_reached_color="#3498DB"
         custom:progress_text_color="#3498DB"
         custom:progress_text_offset="1dp"
+        custom:progress_text_size="10sp"
         custom:progress_text_visibility="visible"
-
-        custom:progress_max="100"
-        custom:progress_current="80"
-        />
+        custom:progress_unreached_bar_height="0.75dp"
+        custom:progress_unreached_color="#CCCCCC" />
 
     <LinearLayout
-        android:layout_marginTop="30dp"
         android:layout_width="match_parent"
+        android:layout_height="1dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:background="@color/darkgray"
-        android:layout_height="1dp"></LinearLayout>
+        android:layout_marginTop="30dp"
+        android:background="@color/darkgray"></LinearLayout>
 
     <RelativeLayout
         android:id="@+id/rl_edit"
@@ -151,20 +148,21 @@
         android:layout_height="50dp"
 
         >
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/mine_edit"
-            android:layout_centerInParent="true"/>
+            android:layout_centerInParent="true"
+            android:text="@string/mine_edit" />
 
     </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="1dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:background="@color/darkgray"
-        android:layout_height="1dp"></LinearLayout>
+        android:background="@color/darkgray"></LinearLayout>
 
     <RelativeLayout
         android:id="@+id/rl_order"
@@ -172,20 +170,21 @@
         android:layout_height="50dp"
 
         >
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/mine_order"
-            android:layout_centerInParent="true"/>
+            android:layout_centerInParent="true"
+            android:text="@string/mine_order" />
 
     </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="1dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:background="@color/darkgray"
-        android:layout_height="1dp"></LinearLayout>
+        android:background="@color/darkgray"></LinearLayout>
 
     <RelativeLayout
         android:id="@+id/rl_cart"
@@ -193,20 +192,21 @@
         android:layout_height="50dp"
 
         >
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/mine_cart"
-            android:layout_centerInParent="true"/>
+            android:layout_centerInParent="true"
+            android:text="@string/mine_cart" />
 
     </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="1dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:background="@color/darkgray"
-        android:layout_height="1dp"></LinearLayout>
+        android:background="@color/darkgray"></LinearLayout>
 
     <RelativeLayout
         android:id="@+id/rl_happy"
@@ -214,20 +214,21 @@
         android:layout_height="50dp"
 
         >
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/mine_record"
-            android:layout_centerInParent="true"/>
+            android:layout_centerInParent="true"
+            android:text="@string/mine_record" />
 
     </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="1dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:background="@color/darkgray"
-        android:layout_height="1dp"></LinearLayout>
+        android:background="@color/darkgray"></LinearLayout>
 
     <RelativeLayout
         android:id="@+id/rl_rank"
@@ -235,20 +236,21 @@
         android:layout_height="50dp"
 
         >
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/mine_rank"
-            android:layout_centerInParent="true"/>
+            android:layout_centerInParent="true"
+            android:text="@string/mine_rank" />
 
     </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="1dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:background="@color/darkgray"
-        android:layout_height="1dp"></LinearLayout>
+        android:background="@color/darkgray"></LinearLayout>
 
     <RelativeLayout
         android:id="@+id/rl_set"
@@ -256,19 +258,20 @@
         android:layout_height="50dp"
 
         >
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/mine_set"
-            android:layout_centerInParent="true"/>
+            android:layout_centerInParent="true"
+            android:text="@string/mine_set" />
 
     </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="1dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:background="@color/darkgray"
-        android:layout_height="1dp"></LinearLayout>
+        android:background="@color/darkgray"></LinearLayout>
 
 </LinearLayout>

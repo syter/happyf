@@ -8,17 +8,18 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.sky.happyf.R;
+import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 
-public class SetActivity extends AppCompatActivity {
-    private EditText etPhone;
-    private EditText etPwd;
-    private Button btnLogin;
+public class SetActivity extends BaseActivity {
+    private CommonTitleBar titleBar;
     private Button btnReg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set);
+
+        getSupportActionBar().hide();//隐藏标题栏
 
         initView();
 
@@ -28,17 +29,17 @@ public class SetActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        etPhone = (EditText) findViewById(R.id.et_phone);
-        etPwd = (EditText) findViewById(R.id.et_pwd);
-        btnLogin = (Button) findViewById(R.id.btn_login);
+        titleBar = (CommonTitleBar) findViewById(R.id.titlebar);
         btnReg = (Button) findViewById(R.id.btn_reg);
     }
 
     private void initListener() {
-        btnLogin.setOnClickListener(new View.OnClickListener() {
+        titleBar.setListener(new CommonTitleBar.OnTitleBarListener() {
             @Override
-            public void onClick(View view) {
-                finish();
+            public void onClicked(View v, int action, String extra) {
+                if (action == CommonTitleBar.ACTION_LEFT_TEXT) {
+                    finish();
+                }
             }
         });
 

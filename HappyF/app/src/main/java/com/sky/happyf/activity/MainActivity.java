@@ -2,6 +2,7 @@ package com.sky.happyf.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +10,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 
 import com.sky.happyf.R;
@@ -17,6 +20,7 @@ import com.sky.happyf.mainHelper.HappyHelper;
 import com.sky.happyf.mainHelper.MainHelper;
 import com.sky.happyf.mainHelper.MineHelper;
 import com.sky.happyf.mainHelper.ShopHelper;
+import com.wuhenzhizao.titlebar.statusbar.StatusBarUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,8 +45,16 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportActionBar().hide();//隐藏标题栏
 
+        getWindow().setStatusBarColor(getColor(R.color.skyblue));
+//        // 设置状态栏白色
+//        StatusBarUtils.transparentStatusBar(getWindow());
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+//        }
+
         initView();
 
+        initData();
     }
 
     private void initView() {
@@ -84,8 +96,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
-        initData();
     }
 
     private void initData() {

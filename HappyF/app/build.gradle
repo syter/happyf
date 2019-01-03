@@ -45,6 +45,10 @@ dependencies {
     compile 'com.daimajia.numberprogressbar:library:1.4@aar'
     compile 'com.wang.avi:library:2.1.3'
     compile 'com.wuhenzhizao:titlebar:1.1.4'
+    compile 'com.chanven.lib:cptr:1.1.0'
+    compile 'com.klinkerapps:sliding-activity:1.5.2'
+    compile 'cn.bingoogolapple:bga-swipebacklayout:1.2.0@aar'
+    compile 'com.just.agentweb:agentweb:4.0.2'
     androidTestCompile('com.android.support:support-annotations:27.1.0') {
         force = true
     }

@@ -10,7 +10,7 @@ import android.widget.EditText;
 import com.orhanobut.logger.Logger;
 import com.sky.happyf.R;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends BaseActivity {
     private EditText etPhone;
     private EditText etPwd;
     private EditText etConPwd;
