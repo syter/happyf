@@ -1,5 +1,6 @@
 <resources>
-    <string name="app_name">HappyF</string>
+    <string name="app_name">东海渔趣</string>
+    <string name="app_version">1.0</string>
 
     <!-- 通用 -->
     <string name="save">保存</string>
@@ -74,7 +75,17 @@
     <string name="rank_state_2">贝壳排行</string>
 
     <!-- 设置 -->
-    <string name="set_title">排行榜</string>
+    <string name="set_title">设置</string>
+    <string name="set_update_pwd">修改密码</string>
+    <string name="set_remove">清除缓存</string>
+    <string name="set_about">关于</string>
+    <string name="set_quit">退出登录</string>
 
+    <!-- 修改密码 -->
+    <string name="updatepwd_title">修改密码</string>
+    <string name="updatepwd_pwd_hint">请输入新密码</string>
+    <string name="updatepwd_conpwd_hint">请再次输入密码</string>
 
+    <!-- 关于 -->
+    <string name="about_title">关于</string>
 </resources>

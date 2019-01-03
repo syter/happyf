@@ -65,6 +65,12 @@
         <activity
             android:name=".activity.ExpActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.AboutActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.UpdatePwdActivity"
+            android:screenOrientation="portrait" />
 
     </application>
 

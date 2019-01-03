@@ -6,13 +6,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 
+import com.orhanobut.logger.Logger;
 import com.sky.happyf.R;
 import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 
 public class SetActivity extends BaseActivity {
     private CommonTitleBar titleBar;
-    private Button btnReg;
+    private RelativeLayout rlUpdatePwd, rlRemove, rlAbout, rlQuit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +32,10 @@ public class SetActivity extends BaseActivity {
 
     private void initView() {
         titleBar = (CommonTitleBar) findViewById(R.id.titlebar);
-        btnReg = (Button) findViewById(R.id.btn_reg);
+        rlUpdatePwd = (RelativeLayout) findViewById(R.id.rl_updatepwd);
+        rlRemove = (RelativeLayout) findViewById(R.id.rl_remove);
+        rlAbout = (RelativeLayout) findViewById(R.id.rl_about);
+        rlQuit = (RelativeLayout) findViewById(R.id.rl_quit);
     }
 
     private void initListener() {
@@ -43,11 +48,32 @@ public class SetActivity extends BaseActivity {
             }
         });
 
-        btnReg.setOnClickListener(new View.OnClickListener() {
+        rlUpdatePwd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent it = new Intent(getApplicationContext(), RegisterActivity.class);
-                startActivity(it);
+                startActivity(new Intent(SetActivity.this, UpdatePwdActivity.class));
+                overridePendingTransition(R.anim.anim_enter, R.anim.bottom_silent);
+            }
+        });
+
+        rlRemove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Logger.d("remove cache!");
+            }
+        });
+
+        rlAbout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(SetActivity.this, AboutActivity.class));
+                overridePendingTransition(R.anim.anim_enter, R.anim.bottom_silent);
+            }
+        });
+
+        rlQuit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 finish();
             }
         });

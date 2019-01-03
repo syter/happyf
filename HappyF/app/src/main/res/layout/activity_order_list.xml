@@ -29,25 +29,28 @@
         android:weightSum="3"
         >
         <TextView
+            android:id="@+id/tv_all"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_weight="1"
-            android:text="@string/order_state_all"
-            />
+            android:gravity="center"
+            android:text="@string/order_state_all" />
 
         <TextView
+            android:id="@+id/tv_one"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_weight="1"
-            android:text="@string/order_state_1"
-            />
+            android:gravity="center"
+            android:text="@string/order_state_1" />
 
         <TextView
+            android:id="@+id/tv_two"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_weight="1"
-            android:text="@string/order_state_2"
-            />
+            android:gravity="center"
+            android:text="@string/order_state_2" />
 
     </LinearLayout>
 

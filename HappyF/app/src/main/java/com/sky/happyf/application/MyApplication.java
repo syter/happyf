@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
+import com.sky.happyf.utils.Constants;
 import com.tencent.bugly.crashreport.CrashReport;
 
 import cn.bingoogolapple.swipebacklayout.BGASwipeBackHelper;
@@ -15,7 +16,7 @@ public class MyApplication extends Application {
 
         BGASwipeBackHelper.init(this, null);
 
-        CrashReport.initCrashReport(getApplicationContext(), "3bf0ab6970", false);
+        CrashReport.initCrashReport(getApplicationContext(), Constants.BUGLY_APPKEY, false);
 
         Logger.addLogAdapter(new AndroidLogAdapter());
 
