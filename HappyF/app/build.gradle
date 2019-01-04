@@ -49,6 +49,7 @@ dependencies {
     compile 'com.klinkerapps:sliding-activity:1.5.2'
     compile 'cn.bingoogolapple:bga-swipebacklayout:1.2.0@aar'
     compile 'com.just.agentweb:agentweb:4.0.2'
+    compile 'com.youth.banner:banner:1.4.10'
     androidTestCompile('com.android.support:support-annotations:27.1.0') {
         force = true
     }

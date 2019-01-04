@@ -71,6 +71,18 @@
         <activity
             android:name=".activity.UpdatePwdActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.GoodsDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.ConfirmOrderActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.SelectAddressActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.EditAddressActivity"
+            android:screenOrientation="portrait" />
 
     </application>
 

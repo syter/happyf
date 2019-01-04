@@ -15,10 +15,10 @@ import com.chanven.lib.cptr.PtrClassicFrameLayout;
 import com.chanven.lib.cptr.PtrDefaultHandler;
 import com.chanven.lib.cptr.PtrFrameLayout;
 import com.chanven.lib.cptr.loadmore.OnLoadMoreListener;
-import com.sky.happyf.Model.Order;
+import com.sky.happyf.Model.Cart;
 import com.sky.happyf.R;
-import com.sky.happyf.adapter.OrderListAdapter;
-import com.sky.happyf.manager.OrderManager;
+import com.sky.happyf.adapter.CartListAdapter;
+import com.sky.happyf.manager.CartManager;
 import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 
 import org.w3c.dom.Text;
@@ -30,11 +30,9 @@ public class CartListActivity extends BaseActivity {
     private CommonTitleBar titleBar;
     private PtrClassicFrameLayout ptrLayout;
     private ListView lvCart;
-    private OrderListAdapter adapter;
-    private OrderManager orderManager;
-    private List<Order> orderList = new ArrayList<Order>();
-    private TextView tvAll, tvOne, tvTwo;
-    private int selectIndex = 0;
+    private CartListAdapter adapter;
+    private CartManager cartManager;
+    private Button btnBuy;
 
 
 
@@ -54,14 +52,13 @@ public class CartListActivity extends BaseActivity {
 
     private void initView() {
         titleBar = (CommonTitleBar) findViewById(R.id.titlebar);
-        tvAll = (TextView) findViewById(R.id.tv_all);
-        tvOne = (TextView) findViewById(R.id.tv_one);
-        tvTwo = (TextView) findViewById(R.id.tv_two);
 
         ptrLayout = (PtrClassicFrameLayout) this.findViewById(R.id.ptr_layout);
         lvCart = (ListView) findViewById(R.id.lv_cart);
-        adapter = new OrderListAdapter(this);
+        adapter = new CartListAdapter(this);
         lvCart.setAdapter(adapter);
+
+        btnBuy = (Button) findViewById(R.id.btn_buy);
     }
 
     private void initListener() {
@@ -82,14 +79,14 @@ public class CartListActivity extends BaseActivity {
 
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
-                orderManager.init(selectIndex, new OrderManager.FetchOrdersCallback() {
+                cartManager.init(new CartManager.FetchCartsCallback() {
                     @Override
                     public void onFailure(String errorMsg) {
                         ptrLayout.refreshComplete();
                     }
 
                     @Override
-                    public void onFinish(List<Order> data) {
+                    public void onFinish(List<Cart> data) {
                         ptrLayout.refreshComplete();
 
                         adapter.applyData(data);
@@ -109,14 +106,14 @@ public class CartListActivity extends BaseActivity {
 
             @Override
             public void loadMore() {
-                orderManager.loadMore(selectIndex, new OrderManager.FetchOrdersCallback() {
+                cartManager.loadMore(new CartManager.FetchCartsCallback() {
                     @Override
                     public void onFailure(String errorMsg) {
                         ptrLayout.refreshComplete();
                     }
 
                     @Override
-                    public void onFinish(List<Order> data) {
+                    public void onFinish(List<Cart> data) {
                         ptrLayout.loadMoreComplete(true);
 
                         adapter.applyData(data);
@@ -131,65 +128,29 @@ public class CartListActivity extends BaseActivity {
             }
         });
 
-        tvAll.setOnClickListener(new View.OnClickListener() {
+        btnBuy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                selectIndex = 0;
-                adapter.applyData(new ArrayList<Order>());
-                adapter.notifyDataSetChanged();
-                ptrLayout.setLoadMoreEnable(false);
-                processSelectIndexView();
-                initOrderData();
-            }
-        });
-        tvOne.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                selectIndex = 1;
-                adapter.applyData(new ArrayList<Order>());
-                adapter.notifyDataSetChanged();
-                ptrLayout.setLoadMoreEnable(false);
-                processSelectIndexView();
-                initOrderData();
-            }
-        });
-        tvTwo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                selectIndex = 2;
-                adapter.applyData(new ArrayList<Order>());
-                adapter.notifyDataSetChanged();
-                ptrLayout.setLoadMoreEnable(false);
-                processSelectIndexView();
-                initOrderData();
+                Intent intent = new Intent(CartListActivity.this, ConfirmOrderActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("id", "x");
+                intent.putExtras(bundle);
+                startActivity(intent);
+                overridePendingTransition(R.anim.anim_enter, R.anim.bottom_silent);
             }
         });
     }
 
     private void initData() {
-        orderManager = new OrderManager(this);
-        processSelectIndexView();
+        cartManager = new CartManager(this);
 
-        initOrderData();
+        initCartData();
     }
 
-    private void processSelectIndexView() {
-        if (selectIndex == 0) {
-            tvAll.setTextColor(getColor(R.color.orangered));
-            tvOne.setTextColor(getColor(R.color.black));
-            tvTwo.setTextColor(getColor(R.color.black));
-        } else if (selectIndex == 1) {
-            tvAll.setTextColor(getColor(R.color.black));
-            tvOne.setTextColor(getColor(R.color.orangered));
-            tvTwo.setTextColor(getColor(R.color.black));
-        } else if (selectIndex == 2) {
-            tvAll.setTextColor(getColor(R.color.black));
-            tvOne.setTextColor(getColor(R.color.black));
-            tvTwo.setTextColor(getColor(R.color.orangered));
-        }
-    }
 
-    private void initOrderData() {
+
+
+    private void initCartData() {
         ptrLayout.postDelayed(new Runnable() {
             @Override
             public void run() {

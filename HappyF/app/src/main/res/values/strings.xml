@@ -88,4 +88,25 @@
 
     <!-- 关于 -->
     <string name="about_title">关于</string>
+
+    <!-- 商城 -->
+    <string name="shop_type_1">海产品</string>
+    <string name="shop_type_2">海钓用具</string>
+    <string name="shop_type_3">消耗用品</string>
+
+    <!-- 商品详情 -->
+
+    <!-- 购物车 -->
+    <string name="cart_title">购物车</string>
+
+    <!-- 确认订单 -->
+    <string name="confirm_order_title">确认订单</string>
+
+    <!-- 收货地址 -->
+    <string name="select_address_title">收货地址</string>
+
+    <!-- 编辑地址 or 添加地址 -->
+    <string name="edit_address_title_1">添加地址</string>
+    <string name="edit_address_title_2">编辑地址</string>
+
 </resources>

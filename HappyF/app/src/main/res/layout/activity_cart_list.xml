@@ -10,7 +10,7 @@
         android:id="@+id/titlebar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        titlebar:centerText="@string/rank_title"
+        titlebar:centerText="@string/cart_title"
         titlebar:centerType="textView"
         titlebar:leftDrawable="@drawable/comm_titlebar_back_normal"
         titlebar:leftDrawablePadding="0dp"
@@ -19,49 +19,13 @@
         titlebar:statusBarColor="@color/skyblue"
         titlebar:statusBarMode="light" />
 
-    <LinearLayout
-        android:id="@+id/ll_top"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_below="@+id/titlebar"
-        android:orientation="horizontal"
-        android:weightSum="2">
-
-        <TextView
-            android:id="@+id/tv_one"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/rank_state_1" />
-
-        <TextView
-            android:id="@+id/tv_two"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/rank_state_2" />
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/tv_type"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ll_top"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
-        android:text="xx鱼"
-        android:textColor="@color/black" />
-
     <com.chanven.lib.cptr.PtrClassicFrameLayout xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
         android:id="@+id/ptr_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/tv_type"
-        android:background="#f0f0f0"
+        android:layout_above="@+id/rl_bottom"
+        android:layout_below="@id/titlebar"
+        android:background="@color/h_lightgray"
         cube_ptr:ptr_duration_to_close="200"
         cube_ptr:ptr_duration_to_close_header="700"
         cube_ptr:ptr_keep_header_when_refresh="true"
@@ -81,5 +45,44 @@
             android:scrollbarStyle="outsideOverlay" />
     </com.chanven.lib.cptr.PtrClassicFrameLayout>
 
+    <RelativeLayout
+        android:id="@+id/rl_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_marginLeft="20dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="全选" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="总计 ￥100" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_buy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:text="结算" />
+
+    </RelativeLayout>
 
 </RelativeLayout>
