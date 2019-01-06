@@ -7,15 +7,15 @@ import android.widget.EditText;
 import com.sky.happyf.R;
 import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 
-public class EditAddressActivity extends BaseActivity {
+public class ArticleDetailActivity extends BaseActivity {
     private CommonTitleBar titleBar;
-    private EditText etName, etPhone, etAddress;
+    private EditText etName;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_address);
+        setContentView(R.layout.activity_article_detail);
 
         getSupportActionBar().hide();//隐藏标题栏
 
@@ -28,8 +28,6 @@ public class EditAddressActivity extends BaseActivity {
 
     private void initView() {
         etName = (EditText) findViewById(R.id.et_name);
-        etPhone = (EditText) findViewById(R.id.et_phone);
-        etAddress = (EditText) findViewById(R.id.et_address);
         titleBar = (CommonTitleBar) findViewById(R.id.titlebar);
     }
 

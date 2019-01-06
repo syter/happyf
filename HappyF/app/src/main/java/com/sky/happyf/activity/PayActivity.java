@@ -2,6 +2,7 @@ package com.sky.happyf.activity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 import com.sky.happyf.R;
@@ -9,13 +10,13 @@ import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 
 public class PayActivity extends BaseActivity {
     private CommonTitleBar titleBar;
-    private EditText etName;
+    private Button btnPay;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_user);
+        setContentView(R.layout.activity_pay);
 
         getSupportActionBar().hide();//隐藏标题栏
 
@@ -27,7 +28,7 @@ public class PayActivity extends BaseActivity {
     }
 
     private void initView() {
-        etName = (EditText) findViewById(R.id.et_name);
+        btnPay = (Button) findViewById(R.id.btn_pay);
         titleBar = (CommonTitleBar) findViewById(R.id.titlebar);
     }
 
@@ -38,10 +39,14 @@ public class PayActivity extends BaseActivity {
             public void onClicked(View v, int action, String extra) {
                 if (action == CommonTitleBar.ACTION_LEFT_TEXT) {
                     finish();
-                } else if (action == CommonTitleBar.ACTION_RIGHT_TEXT) {
-                    // TODO save
-                    finish();
                 }
+            }
+        });
+        btnPay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO pay
+                finish();
             }
         });
     }

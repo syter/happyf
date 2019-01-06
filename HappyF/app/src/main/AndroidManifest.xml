@@ -83,6 +83,12 @@
         <activity
             android:name=".activity.EditAddressActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.ArticleDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.WannaHappyActivity"
+            android:screenOrientation="portrait" />
 
     </application>
 
