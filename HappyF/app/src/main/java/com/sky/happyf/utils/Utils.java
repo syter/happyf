@@ -7,10 +7,13 @@ import android.net.NetworkInfo;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
+import java.util.Comparator;
+import java.util.Map;
+import java.util.TreeMap;
 
 
 public class Utils {
-    /*
+    /**
      * 获取当前网络连接的类型信息
      */
     public static int getConnectedType(Context context) {
@@ -25,10 +28,10 @@ public class Utils {
         return -1;
     }
 
-    /*
+    /**
      * 判断是否有网络连接
      */
-    public boolean isNetworkConnected(Context context) {
+    public static boolean isNetworkConnected(Context context) {
         if (context != null) {
             ConnectivityManager mConnectivityManager = (ConnectivityManager) context
                     .getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -40,10 +43,10 @@ public class Utils {
         return false;
     }
 
-    /*
+    /**
      * 判断WIFI网络是否可用
      */
-    public boolean isWifiConnected(Context context) {
+    public static boolean isWifiConnected(Context context) {
         if (context != null) {
             ConnectivityManager mConnectivityManager = (ConnectivityManager) context
                     .getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -56,10 +59,10 @@ public class Utils {
         return false;
     }
 
-    /*
+    /**
      * 判断MOBILE网络是否可用
      */
-    public boolean isMobileConnected(Context context) {
+    public static boolean isMobileConnected(Context context) {
         if (context != null) {
             ConnectivityManager mConnectivityManager = (ConnectivityManager) context
                     .getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -72,6 +75,30 @@ public class Utils {
         return false;
     }
 
+    /**
+     * 使用 Map按key进行排序
+     */
+    public static Map<String, String> sortMapByKey(Map<String, String> map) {
+        if (map == null || map.isEmpty()) {
+            return null;
+        }
 
+        Map<String, String> sortMap = new TreeMap<String, String>(new Comparator<String>() {
+            @Override
+            public int compare(String s1, String s2) {
+                return s1.compareTo(s2);
+            }
+        });
+        sortMap.putAll(map);
 
+        return sortMap;
+    }
+
+    public static boolean isEmptyString(String str) {
+        if (str == null || str.length() == 0 || str.trim().length() == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

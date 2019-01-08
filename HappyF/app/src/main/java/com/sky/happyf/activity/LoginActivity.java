@@ -1,88 +1,59 @@
 package com.sky.happyf.activity;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.orhanobut.logger.Logger;
 import com.sky.happyf.R;
-import com.sky.happyf.utils.Base64Utils;
-import com.sky.happyf.utils.Constants;
-import com.sky.happyf.utils.RSAUtils;
+import com.sky.happyf.manager.UserManager;
+import com.sky.happyf.utils.NetUtils;
 import com.sky.happyf.utils.Utils;
+import com.wuhenzhizao.titlebar.statusbar.StatusBarUtils;
 
+import org.json.JSONObject;
 
-import java.io.InputStream;
-import java.security.PublicKey;
-import java.util.Calendar;
-
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-
-public class LoginActivity extends BaseActivity {
+public class LoginActivity extends AppCompatActivity {
     private EditText etPhone, etCode;
     private Button btnLogin, btnGetCode;
+    private boolean isLoginCalled = false;
     private TextView tvChangeType;
+    private ImageView ivClose;
+    private Handler handler = new Handler();
+    private UserManager userManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        getSupportActionBar().hide();//隐藏标题栏
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                //5.x开始需要把颜色设置透明，否则导航栏会呈现系统默认的浅灰色
-                Window window = getWindow();
-                View decorView = window.getDecorView();
-                //两个 flag 要结合使用，表示让应用的主体内容占用系统状态栏的空间
-                int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
-                decorView.setSystemUiVisibility(option);
-                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                window.setStatusBarColor(Color.TRANSPARENT);
-                //导航栏颜色也可以正常设置
-//                window.setNavigationBarColor(Color.TRANSPARENT);
-            } else {
-                Window window = getWindow();
-                WindowManager.LayoutParams attributes = window.getAttributes();
-                int flagTranslucentStatus = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
-                int flagTranslucentNavigation = WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION;
-                attributes.flags |= flagTranslucentStatus;
-//                attributes.flags |= flagTranslucentNavigation;
-                window.setAttributes(attributes);
-            }
-        }
-
+        //设置标题栏和状态栏
+        getSupportActionBar().hide();
+        StatusBarUtils.setStatusBarColor(getWindow(), getColor(R.color.login_bg_end), 0);
 
         initView();
-
         initListener();
-
-
     }
 
     private void initView() {
-        etPhone = (EditText) findViewById(R.id.et_phone);
-        etCode = (EditText) findViewById(R.id.et_code);
-        btnLogin = (Button) findViewById(R.id.btn_login);
-        btnGetCode = (Button) findViewById(R.id.btn_get_code);
-        tvChangeType = (TextView) findViewById(R.id.tv_change_type);
+        etPhone = findViewById(R.id.et_phone);
+        etCode = findViewById(R.id.et_code);
+        btnLogin = findViewById(R.id.btn_login);
+        btnGetCode = findViewById(R.id.btn_get_code);
+        tvChangeType = findViewById(R.id.tv_change_type);
+        ivClose = findViewById(R.id.iv_close);
     }
 
     private void initListener() {
+        userManager = new UserManager(this);
         etPhone.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
@@ -102,45 +73,80 @@ public class LoginActivity extends BaseActivity {
             }
         });
 
+        ivClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
+        btnGetCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // 阻止按钮继续使用
+                disableGetCodeButton();
+                // 开启60秒计时器
+                startCountingThread(60);
+                // 访问接口，获取验证码
+                userManager.getCode(etPhone.getText().toString(), new NetUtils.NetCallback() {
+                    @Override
+                    public void onFailure(final String errorMsg) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onFinish(final JSONObject data) {
+
+                    }
+                });
+            }
+        });
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                new Thread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        OkHttpClient client = new OkHttpClient();
-//                        Calendar.getInstance().getTimeInMillis();
-//                        String source = "phone=18612250715&ts=" + Calendar.getInstance().getTimeInMillis();
-//                        try {
-//                            InputStream inPublic = getResources().getAssets().open("pub_key.pem");
-//                            PublicKey publicKey = RSAUtils.loadPublicKey(inPublic);
-//                            // 加密
-//                            byte[] encryptByte = RSAUtils.encryptData(source.getBytes(), publicKey);
-//                            // 为了方便观察吧加密后的数据用base64加密转一下，要不然看起来是乱码,所以解密是也是要用Base64先转换
-//                            String sign = Base64Utils.encode(encryptByte);
-//
-//                            String params = source + "&sign=" + sign;
-//
-//                            String url = "http://192.168.0.151/shop/Api/User/sendMsg";
-//                            Logger.e(url);
-//                            Logger.e(params);
-//                            RequestBody body = RequestBody.create(Constants.JSON, "");
-//                            Request request = new Request.Builder()
-//                                    .url(url)
-//                                    .post(body)
-//                                    .build();
-//
-//                            Response response = client.newCall(request).execute();
-//                            Logger.e(response.body().string());
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                }).start();
+                if (isLoginCalled) {
+                    return;
+                }
+                // 设置按钮不可用
+                isLoginCalled = true;
+                // 校验参数
+                String phone = etPhone.getText().toString();
+                String code = etCode.getText().toString();
+                String errorMsg = userManager.validLoginParams(phone, code);
+                if (!Utils.isEmptyString(errorMsg)) {
+                    Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
+                    return;
+                }
 
+                // 访问接口，调用登录方法
+                userManager.login(phone, code, new NetUtils.NetCallback() {
+                    @Override
+                    public void onFailure(final String errorMsg) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    }
 
-                finish();
+                    @Override
+                    public void onFinish(final JSONObject data) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                // TODO
+                                finish();
+                            }
+                        });
+                    }
+                });
             }
         });
 
@@ -154,6 +160,28 @@ public class LoginActivity extends BaseActivity {
         });
     }
 
+    private void startCountingThread(final int seconds) {
+        if (seconds == 0) {
+            if (etPhone.getText().length() == 11) {
+                ableGetCodeButton();
+            } else {
+                btnGetCode.setText(getString(R.string.login_getcode));
+                disableGetCodeButton();
+            }
+            return;
+        }
+        String getCodeText = getString(R.string.login_getcode) + " (" + seconds + "s)";
+        btnGetCode.setText(getCodeText);
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                int nextSeconds = seconds - 1;
+                startCountingThread(nextSeconds);
+            }
+        }, 1000);
+    }
+
     private void ableGetCodeButton() {
         btnGetCode.setBackground(getDrawable(R.drawable.login_button));
         btnGetCode.setTextColor(getColor(R.color.white));
@@ -163,12 +191,6 @@ public class LoginActivity extends BaseActivity {
     private void disableGetCodeButton() {
         btnGetCode.setBackground(getDrawable(R.drawable.login_button_disabled));
         btnGetCode.setTextColor(getColor(R.color.login_button_text_disabled));
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
     }
 
     @Override

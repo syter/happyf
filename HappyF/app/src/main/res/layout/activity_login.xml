@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/login_bg"
+    android:clipToPadding="true"
+    android:fitsSystemWindows="true"
     tools:context="com.sky.happyf.activity.LoginActivity">
 
     <TextView
@@ -24,6 +26,7 @@
         android:layout_height="40dp">
 
         <ImageView
+            android:id="@+id/iv_close"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_centerInParent="true"
@@ -37,8 +40,8 @@
         android:layout_height="44dp"
         android:layout_below="@+id/tv_login"
         android:layout_marginLeft="15dp"
-        android:layout_marginTop="204dp"
         android:layout_marginRight="15dp"
+        android:layout_marginTop="204dp"
         android:background="@drawable/input_boder">
 
         <EditText
@@ -56,12 +59,14 @@
 
         <Button
             android:id="@+id/btn_get_code"
-            android:layout_width="100dp"
+            android:layout_width="wrap_content"
             android:layout_height="36dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="4dp"
             android:background="@drawable/login_button_disabled"
+            android:paddingLeft="13dp"
+            android:paddingRight="13dp"
             android:text="@string/login_getcode"
             android:textColor="@color/login_button_text_disabled"
             android:textSize="15sp" />
@@ -75,8 +80,8 @@
         android:layout_height="44dp"
         android:layout_below="@+id/rl_phone"
         android:layout_marginLeft="15dp"
-        android:layout_marginTop="10dp"
         android:layout_marginRight="15dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/input_boder">
 
         <EditText
@@ -101,8 +106,8 @@
         android:layout_below="@id/rl_code"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="15dp"
-        android:layout_marginTop="10dp"
         android:layout_marginRight="15dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/login_button"
         android:text="@string/login_login"
         android:textColor="@color/white"
@@ -112,10 +117,10 @@
         android:id="@+id/tv_change_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/btn_login"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="17dp"
+        android:layout_below="@id/btn_login"
         android:layout_marginRight="15dp"
+        android:layout_marginTop="17dp"
         android:text="@string/login_change_type"
         android:textColor="@color/login_button"
         android:textSize="16sp" />
