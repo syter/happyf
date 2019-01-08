@@ -4,6 +4,10 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
+
 
 public class Utils {
     /*
@@ -67,4 +71,7 @@ public class Utils {
         }
         return false;
     }
+
+
+
 }

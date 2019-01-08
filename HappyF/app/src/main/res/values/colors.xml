@@ -5,6 +5,14 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="h_lightgray">#f0f0f0</color>
+    <color name="login_bg_start">#c4d7e0</color>
+    <color name="login_bg_end">#d1dce0</color>
+    <color name="login_button">#42819d</color>
+    <color name="login_button_disabled">#bdbdbd</color>
+    <color name="login_button_text_disabled">#757575</color>
+
+
+
 
     <color name="white">#ffffff</color><!--白色 -->
     <color name="ivory">#fffff0</color><!--象牙色 -->
