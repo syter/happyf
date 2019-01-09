@@ -6,7 +6,9 @@ import java.util.List;
 public class Goods implements Serializable {
     public String id;
     public String covers;
-    public String title;
+    public String title1;
+    public String title2;
+    public String title3;
     public String desc;
     public String content;
     public List<String> sizes;

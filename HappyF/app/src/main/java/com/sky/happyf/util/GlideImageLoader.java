@@ -1,4 +1,4 @@
-package com.sky.happyf.utils;
+package com.sky.happyf.util;
 
 import android.content.Context;
 import android.widget.ImageView;

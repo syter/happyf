@@ -43,14 +43,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        getSupportActionBar().hide();//隐藏标题栏
-
-        getWindow().setStatusBarColor(getColor(R.color.skyblue));
-//        // 设置状态栏白色
-//        StatusBarUtils.transparentStatusBar(getWindow());
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-//        }
+        //设置标题栏和状态栏
+        getSupportActionBar().hide();
+        StatusBarUtils.setDarkMode(getWindow());
+        StatusBarUtils.setStatusBarColor(getWindow(), getColor(R.color.white), 0);
 
         initView();
 

@@ -2,50 +2,107 @@ package com.sky.happyf.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import com.orhanobut.logger.Logger;
 import com.sky.happyf.R;
+import com.sky.happyf.manager.UserManager;
+import com.sky.happyf.util.NetUtils;
+import com.sky.happyf.util.Utils;
+import com.wuhenzhizao.titlebar.statusbar.StatusBarUtils;
 
-public class RegisterActivity extends BaseActivity {
-    private EditText etPhone;
-    private EditText etPwd;
-    private EditText etConPwd;
-    private EditText etCode;
+import org.json.JSONObject;
+
+public class RegisterActivity extends AppCompatActivity {
+    private EditText etPhone, etPwd;
     private Button btnLogin;
-    private Button btnReg;
-    private Button btnSendCode;
+    private boolean isLoginCalled = false;
+    private TextView tvChangeType;
+    private ImageView ivClose;
+    private Handler handler = new Handler();
+    private UserManager userManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);//隐藏状态栏
-        getSupportActionBar().hide();//隐藏标题栏
+        //设置标题栏和状态栏
+        getSupportActionBar().hide();
+        StatusBarUtils.setStatusBarColor(getWindow(), getColor(R.color.login_bg_end), 0);
+
         initView();
-
         initListener();
-
-
     }
 
     private void initView() {
-        etPhone = (EditText) findViewById(R.id.et_phone);
-        etPwd = (EditText) findViewById(R.id.et_pwd);
-        etConPwd = (EditText) findViewById(R.id.et_conpwd);
-        etCode = (EditText) findViewById(R.id.et_code);
-        btnLogin = (Button) findViewById(R.id.btn_login);
-        btnReg = (Button) findViewById(R.id.btn_reg);
-        btnSendCode = (Button) findViewById(R.id.btn_sendcode);
+        etPhone = findViewById(R.id.et_phone);
+        etPwd = findViewById(R.id.et_pwd);
+        btnLogin = findViewById(R.id.btn_login);
+        tvChangeType = findViewById(R.id.tv_change_type);
+        ivClose = findViewById(R.id.iv_close);
     }
 
     private void initListener() {
+        userManager = new UserManager(this);
+
+        ivClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
         btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isLoginCalled) {
+                    return;
+                }
+                // 设置按钮不可用
+                isLoginCalled = true;
+                // 校验参数
+                String phone = etPhone.getText().toString();
+                String password = etPwd.getText().toString();
+                String errorMsg = userManager.validLoginByPwdParams(phone, password);
+                if (!Utils.isEmptyString(errorMsg)) {
+                    Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                // 访问接口，调用登录方法
+                userManager.loginByPwd(phone, password, new NetUtils.NetCallback() {
+                    @Override
+                    public void onFailure(final String errorMsg) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onFinish(final JSONObject data) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                // TODO
+                                finish();
+                            }
+                        });
+                    }
+                });
+            }
+        });
+
+        tvChangeType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent it = new Intent(getApplicationContext(), LoginActivity.class);
@@ -53,28 +110,8 @@ public class RegisterActivity extends BaseActivity {
                 finish();
             }
         });
-
-        btnReg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
-
-        btnSendCode.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // 发送验证码
-                Logger.d("发送验证码 开始");
-            }
-        });
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-    }
 
     @Override
     public void finish() {

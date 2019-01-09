@@ -7,9 +7,15 @@
     <color name="h_lightgray">#f0f0f0</color>
     <color name="login_bg_start">#c4d7e0</color>
     <color name="login_bg_end">#d1dce0</color>
-    <color name="login_button">#42819d</color>
+    <color name="main_color_blue">#42819d</color>
     <color name="login_button_disabled">#bdbdbd</color>
     <color name="login_button_text_disabled">#757575</color>
+    <color name="main_bg">#e5e5e5</color>
+    <color name="cart_button_bg">#b12f27</color>
+    <color name="gray_text_1">#757575</color>
+    <color name="gray_text_2">#1f1f1f</color>
+    <color name="gray_text_3">#bdbdbd</color>
+    <color name="search_text_bg">#dedede</color>
 
 
 

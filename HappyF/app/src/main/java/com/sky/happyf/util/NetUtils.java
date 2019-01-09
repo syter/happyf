@@ -1,11 +1,8 @@
-package com.sky.happyf.utils;
+package com.sky.happyf.util;
 
 import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 
 import com.orhanobut.logger.Logger;
-import com.sky.happyf.Model.Rank;
 import com.sky.happyf.R;
 
 import org.json.JSONObject;
@@ -13,9 +10,7 @@ import org.json.JSONObject;
 import java.io.InputStream;
 import java.security.PublicKey;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -45,7 +40,7 @@ public class NetUtils {
                     for (Map.Entry<String, String> entry : resultMap.entrySet()) {
                         sb.append(entry.getKey() + "=" + entry.getValue() + "&");
                     }
-                    String source = sb.substring(sb.length() - 1);
+                    String source = sb.substring(0, sb.length() - 1);
                     InputStream inPublic = ct.getResources().getAssets().open("pub_key.pem");
                     PublicKey publicKey = RSAUtils.loadPublicKey(inPublic);
                     // 加密

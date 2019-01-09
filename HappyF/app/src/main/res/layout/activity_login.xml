@@ -40,8 +40,8 @@
         android:layout_height="44dp"
         android:layout_below="@+id/tv_login"
         android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
         android:layout_marginTop="204dp"
+        android:layout_marginRight="15dp"
         android:background="@drawable/input_boder">
 
         <EditText
@@ -55,6 +55,7 @@
             android:maxLength="11"
             android:paddingLeft="13dp"
             android:textColor="@color/black"
+            android:textCursorDrawable="@drawable/edittext_cursor"
             android:textSize="14sp" />
 
         <Button
@@ -80,8 +81,8 @@
         android:layout_height="44dp"
         android:layout_below="@+id/rl_phone"
         android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
         android:layout_marginTop="10dp"
+        android:layout_marginRight="15dp"
         android:background="@drawable/input_boder">
 
         <EditText
@@ -94,6 +95,7 @@
             android:maxLength="6"
             android:paddingLeft="13dp"
             android:textColor="@color/black"
+            android:textCursorDrawable="@drawable/edittext_cursor"
             android:textSize="14sp" />
 
     </RelativeLayout>
@@ -106,8 +108,8 @@
         android:layout_below="@id/rl_code"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
         android:layout_marginTop="10dp"
+        android:layout_marginRight="15dp"
         android:background="@drawable/login_button"
         android:text="@string/login_login"
         android:textColor="@color/white"
@@ -117,12 +119,12 @@
         android:id="@+id/tv_change_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
         android:layout_below="@id/btn_login"
-        android:layout_marginRight="15dp"
+        android:layout_alignParentRight="true"
         android:layout_marginTop="17dp"
+        android:layout_marginRight="15dp"
         android:text="@string/login_change_type"
-        android:textColor="@color/login_button"
+        android:textColor="@color/main_color_blue"
         android:textSize="16sp" />
 
 

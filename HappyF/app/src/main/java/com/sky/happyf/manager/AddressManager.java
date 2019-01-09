@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.Handler;
 
 import com.sky.happyf.Model.Address;
-import com.sky.happyf.utils.Constants;
+import com.sky.happyf.util.Constants;
 
 import java.util.ArrayList;
 import java.util.List;

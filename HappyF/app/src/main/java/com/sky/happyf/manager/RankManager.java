@@ -5,7 +5,7 @@ import android.os.Handler;
 
 import com.sky.happyf.Model.Rank;
 import com.sky.happyf.Model.User;
-import com.sky.happyf.utils.Constants;
+import com.sky.happyf.util.Constants;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -4,7 +4,7 @@ import android.app.Application;
 
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
-import com.sky.happyf.utils.Constants;
+import com.sky.happyf.util.Constants;
 import com.tencent.bugly.crashreport.CrashReport;
 
 import cn.bingoogolapple.swipebacklayout.BGASwipeBackHelper;

@@ -71,26 +71,27 @@ public class GoodsListAdapter extends BaseAdapter {
 
     public class GoodsListItem extends LinearLayout {
         private ImageView ivCover;
-        private TextView tvTitle, tvDesc, tvPrice, tvShellPrice, tvSellCount;
+        private TextView tvTitle1, tvTitle2, tvTitle3, tvPrice, tvShellPrice, tvSellCount;
 
         public GoodsListItem(Context ct) {
             super(ct);
             inflate(getContext(), R.layout.lvitem_goods, this);
             ivCover = (ImageView) findViewById(R.id.iv_cover);
-            tvTitle = (TextView) findViewById(R.id.tv_title);
-            tvDesc = (TextView) findViewById(R.id.tv_desc);
+            tvTitle1 = (TextView) findViewById(R.id.tv_title1);
+            tvTitle2 = (TextView) findViewById(R.id.tv_title2);
+            tvTitle3 = (TextView) findViewById(R.id.tv_title3);
             tvPrice = (TextView) findViewById(R.id.tv_price);
             tvShellPrice = (TextView) findViewById(R.id.tv_shell_price);
             tvSellCount = (TextView) findViewById(R.id.tv_sell_count);
         }
 
         public void setData(final Goods goods) {
-            tvTitle.setText(goods.title);
-            tvDesc.setText(goods.desc);
-            tvPrice.setText("￥" + goods.price);
-            tvPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-            tvShellPrice.setText("￥" + goods.shellPrice);
-            tvSellCount.setText("销量" + goods.state);
+            tvTitle1.setText(goods.title1);
+            tvTitle2.setText(goods.title2);
+            tvTitle3.setText(goods.title3);
+            tvPrice.setText(goods.price);
+            tvShellPrice.setText(goods.shellPrice);
+            tvSellCount.setText(goods.sell_count + " " + ct.getString(R.string.shop_selled));
 
 
         }

@@ -15,8 +15,8 @@ import android.widget.Toast;
 
 import com.sky.happyf.R;
 import com.sky.happyf.manager.UserManager;
-import com.sky.happyf.utils.NetUtils;
-import com.sky.happyf.utils.Utils;
+import com.sky.happyf.util.NetUtils;
+import com.sky.happyf.util.Utils;
 import com.wuhenzhizao.titlebar.statusbar.StatusBarUtils;
 
 import org.json.JSONObject;

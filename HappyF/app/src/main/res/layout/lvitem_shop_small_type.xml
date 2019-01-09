@@ -1,0 +1,24 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bulletin_item"
+    android:layout_width="100dp"
+    android:layout_height="30dp">
+
+    <TextView
+        android:id="@+id/tv_small_type"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_centerInParent="true"
+        android:text="休闲食品"
+        android:textColor="@color/main_color_blue"
+        android:textSize="14sp" />
+
+    <LinearLayout
+        android:id="@+id/ll_bottom_line"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/main_color_blue"
+        android:orientation="vertical"></LinearLayout>
+
+</RelativeLayout>

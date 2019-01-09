@@ -5,7 +5,7 @@ import android.view.View;
 import android.webkit.WebView;
 
 import com.sky.happyf.R;
-import com.sky.happyf.utils.Constants;
+import com.sky.happyf.util.Constants;
 import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 
 public class ExpActivity extends BaseActivity {

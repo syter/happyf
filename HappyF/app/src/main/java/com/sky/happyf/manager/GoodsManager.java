@@ -4,11 +4,16 @@ import android.content.Context;
 import android.os.Handler;
 
 import com.sky.happyf.Model.Goods;
-import com.sky.happyf.utils.Constants;
+import com.sky.happyf.util.Constants;
+import com.sky.happyf.util.NetUtils;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Observable;
+import java.util.TreeMap;
 
 public class GoodsManager extends Observable {
     private ArrayList<Goods> goodsList = new ArrayList<Goods>();
@@ -86,7 +91,9 @@ public class GoodsManager extends Observable {
                     Goods o = new Goods();
                     o.id = i + "goods";
                     o.covers = "xxx";
-                    o.title = "title";
+                    o.title1 = "title1";
+                    o.title2 = "title2";
+                    o.title3 = "title3";
                     o.state = 1;
                     o.desc = "desc";
                     List<String> sizes = new ArrayList<String>();
@@ -96,7 +103,7 @@ public class GoodsManager extends Observable {
                     o.sizes = sizes;
                     o.content = "商品详情 无啦啦啦啦啦了";
                     o.price = "￥100";
-                    o.shellPrice = "￥98";
+                    o.shellPrice = "98";
                     o.backPrice = "￥48";
                     o.sell_count = 56;
                     goodsList.add(o);
@@ -120,7 +127,9 @@ public class GoodsManager extends Observable {
                 Goods o = new Goods();
                 o.id = page + "";
                 o.covers = "xxx";
-                o.title = "title";
+                o.title1 = "title1";
+                o.title2 = "title2";
+                o.title3 = "title3";
                 o.state = 1;
                 o.desc = "desc";
                 List<String> sizes = new ArrayList<String>();
@@ -130,7 +139,7 @@ public class GoodsManager extends Observable {
                 o.sizes = sizes;
                 o.content = "商品详情 无啦啦啦啦啦了";
                 o.price = "￥100";
-                o.shellPrice = "￥98";
+                o.shellPrice = "98";
                 o.backPrice = "￥48";
                 o.sell_count = 56;
                 goodsList.add(o);
@@ -243,6 +252,22 @@ public class GoodsManager extends Observable {
 //                }
 //            }
 //        }).start();
+    }
+
+    public void searchGoods(final String content, final NetUtils.NetCallback callback) {
+        if (Constants.IS_DEBUG) {
+            searchLocalGoods(content, callback);
+            return;
+        }
+        Map<String, String> params = new TreeMap<>();
+        params.put("content", content);
+        NetUtils.post(ct.getApplicationContext(), params, Constants.PATH_SEARCH_GOODS, callback);
+    }
+
+    public void searchLocalGoods(final String content, final NetUtils.NetCallback callback) {
+        if (callback != null) {
+            callback.onFinish(new JSONObject());
+        }
     }
 
 

@@ -22,10 +22,15 @@
     <string name="login_reg">注册</string>
     <string name="login_getcode">获取验证码</string>
     <string name="login_codehint">请输入验证码</string>
+    <string name="login_pwdhint">请输入密码</string>
     <string name="login_change_type">账号密码登录</string>
+    <string name="login_change_type_2">手机号快速登录</string>
     <string name="login_phone_error">电话号码长度不对</string>
+    <string name="login_phone_empty">请输入电话号码</string>
     <string name="login_code_error">验证码长度不对</string>
-
+    <string name="login_code_empty">请输入验证码</string>
+    <string name="login_pwd_error">密码最少需要6位</string>
+    <string name="login_pwd_empty">请输入密码</string>
 
     <!-- 注册页 -->
     <string name="reg_phone">手机号</string>
@@ -99,11 +104,19 @@
     <string name="about_title">关于</string>
 
     <!-- 商城 -->
+    <string name="shop_title">渔趣商城</string>
+    <string name="shop_search_hint">搜索商城商品</string>
     <string name="shop_type_1">海产品</string>
     <string name="shop_type_2">海钓用具</string>
     <string name="shop_type_3">消耗用品</string>
+    <string name="shop_selled">人已购</string>
 
     <!-- 商品详情 -->
+    <string name="sd_select">选择</string>
+    <string name="sd_select_default">选择 规格重量</string>
+    <string name="sd_service">服务</string>
+    <string name="sd_service_default">生鲜放心购服务</string>
+    <string name="sd_detail">商品详情</string>
 
     <!-- 购物车 -->
     <string name="cart_title">购物车</string>

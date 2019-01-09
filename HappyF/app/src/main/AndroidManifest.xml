@@ -89,6 +89,9 @@
         <activity
             android:name=".activity.WannaHappyActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.SearchGoodsActivity"
+            android:screenOrientation="portrait" />
 
     </application>
 

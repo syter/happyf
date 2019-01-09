@@ -1,4 +1,4 @@
-package com.sky.happyf.utils;
+package com.sky.happyf.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;
