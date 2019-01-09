@@ -9,6 +9,7 @@
     <string name="yes">是</string>
     <string name="no">否</string>
     <string name="confirm">确认</string>
+    <string name="sure">确定</string>
     <string name="net_error">网络不可用，请检查网络是否正常连接</string>
 
 
@@ -117,6 +118,11 @@
     <string name="sd_service">服务</string>
     <string name="sd_service_default">生鲜放心购服务</string>
     <string name="sd_detail">商品详情</string>
+    <string name="sd_join_cart">加入购物车</string>
+    <string name="sd_total_price">总价</string>
+    <string name="sd_no_select">未选择</string>
+    <string name="sd_select_count">数量选择</string>
+
 
     <!-- 购物车 -->
     <string name="cart_title">购物车</string>
