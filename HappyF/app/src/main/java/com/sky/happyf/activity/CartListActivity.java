@@ -8,7 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.chanven.lib.cptr.PtrClassicFrameLayout;
@@ -19,6 +21,7 @@ import com.sky.happyf.Model.Cart;
 import com.sky.happyf.R;
 import com.sky.happyf.adapter.CartListAdapter;
 import com.sky.happyf.manager.CartManager;
+import com.sky.happyf.view.SmoothCheckBox;
 import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 
 import org.w3c.dom.Text;
@@ -28,12 +31,13 @@ import java.util.List;
 
 public class CartListActivity extends BaseActivity {
     private CommonTitleBar titleBar;
-    private PtrClassicFrameLayout ptrLayout;
     private ListView lvCart;
     private CartListAdapter adapter;
     private CartManager cartManager;
-    private Button btnBuy;
-
+    private LinearLayout llPay, llRemove;
+    private RelativeLayout rlLeft, rlCheckall;
+    private SmoothCheckBox cbAll;
+    private boolean isEdit = false;
 
 
     @Override
@@ -51,14 +55,17 @@ public class CartListActivity extends BaseActivity {
     }
 
     private void initView() {
-        titleBar = (CommonTitleBar) findViewById(R.id.titlebar);
+        titleBar = findViewById(R.id.titlebar);
 
-        ptrLayout = (PtrClassicFrameLayout) this.findViewById(R.id.ptr_layout);
-        lvCart = (ListView) findViewById(R.id.lv_cart);
-        adapter = new CartListAdapter(this);
+        lvCart = findViewById(R.id.lv_cart);
+        adapter = new CartListAdapter(this, isEdit);
         lvCart.setAdapter(adapter);
 
-        btnBuy = (Button) findViewById(R.id.btn_buy);
+        llPay = findViewById(R.id.ll_pay);
+        llRemove = findViewById(R.id.ll_remove);
+        rlLeft = findViewById(R.id.rl_left);
+        cbAll = findViewById(R.id.cb_all);
+        rlCheckall = findViewById(R.id.rl_checkall);
     }
 
     private void initListener() {
@@ -67,68 +74,40 @@ public class CartListActivity extends BaseActivity {
             public void onClicked(View v, int action, String extra) {
                 if (action == CommonTitleBar.ACTION_LEFT_TEXT) {
                     finish();
+                } else if (action == CommonTitleBar.ACTION_RIGHT_TEXT) {
+                    TextView rightTextview = titleBar.getRightTextView();
+                    // 切换模式
+                    if (isEdit) {
+                        rightTextview.setText(R.string.edit);
+                        isEdit = false;
+                        llRemove.setVisibility(View.GONE);
+                        rlCheckall.setVisibility(View.GONE);
+                        llPay.setVisibility(View.VISIBLE);
+                        rlLeft.setVisibility(View.VISIBLE);
+                        adapter.setEdit(isEdit);
+                    } else {
+                        rightTextview.setText(R.string.complete);
+                        isEdit = true;
+                        llRemove.setVisibility(View.VISIBLE);
+                        rlCheckall.setVisibility(View.VISIBLE);
+                        llPay.setVisibility(View.GONE);
+                        rlLeft.setVisibility(View.GONE);
+                        adapter.setEdit(isEdit);
+
+                    }
                 }
             }
         });
 
-        // set auto load more disable,default available
-//        ptrLayout.setAutoLoadMoreEnable(false);
-
-
-        ptrLayout.setPtrHandler(new PtrDefaultHandler() {
-
+        cbAll.setOnCheckedChangeListener(new SmoothCheckBox.OnCheckedChangeListener() {
             @Override
-            public void onRefreshBegin(PtrFrameLayout frame) {
-                cartManager.init(new CartManager.FetchCartsCallback() {
-                    @Override
-                    public void onFailure(String errorMsg) {
-                        ptrLayout.refreshComplete();
-                    }
-
-                    @Override
-                    public void onFinish(List<Cart> data) {
-                        ptrLayout.refreshComplete();
-
-                        adapter.applyData(data);
-                        adapter.notifyDataSetChanged();
-                        ptrLayout.refreshComplete();
-
-                        if (!ptrLayout.isLoadMoreEnable()) {
-                            ptrLayout.setLoadMoreEnable(true);
-                        }
-                    }
-                });
+            public void onCheckedChanged(SmoothCheckBox checkBox, boolean isChecked) {
+                adapter.checkAll(isChecked);
             }
         });
 
 
-        ptrLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
-
-            @Override
-            public void loadMore() {
-                cartManager.loadMore(new CartManager.FetchCartsCallback() {
-                    @Override
-                    public void onFailure(String errorMsg) {
-                        ptrLayout.refreshComplete();
-                    }
-
-                    @Override
-                    public void onFinish(List<Cart> data) {
-                        ptrLayout.loadMoreComplete(true);
-
-                        adapter.applyData(data);
-                        adapter.notifyDataSetChanged();
-                        ptrLayout.refreshComplete();
-
-                        if (data.isEmpty()) {
-                            ptrLayout.setLoadMoreEnable(false);
-                        }
-                    }
-                });
-            }
-        });
-
-        btnBuy.setOnClickListener(new View.OnClickListener() {
+        llPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(CartListActivity.this, ConfirmOrderActivity.class);
@@ -148,15 +127,21 @@ public class CartListActivity extends BaseActivity {
     }
 
 
-
-
     private void initCartData() {
-        ptrLayout.postDelayed(new Runnable() {
+        cartManager.init(new CartManager.FetchCartsCallback() {
             @Override
-            public void run() {
-                ptrLayout.autoRefresh(true);
+            public void onFailure(String errorMsg) {
+
             }
-        }, 150);
+
+            @Override
+            public void onFinish(List<Cart> data) {
+
+                adapter.applyData(data);
+                adapter.notifyDataSetChanged();
+
+            }
+        });
     }
 
     @Override

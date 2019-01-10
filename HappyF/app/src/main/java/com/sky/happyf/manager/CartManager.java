@@ -82,16 +82,62 @@ public class CartManager extends Observable {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                for (int i = 0; i < 4; i++) {
-                    Cart o = new Cart();
-                    o.title = "title";
-                    o.state = 1;
-                    o.desc = "desc";
-                    o.size = "size";
-                    o.amount = "100";
-                    o.count = 1;
-                    o.date = "2019-01-10";
-                    cartList.add(o);
+                for (int i = 0; i < 10; i++) {
+                    if (i == 0) {
+                        Cart o = new Cart();
+//                        o.removeSelected = true;
+//                        o.selected = true;
+                        o.id = i + "";
+                        o.goods_id = i + "";
+                        o.title = "title";
+                        o.state = 0;
+                        o.param = "选定参数";
+                        o.price = "100";
+                        o.shell = "200";
+                        o.type = 1;
+                        o.count = 1;
+                        o.date = "2019-01-10";
+                        cartList.add(o);
+                    } else if (i == 1) {
+                        Cart o = new Cart();
+                        o.id = i + "";
+                        o.goods_id = i + "";
+                        o.title = "title";
+                        o.state = 0;
+                        o.param = "选定参数";
+                        o.price = "100";
+                        o.shell = "200";
+                        o.type = 2;
+                        o.count = 1;
+                        o.date = "2019-01-10";
+                        cartList.add(o);
+                    } else if (i == 2) {
+                        Cart o = new Cart();
+                        o.id = i + "";
+                        o.goods_id = i + "";
+                        o.title = "title";
+                        o.state = 1;
+                        o.param = "选定参数";
+                        o.price = "100";
+                        o.shell = "200";
+                        o.type = 2;
+                        o.count = 1;
+                        o.date = "2019-01-10";
+                        cartList.add(o);
+                    } else {
+                        Cart o = new Cart();
+                        o.id = i + "";
+                        o.goods_id = i + "";
+                        o.title = "title";
+                        o.state = 1;
+                        o.param = "选定参数";
+                        o.price = "100";
+                        o.shell = "200";
+                        o.type = 1;
+                        o.count = 1;
+                        o.date = "2019-01-10";
+                        cartList.add(o);
+                    }
                 }
                 handler.postDelayed(new Runnable() {
                     @Override
@@ -112,9 +158,10 @@ public class CartManager extends Observable {
                 Cart o = new Cart();
                 o.title = "title";
                 o.state = 1;
-                o.desc = "desc";
-                o.size = "size";
-                o.amount = "100";
+                o.param = "选定参数";
+                o.price = "100";
+                o.shell = "200";
+                o.type = 1;
                 o.count = 1;
                 o.date = "2019-01-10";
                 cartList.add(o);

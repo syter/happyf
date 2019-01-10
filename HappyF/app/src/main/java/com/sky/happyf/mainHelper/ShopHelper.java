@@ -23,6 +23,7 @@ import com.orhanobut.logger.Logger;
 import com.sky.happyf.Model.Goods;
 import com.sky.happyf.Model.SmallType;
 import com.sky.happyf.R;
+import com.sky.happyf.activity.CartListActivity;
 import com.sky.happyf.activity.GoodsDetailActivity;
 import com.sky.happyf.activity.SearchGoodsActivity;
 import com.sky.happyf.adapter.GoodsListAdapter;
@@ -45,7 +46,7 @@ public class ShopHelper {
     private GoodsListAdapter adapter;
     private GoodsManager goodsManager;
     private Banner banner;
-    private RelativeLayout rlBanner;
+    private RelativeLayout rlBanner, rlCart;
     private LinearLayout llLeftMenu, llRightClose, llTitleSearch, llQuickway, llLoadMore;
     private ImageView ivMenu;
     private ScrollView svMain;
@@ -79,6 +80,7 @@ public class ShopHelper {
         llTitleSearch = view.findViewById(R.id.ll_title_search);
         llQuickway = view.findViewById(R.id.ll_quickway);
         llLoadMore = view.findViewById(R.id.ll_load_more);
+        rlCart = view.findViewById(R.id.rl_cart);
 
 //        ptrLayout = view.findViewById(R.id.ptr_layout);
         lvGoods = view.findViewById(R.id.lv_goods);
@@ -105,6 +107,14 @@ public class ShopHelper {
 
     @SuppressLint("ClickableViewAccessibility")
     private void initListener() {
+        rlCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                act.startActivity(new Intent(act, CartListActivity.class));
+                act.overridePendingTransition(R.anim.anim_enter, R.anim.bottom_silent);
+            }
+        });
+
         ivMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

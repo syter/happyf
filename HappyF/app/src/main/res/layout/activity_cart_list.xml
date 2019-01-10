@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/main_bg"
     tools:context="com.sky.happyf.activity.CartListActivity">
 
     <com.wuhenzhizao.titlebar.widget.CommonTitleBar
@@ -14,75 +15,142 @@
         titlebar:centerType="textView"
         titlebar:leftDrawable="@drawable/comm_titlebar_back_normal"
         titlebar:leftDrawablePadding="0dp"
-        titlebar:leftText="@string/back"
+        titlebar:leftText=""
         titlebar:leftType="textView"
-        titlebar:statusBarColor="@color/skyblue"
-        titlebar:statusBarMode="light" />
+        titlebar:rightText="@string/edit"
+        titlebar:rightTextColor="@color/main_color_blue"
+        titlebar:rightType="textView"
+        titlebar:statusBarColor="@color/white"
+        titlebar:statusBarMode="dark" />
 
-    <com.chanven.lib.cptr.PtrClassicFrameLayout xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/ptr_layout"
+    <ListView
+        android:id="@+id/lv_cart"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/rl_bottom"
-        android:layout_below="@id/titlebar"
-        android:background="@color/h_lightgray"
-        cube_ptr:ptr_duration_to_close="200"
-        cube_ptr:ptr_duration_to_close_header="700"
-        cube_ptr:ptr_keep_header_when_refresh="true"
-        cube_ptr:ptr_pull_to_fresh="false"
-        cube_ptr:ptr_ratio_of_header_height_to_refresh="1.2"
-        cube_ptr:ptr_resistance="1.8">
-
-        <ListView
-            android:id="@+id/lv_cart"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/white"
-            android:choiceMode="singleChoice"
-            android:divider="@color/darkgray"
-            android:dividerHeight="0.1dp"
-            android:fadingEdge="none"
-            android:scrollbarStyle="outsideOverlay" />
-    </com.chanven.lib.cptr.PtrClassicFrameLayout>
+        android:layout_above="@id/rl_bottom"
+        android:layout_below="@+id/titlebar"
+        android:background="@android:color/white"
+        android:choiceMode="singleChoice"
+        android:divider="@color/darkgray"
+        android:dividerHeight="0.1dp"
+        android:fadingEdge="none"
+        android:scrollbarStyle="outsideOverlay" />
 
     <RelativeLayout
         android:id="@+id/rl_bottom"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_alignParentBottom="true">
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white">
 
-        <LinearLayout
+        <RelativeLayout
+            android:id="@+id/rl_checkall"
             android:layout_width="wrap_content"
-            android:layout_height="60dp"
-            android:layout_marginLeft="20dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:visibility="gone">
 
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="全选" />
+            <com.sky.happyf.view.SmoothCheckBox
+                android:id="@+id/cb_all"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                titlebar:color_checked="@color/main_color_blue" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
-                android:text="总计 ￥100" />
-        </LinearLayout>
+                android:layout_toRightOf="@id/cb_all"
+                android:text="全选"
+                android:textColor="@color/main_color_blue" />
 
-        <Button
-            android:id="@+id/btn_buy"
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_left"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp">
+
+
+            <LinearLayout
+                android:id="@+id/ll_shell"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_price"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:src="@drawable/logo" />
+
+                <TextView
+                    android:id="@+id/tv_shell"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="99990"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="￥100"
+                android:textColor="@color/cart_button_bg"
+                android:textSize="14sp" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_pay"
+            android:layout_width="140dp"
+            android:layout_height="36dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="20dp"
-            android:text="结算" />
+            android:layout_marginRight="5dp"
+            android:background="@drawable/pay_button_shell"
+            android:gravity="center"
+            android:orientation="vertical">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cart_pay"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_remove"
+            android:layout_width="140dp"
+            android:layout_height="36dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/pay_button_price"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/remove"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+
+        </LinearLayout>
     </RelativeLayout>
+
 
 </RelativeLayout>

@@ -87,9 +87,9 @@ public class OrderCartListAdapter extends BaseAdapter {
 
         public void setData(final Cart cart) {
             tvTitle.setText(cart.title);
-            tvDesc.setText(cart.desc);
-            tvSize.setText(cart.size);
-            tvAmount.setText("￥" + cart.amount);
+//            tvDesc.setText(cart.desc);
+//            tvSize.setText(cart.size);
+//            tvAmount.setText("￥" + cart.amount);
             tvCount.setText(cart.count + "");
         }
     }

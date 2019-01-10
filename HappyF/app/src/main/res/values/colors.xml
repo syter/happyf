@@ -17,6 +17,9 @@
     <color name="gray_text_3">#bdbdbd</color>
     <color name="search_text_bg">#dedede</color>
     <color name="price_red">#c11b1b</color>
+    <color name="fish_green">#ecfffc</color>
+    <color name="cart_invalid_gray">#f5f5f5</color>
+
 
 
 

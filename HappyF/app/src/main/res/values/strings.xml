@@ -11,6 +11,9 @@
     <string name="confirm">确认</string>
     <string name="sure">确定</string>
     <string name="net_error">网络不可用，请检查网络是否正常连接</string>
+    <string name="edit">编辑</string>
+    <string name="complete">完成</string>
+    <string name="remove">删除</string>
 
 
     <!-- 启动页 -->
@@ -129,6 +132,8 @@
 
     <!-- 购物车 -->
     <string name="cart_title">购物车</string>
+    <string name="cart_pay">支付</string>
+    <string name="cart_invalid">商品已失效</string>
 
     <!-- 确认订单 -->
     <string name="confirm_order_title">确认订单</string>

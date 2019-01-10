@@ -38,7 +38,7 @@ public class SearchGoodsActivity extends BaseActivity {
     private ListView lvGoods;
     private GoodsListAdapter adapter;
     private String content;
-    private RelativeLayout rlBack;
+    private RelativeLayout rlBack, rlCart;
 
 
     @Override
@@ -62,6 +62,7 @@ public class SearchGoodsActivity extends BaseActivity {
         rlBack = findViewById(R.id.rl_back);
         etSearch = findViewById(R.id.et_search);
         ptrLayout = findViewById(R.id.ptr_layout);
+        rlCart = findViewById(R.id.rl_cart);
         lvGoods = findViewById(R.id.lv_goods);
         adapter = new GoodsListAdapter(this);
         lvGoods.setAdapter(adapter);
@@ -72,6 +73,14 @@ public class SearchGoodsActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 finish();
+            }
+        });
+
+        rlCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(SearchGoodsActivity.this, CartListActivity.class));
+                overridePendingTransition(R.anim.anim_enter, R.anim.bottom_silent);
             }
         });
 
