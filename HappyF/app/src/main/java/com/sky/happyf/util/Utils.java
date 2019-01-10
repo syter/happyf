@@ -3,6 +3,8 @@ package com.sky.happyf.util;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 
 import java.util.Comparator;
 import java.util.Map;
@@ -104,6 +106,7 @@ public class Utils {
 
     /**
      * 根据手机分辨率从DP转成PX
+     *
      * @param context
      * @param dpValue
      * @return
@@ -115,6 +118,7 @@ public class Utils {
 
     /**
      * 将sp值转换为px值，保证文字大小不变
+     *
      * @param spValue
      * @return
      */
@@ -125,6 +129,7 @@ public class Utils {
 
     /**
      * 根据手机的分辨率PX(像素)转成DP
+     *
      * @param context
      * @param pxValue
      * @return
@@ -136,6 +141,7 @@ public class Utils {
 
     /**
      * 将px值转换为sp值，保证文字大小不变
+     *
      * @param pxValue
      * @return
      */
@@ -143,5 +149,32 @@ public class Utils {
     public static int px2sp(Context context, float pxValue) {
         final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
         return (int) (pxValue / fontScale + 0.5f);
+    }
+
+
+    /**
+     * 从控件所在位置移动到控件的底部
+     *
+     * @return
+     */
+    public static TranslateAnimation moveToViewBottom() {
+        TranslateAnimation mHiddenAction = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f,
+                Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF,
+                0.0f, Animation.RELATIVE_TO_SELF, 1.0f);
+        mHiddenAction.setDuration(500);
+        return mHiddenAction;
+    }
+
+    /**
+     * 从控件的底部移动到控件所在位置
+     *
+     * @return
+     */
+    public static TranslateAnimation moveToViewLocation() {
+        TranslateAnimation mHiddenAction = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f,
+                Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF,
+                1.0f, Animation.RELATIVE_TO_SELF, 0.0f);
+        mHiddenAction.setDuration(500);
+        return mHiddenAction;
     }
 }

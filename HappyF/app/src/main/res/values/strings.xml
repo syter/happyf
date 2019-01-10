@@ -122,6 +122,9 @@
     <string name="sd_total_price">总价</string>
     <string name="sd_no_select">未选择</string>
     <string name="sd_select_count">数量选择</string>
+    <string name="sd_count_one">最少得买一个</string>
+    <string name="sd_count_ten">最多买十个</string>
+    <string name="sd_join_cart_succ">加入购物车成功</string>
 
 
     <!-- 购物车 -->

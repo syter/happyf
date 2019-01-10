@@ -74,7 +74,7 @@ public class AutoNextLineLinearlayout extends LinearLayout {
             position.bottom = mBottom;
             map.put(child, position);
         }
-        setMeasuredDimension(mWidth, mBottom);
+        setMeasuredDimension(mWidth, mBottom + 10);
     }
 
     @Override
