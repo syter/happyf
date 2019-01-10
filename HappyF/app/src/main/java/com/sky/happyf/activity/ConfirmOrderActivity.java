@@ -12,6 +12,7 @@ import com.sky.happyf.R;
 import com.sky.happyf.adapter.CartListAdapter;
 import com.sky.happyf.adapter.OrderCartListAdapter;
 import com.sky.happyf.manager.CartManager;
+import com.sky.happyf.view.MyListView;
 import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public class ConfirmOrderActivity extends BaseActivity {
     private CommonTitleBar titleBar;
     private Button btnConfirm;
     private RelativeLayout rlSelectAddress;
-    private ListView lvCart;
+    private MyListView lvCart;
     private OrderCartListAdapter adapter;
     private CartManager cartManager;
 
@@ -40,11 +41,11 @@ public class ConfirmOrderActivity extends BaseActivity {
     }
 
     private void initView() {
-        btnConfirm = (Button) findViewById(R.id.btn_confirm);
-        titleBar = (CommonTitleBar) findViewById(R.id.titlebar);
-        rlSelectAddress = (RelativeLayout) findViewById(R.id.rl_select_address);
+//        btnConfirm = (Button) findViewById(R.id.btn_confirm);
+        titleBar = findViewById(R.id.titlebar);
+        rlSelectAddress = findViewById(R.id.rl_select_address);
 
-        lvCart = (ListView) findViewById(R.id.lv_cart);
+        lvCart = findViewById(R.id.lv_cart);
         adapter = new OrderCartListAdapter(this);
         lvCart.setAdapter(adapter);
     }
@@ -68,17 +69,17 @@ public class ConfirmOrderActivity extends BaseActivity {
             }
         });
 
-        btnConfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(ConfirmOrderActivity.this, PayActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("price", "100");
-                intent.putExtras(bundle);
-                startActivity(intent);
-                overridePendingTransition(R.anim.anim_enter, R.anim.bottom_silent);
-            }
-        });
+//        btnConfirm.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(ConfirmOrderActivity.this, PayActivity.class);
+//                Bundle bundle = new Bundle();
+//                bundle.putString("price", "100");
+//                intent.putExtras(bundle);
+//                startActivity(intent);
+//                overridePendingTransition(R.anim.anim_enter, R.anim.bottom_silent);
+//            }
+//        });
     }
 
     private void initData() {

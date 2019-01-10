@@ -21,7 +21,6 @@ import java.util.List;
 
 public class SelectAddressActivity extends BaseActivity {
     private CommonTitleBar titleBar;
-    private EditText etName;
     private ListView lvAddress;
     private AddressListAdapter adapter;
     private AddressManager addressManager;
@@ -42,7 +41,6 @@ public class SelectAddressActivity extends BaseActivity {
     }
 
     private void initView() {
-        etName = (EditText) findViewById(R.id.et_name);
         titleBar = (CommonTitleBar) findViewById(R.id.titlebar);
         lvAddress = (ListView) findViewById(R.id.lv_address);
         adapter = new AddressListAdapter(this);

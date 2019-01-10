@@ -146,7 +146,7 @@ public class CartManager extends Observable {
                             callback.onFinish(cartList);
                         }
                     }
-                }, 1500);
+                }, 500);
             }
         }).start();
     }

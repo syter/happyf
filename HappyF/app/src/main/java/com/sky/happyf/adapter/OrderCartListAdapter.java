@@ -71,25 +71,25 @@ public class OrderCartListAdapter extends BaseAdapter {
 
     public class CartListItem extends LinearLayout {
         private ImageView ivCover;
-        private TextView tvTitle, tvDesc, tvSize, tvAmount, tvCount;
+        private TextView tvTitle, tvParam, tvPrice, tvShell, tvCount;
 
         public CartListItem(Context ct) {
             super(ct);
             inflate(getContext(), R.layout.lvitem_ordercart, this);
             ivCover = (ImageView) findViewById(R.id.iv_cover);
             tvTitle = (TextView) findViewById(R.id.tv_title);
-            tvDesc = (TextView) findViewById(R.id.tv_desc);
-            tvSize = (TextView) findViewById(R.id.tv_size);
-            tvAmount = (TextView) findViewById(R.id.tv_amount);
+            tvParam = (TextView) findViewById(R.id.tv_param);
+            tvPrice = (TextView) findViewById(R.id.tv_price);
+            tvShell = (TextView) findViewById(R.id.tv_shell);
             tvCount = (TextView) findViewById(R.id.tv_count);
 
         }
 
         public void setData(final Cart cart) {
             tvTitle.setText(cart.title);
-//            tvDesc.setText(cart.desc);
-//            tvSize.setText(cart.size);
-//            tvAmount.setText("￥" + cart.amount);
+            tvParam.setText(cart.param);
+            tvPrice.setText("￥" + cart.price);
+            tvShell.setText(cart.shell);
             tvCount.setText(cart.count + "");
         }
     }

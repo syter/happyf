@@ -73,16 +73,15 @@ public class AddressListAdapter extends BaseAdapter {
     }
 
     public class AddressListItem extends LinearLayout {
-        private ImageView ivEdit;
-        private TextView tvName, tvPhone, tvAddress;
+        private TextView tvEdit, tvName, tvPhone, tvAddress;
 
         public AddressListItem(Context ct) {
             super(ct);
             inflate(getContext(), R.layout.lvitem_address, this);
-            ivEdit = (ImageView) findViewById(R.id.iv_edit);
-            tvName = (TextView) findViewById(R.id.tv_name);
-            tvPhone = (TextView) findViewById(R.id.tv_phone);
-            tvAddress = (TextView) findViewById(R.id.tv_address);
+            tvEdit = findViewById(R.id.tv_edit);
+            tvName = findViewById(R.id.tv_address_name);
+            tvPhone = findViewById(R.id.tv_address_phone);
+            tvAddress = findViewById(R.id.tv_address_detail);
         }
 
         public void setData(final Address address) {
@@ -90,7 +89,7 @@ public class AddressListAdapter extends BaseAdapter {
             tvPhone.setText(address.phone);
             tvAddress.setText(address.address);
 
-            ivEdit.setOnClickListener(new OnClickListener() {
+            tvEdit.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     act.startActivity(new Intent(act, EditAddressActivity.class));

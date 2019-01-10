@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/main_bg"
     tools:context="com.sky.happyf.activity.SelectAddressActivity">
 
     <com.wuhenzhizao.titlebar.widget.CommonTitleBar
@@ -14,18 +15,94 @@
         titlebar:centerType="textView"
         titlebar:leftDrawable="@drawable/comm_titlebar_back_normal"
         titlebar:leftDrawablePadding="0dp"
-        titlebar:leftText="@string/back"
         titlebar:leftType="textView"
         titlebar:rightText="@string/add"
+        titlebar:rightTextColor="@color/main_color_blue"
         titlebar:rightType="textView"
-        titlebar:statusBarColor="@color/skyblue"
-        titlebar:statusBarMode="light" />
+        titlebar:statusBarColor="@color/white"
+        titlebar:statusBarMode="dark" />
+
+    <RelativeLayout
+        android:id="@+id/rl_select_current"
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:layout_below="@id/titlebar"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/iv_address"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="12dp"
+            android:src="@drawable/address" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="12dp"
+            android:layout_toRightOf="@id/iv_address">
+
+            <TextView
+                android:id="@+id/tv_address_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="伤心猪蹄子"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_address_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="28dp"
+                android:layout_toRightOf="@id/tv_address_name"
+                android:text="18612254457"
+                android:textColor="@color/gray_text_1"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/tv_address_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_address_name"
+                android:layout_marginTop="14dp"
+                android:maxLines="2"
+                android:text="收货地址：浙江省宁波市镇海区汇智大厦1201楼房凑字"
+                android:textColor="@color/gray_text_2"
+                android:textSize="12sp" />
+
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="5dp"
+            android:text="@string/select_current"
+            android:textColor="@color/main_color_blue"
+            android:textSize="12sp" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/rl_select_current"
+        android:background="@color/gray"
+        android:orientation="horizontal"></LinearLayout>
 
     <ListView
-        android:layout_below="@id/titlebar"
         android:id="@+id/lv_address"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/ll_line"
         android:background="@android:color/white"
         android:choiceMode="singleChoice"
         android:divider="@color/darkgray"

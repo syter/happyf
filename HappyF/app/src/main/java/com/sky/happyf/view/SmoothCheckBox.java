@@ -201,6 +201,28 @@ public class SmoothCheckBox extends View implements Checkable {
         }
     }
 
+    /**
+     * checked with animation
+     *
+     * @param checked checked
+     * @param animate change with animation
+     */
+    public void setCheckedAttr(boolean checked, boolean animate) {
+        if (animate) {
+            mTickDrawing = false;
+            mChecked = checked;
+            mDrewDistance = 0f;
+            if (checked) {
+                startCheckedAnimation();
+            } else {
+                startUnCheckedAnimation();
+            }
+
+        } else {
+            this.setChecked(checked);
+        }
+    }
+
     private void reset() {
         mTickDrawing = true;
         mFloorScale = 1.0f;

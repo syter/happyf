@@ -2,55 +2,85 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/bulletin_item"
     android:layout_width="match_parent"
-    android:layout_height="60dp">
+    android:layout_height="100dp">
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="60dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="10dp"
-        android:layout_toLeftOf="@id/iv_edit"
-        android:orientation="vertical">
+    <RelativeLayout
+        android:id="@+id/rl_select_current"
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/iv_address"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="12dp"
+            android:src="@drawable/address" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="12dp"
+            android:layout_toLeftOf="@id/ll_verline"
+            android:layout_toRightOf="@id/iv_address">
+
+            <TextView
+                android:id="@+id/tv_address_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="伤心猪蹄子"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_address_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="28dp"
+                android:layout_toRightOf="@id/tv_address_name"
+                android:text="18612254457"
+                android:textColor="@color/gray_text_1"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/tv_address_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_address_name"
+                android:layout_marginTop="14dp"
+                android:maxLines="2"
+                android:text="收货地址：浙江省宁波市镇海区汇智大厦1201楼房凑字"
+                android:textColor="@color/gray_text_2"
+                android:textSize="12sp" />
+
+
+        </RelativeLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/tv_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="姓名xx" />
-
-            <TextView
-                android:id="@+id/tv_phone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:text="电话xxx" />
-
-        </LinearLayout>
+            android:id="@+id/ll_verline"
+            android:layout_width="1dp"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="12dp"
+            android:layout_toLeftOf="@id/tv_edit"
+            android:background="@color/gray"
+            android:orientation="vertical"></LinearLayout>
 
         <TextView
-            android:id="@+id/tv_address"
+            android:id="@+id/tv_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="地址xxxxxxx" />
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="12dp"
+            android:text="@string/edit" />
 
-    </LinearLayout>
 
-    <ImageView
-        android:id="@+id/iv_edit"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="20dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/logo" />
+    </RelativeLayout>
 
 
 </RelativeLayout>

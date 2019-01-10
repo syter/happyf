@@ -22,11 +22,14 @@ import com.sky.happyf.activity.GoodsDetailActivity;
 import com.sky.happyf.view.SmoothCheckBox;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class CartListAdapter extends BaseAdapter {
     private List<Cart> cartList;
+    private Map<String, Cart> cartMap;
     private Activity act;
     private boolean isEdit;
 
@@ -34,6 +37,7 @@ public class CartListAdapter extends BaseAdapter {
         this.act = act;
         this.isEdit = isEdit;
         cartList = new ArrayList<Cart>();
+        cartMap = new HashMap<>();
     }
 
     public List<Cart> getList() {
@@ -43,6 +47,11 @@ public class CartListAdapter extends BaseAdapter {
     public void applyData(List<Cart> carts) {
         cartList.clear();
         cartList.addAll(carts);
+
+        cartMap.clear();
+        for (Cart cart : cartList) {
+            cartMap.put(cart.id, cart);
+        }
 
         notifyDataSetChanged();
     }
@@ -127,7 +136,10 @@ public class CartListAdapter extends BaseAdapter {
             tvCount.setText(cart.count + "");
 
             Logger.e("card_id=" + cart.id + "-----removeSelected=" + cart.removeSelected);
-            cb2.setChecked(cart.removeSelected, true);
+            cb2.setCheckedAttr(cart.removeSelected, true);
+            cb2.setTag(cart.id);
+            cb1.setCheckedAttr(cart.selected, true);
+            cb1.setTag(cart.id);
 
             if (isEdit) {
                 llcb1.setVisibility(View.GONE);
@@ -154,7 +166,8 @@ public class CartListAdapter extends BaseAdapter {
                 cb1.setOnCheckedChangeListener(new SmoothCheckBox.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(SmoothCheckBox checkBox, boolean isChecked) {
-                        cart.selected = isChecked;
+                        String id = (String) checkBox.getTag();
+                        cartMap.get(id).selected = isChecked;
                     }
                 });
                 llRight.setOnClickListener(new OnClickListener() {
@@ -172,8 +185,9 @@ public class CartListAdapter extends BaseAdapter {
             cb2.setOnCheckedChangeListener(new SmoothCheckBox.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(SmoothCheckBox checkBox, boolean isChecked) {
-                    cart.removeSelected = isChecked;
-                    Logger.e("card_id=" + cart.id + "-----isChecked=" + isChecked + "-----removeSelected=" + cart.removeSelected);
+                    String id = (String) checkBox.getTag();
+                    cartMap.get(id).removeSelected = isChecked;
+                    Logger.e("card_id=" + cartMap.get(id).id + "-----isChecked=" + isChecked + "-----removeSelected=" + cartMap.get(id).removeSelected);
                 }
             });
 
