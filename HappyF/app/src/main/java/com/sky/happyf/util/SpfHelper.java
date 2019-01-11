@@ -3,6 +3,7 @@ package com.sky.happyf.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.sky.happyf.Model.User;
 import com.sky.happyf.R;
 
 public class SpfHelper {
@@ -10,11 +11,14 @@ public class SpfHelper {
     public SharedPreferences Account;
     public SharedPreferences.Editor editor;
 
-    private static final String KEY_USER_USERNAME = "username";
-    private static final String KEY_USER_PWD = "pwd";
     private static final String KEY_USER_USERID = "userid";
-    private static final String KEY_USER_CLIENTID = "clientid";
-    private static final String KEY_USER_NICKNAME = "nickname";
+    private static final String KEY_USER_PHONE = "phone";
+    private static final String KEY_USER_NAME = "name";
+    private static final String KEY_USER_COVER = "cover";
+    private static final String KEY_USER_SHELLCOUNT = "shellcount";
+    private static final String KEY_USER_EXP = "exp";
+    private static final String KEY_USER_MAXEXP = "maxexp";
+    private static final String KEY_USER_LEVEL = "level";
 
     private SpfHelper(Context ct) {
         Account = ct.getSharedPreferences(ct.getString(R.string.app_name), 0);
@@ -29,42 +33,48 @@ public class SpfHelper {
     }
 
     public void clearUserInfo() {
-        editor.putString(KEY_USER_USERNAME, "").commit();
-        editor.putString(KEY_USER_PWD, "").commit();
         editor.putString(KEY_USER_USERID, "").commit();
-        editor.putString(KEY_USER_CLIENTID, "").commit();
+        editor.putString(KEY_USER_PHONE, "").commit();
     }
 
-    public void saveUserInfo(String username, String pwd,String nickname, String userId, String clientId) {
-        editor.putString(KEY_USER_USERNAME, username).commit();
-        editor.putString(KEY_USER_PWD, pwd).commit();
-        editor.putString(KEY_USER_USERID, userId).commit();
-        editor.putString(KEY_USER_NICKNAME, nickname).commit();
-        editor.putString(KEY_USER_CLIENTID, clientId).commit();
+    public void saveMyUserInfo(String id, String phone, String name, String cover, String shellCount, String exp, String maxExp, String level) {
+        editor.putString(KEY_USER_USERID, id).commit();
+        editor.putString(KEY_USER_PHONE, phone).commit();
+        editor.putString(KEY_USER_NAME, name).commit();
+        editor.putString(KEY_USER_COVER, cover).commit();
+        editor.putString(KEY_USER_SHELLCOUNT, shellCount).commit();
+        editor.putString(KEY_USER_EXP, exp).commit();
+        editor.putString(KEY_USER_MAXEXP, maxExp).commit();
+        editor.putString(KEY_USER_LEVEL, level).commit();
     }
-    
-    public void updateNickname(String nickname){
-    	editor.putString(KEY_USER_NICKNAME, nickname).commit();
-    }
-    
 
-    public String getMyUserId() {
-        return Account.getString(KEY_USER_USERID, "");
+    public void saveMyUserInfo(User user) {
+        editor.putString(KEY_USER_USERID, user.id).commit();
+        editor.putString(KEY_USER_PHONE, user.phone).commit();
+        editor.putString(KEY_USER_NAME, user.name).commit();
+        editor.putString(KEY_USER_COVER, user.cover).commit();
+        editor.putString(KEY_USER_SHELLCOUNT, user.shellCount).commit();
+        editor.putString(KEY_USER_EXP, user.exp).commit();
+        editor.putString(KEY_USER_MAXEXP, user.maxExp).commit();
+        editor.putString(KEY_USER_LEVEL, user.level).commit();
     }
-    
-    public String getMyClientId() {
-        return Account.getString(KEY_USER_CLIENTID, "");
+
+    public User getMyUserInfo() {
+        User user = new User();
+        user.id = Account.getString(KEY_USER_USERID, "");
+        user.phone = Account.getString(KEY_USER_PHONE, "");
+        user.name = Account.getString(KEY_USER_NAME, "");
+        user.cover = Account.getString(KEY_USER_COVER, "");
+        user.shellCount = Account.getString(KEY_USER_SHELLCOUNT, "");
+        user.exp = Account.getString(KEY_USER_EXP, "");
+        user.maxExp = Account.getString(KEY_USER_MAXEXP, "");
+        user.level = Account.getString(KEY_USER_LEVEL, "");
+
+        return user;
     }
 
     public boolean hasSignIn() {
-        return getMyUsername() != null && getMyUsername().length() > 0 && getMyPwd() != null && getMyPwd().length() > 0;
+        return !Utils.isEmptyString(getMyUserInfo().id);
     }
 
-    public String getMyUsername() {
-        return Account.getString(KEY_USER_USERNAME, "");
-    }
-
-    public String getMyPwd() {
-        return Account.getString(KEY_USER_PWD, "");
-    }
 }

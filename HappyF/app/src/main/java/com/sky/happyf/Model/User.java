@@ -7,10 +7,10 @@ public class User implements Serializable {
     public String name;
     public String id;
     public String phone;
-    public String amount;
     public String exp;
-    public String max_exp;
+    public String maxExp;
     public String level;
+    public String shellCount;
 
     public User() {
     }

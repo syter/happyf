@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -97,7 +98,8 @@
                 android:background="@color/cart_button_bg"
                 android:text="￥9999+"
                 android:textColor="@color/white"
-                android:textSize="7sp" />
+                android:textSize="7sp"
+                android:visibility="gone" />
 
         </RelativeLayout>
     </RelativeLayout>
@@ -189,6 +191,7 @@
                     android:weightSum="4">
 
                     <LinearLayout
+                        android:id="@+id/ll_quickway1"
                         android:layout_width="wrap_content"
                         android:layout_height="90dp"
                         android:layout_weight="1"
@@ -196,23 +199,24 @@
                         android:orientation="vertical">
 
                         <ImageView
+                            android:id="@+id/iv_quickway1"
                             android:layout_width="55dp"
                             android:layout_height="55dp"
                             android:layout_marginTop="10dp"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/logo" />
+                            android:scaleType="centerCrop" />
 
                         <TextView
+                            android:id="@+id/tv_quickway1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="7dp"
-                            android:text="快捷入口"
                             android:textColor="@color/gray_text_2"
                             android:textSize="14sp" />
 
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/ll_quickway2"
                         android:layout_width="wrap_content"
                         android:layout_height="90dp"
                         android:layout_weight="1"
@@ -220,23 +224,24 @@
                         android:orientation="vertical">
 
                         <ImageView
+                            android:id="@+id/iv_quickway2"
                             android:layout_width="55dp"
                             android:layout_height="55dp"
                             android:layout_marginTop="10dp"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/logo" />
+                            android:scaleType="centerCrop" />
 
                         <TextView
+                            android:id="@+id/tv_quickway2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="7dp"
-                            android:text="快捷入口"
                             android:textColor="@color/gray_text_2"
                             android:textSize="14sp" />
 
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/ll_quickway3"
                         android:layout_width="wrap_content"
                         android:layout_height="90dp"
                         android:layout_weight="1"
@@ -244,23 +249,24 @@
                         android:orientation="vertical">
 
                         <ImageView
+                            android:id="@+id/iv_quickway3"
                             android:layout_width="55dp"
                             android:layout_height="55dp"
                             android:layout_marginTop="10dp"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/logo" />
+                            android:scaleType="centerCrop" />
 
                         <TextView
+                            android:id="@+id/tv_quickway3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="7dp"
-                            android:text="快捷入口"
                             android:textColor="@color/gray_text_2"
                             android:textSize="14sp" />
 
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/ll_quickway4"
                         android:layout_width="wrap_content"
                         android:layout_height="90dp"
                         android:layout_weight="1"
@@ -268,17 +274,17 @@
                         android:orientation="vertical">
 
                         <ImageView
+                            android:id="@+id/iv_quickway4"
                             android:layout_width="55dp"
                             android:layout_height="55dp"
                             android:layout_marginTop="10dp"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/logo" />
+                            android:scaleType="centerCrop" />
 
                         <TextView
+                            android:id="@+id/tv_quickway4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="7dp"
-                            android:text="快捷入口"
                             android:textColor="@color/gray_text_2"
                             android:textSize="14sp" />
 
@@ -295,6 +301,7 @@
                     android:weightSum="4">
 
                     <LinearLayout
+                        android:id="@+id/ll_quickway5"
                         android:layout_width="wrap_content"
                         android:layout_height="90dp"
                         android:layout_weight="1"
@@ -302,23 +309,24 @@
                         android:orientation="vertical">
 
                         <ImageView
+                            android:id="@+id/iv_quickway5"
                             android:layout_width="55dp"
                             android:layout_height="55dp"
                             android:layout_marginTop="10dp"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/logo" />
+                            android:scaleType="centerCrop" />
 
                         <TextView
+                            android:id="@+id/tv_quickway5"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="7dp"
-                            android:text="快捷入口"
                             android:textColor="@color/gray_text_2"
                             android:textSize="14sp" />
 
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/ll_quickway6"
                         android:layout_width="wrap_content"
                         android:layout_height="90dp"
                         android:layout_weight="1"
@@ -326,23 +334,24 @@
                         android:orientation="vertical">
 
                         <ImageView
+                            android:id="@+id/iv_quickway6"
                             android:layout_width="55dp"
                             android:layout_height="55dp"
                             android:layout_marginTop="10dp"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/logo" />
+                            android:scaleType="centerCrop" />
 
                         <TextView
+                            android:id="@+id/tv_quickway6"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="7dp"
-                            android:text="快捷入口"
                             android:textColor="@color/gray_text_2"
                             android:textSize="14sp" />
 
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/ll_quickway7"
                         android:layout_width="wrap_content"
                         android:layout_height="90dp"
                         android:layout_weight="1"
@@ -350,23 +359,24 @@
                         android:orientation="vertical">
 
                         <ImageView
+                            android:id="@+id/iv_quickway7"
                             android:layout_width="55dp"
                             android:layout_height="55dp"
                             android:layout_marginTop="10dp"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/logo" />
+                            android:scaleType="centerCrop" />
 
                         <TextView
+                            android:id="@+id/tv_quickway7"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="7dp"
-                            android:text="快捷入口"
                             android:textColor="@color/gray_text_2"
                             android:textSize="14sp" />
 
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/ll_quickway8"
                         android:layout_width="wrap_content"
                         android:layout_height="90dp"
                         android:layout_weight="1"
@@ -374,17 +384,17 @@
                         android:orientation="vertical">
 
                         <ImageView
+                            android:id="@+id/iv_quickway8"
                             android:layout_width="55dp"
                             android:layout_height="55dp"
                             android:layout_marginTop="10dp"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/logo" />
+                            android:scaleType="centerCrop" />
 
                         <TextView
+                            android:id="@+id/tv_quickway8"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="7dp"
-                            android:text="快捷入口"
                             android:textColor="@color/gray_text_2"
                             android:textSize="14sp" />
 
@@ -393,7 +403,6 @@
                 </LinearLayout>
 
             </LinearLayout>
-
 
             <com.sky.happyf.view.MyListView
                 android:id="@+id/lv_goods"
@@ -405,6 +414,16 @@
                 android:dividerHeight="0.1dp"
                 android:fadingEdge="none"
                 android:scrollbarStyle="outsideOverlay" />
+
+            <com.wang.avi.AVLoadingIndicatorView
+                android:id="@+id/loadingview"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="30dp"
+                app:indicatorColor="@color/main_color_blue"
+                app:indicatorName="LineSpinFadeLoaderIndicator" />
 
             <LinearLayout
                 android:id="@+id/ll_load_more"
@@ -469,92 +488,96 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_type1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
 
                 <ImageView
+                    android:id="@+id/iv_type1"
                     android:layout_width="55dp"
                     android:layout_height="55dp"
                     android:layout_marginTop="15dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/logo" />
+                    android:scaleType="centerCrop" />
 
                 <TextView
+                    android:id="@+id/tv_type1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="7dp"
-                    android:text="@string/app_name"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_type2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
 
                 <ImageView
+                    android:id="@+id/iv_type2"
                     android:layout_width="55dp"
                     android:layout_height="55dp"
                     android:layout_marginTop="15dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/logo" />
+                    android:scaleType="centerCrop" />
 
                 <TextView
+                    android:id="@+id/tv_type2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="7dp"
-                    android:text="@string/app_name"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_type3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
 
                 <ImageView
+                    android:id="@+id/iv_type3"
                     android:layout_width="55dp"
                     android:layout_height="55dp"
                     android:layout_marginTop="15dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/logo" />
+                    android:scaleType="centerCrop" />
 
                 <TextView
+                    android:id="@+id/tv_type3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="7dp"
-                    android:text="@string/app_name"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_type4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
 
                 <ImageView
+                    android:id="@+id/iv_type4"
                     android:layout_width="55dp"
                     android:layout_height="55dp"
                     android:layout_marginTop="15dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/logo" />
+                    android:scaleType="centerCrop" />
 
                 <TextView
+                    android:id="@+id/tv_type4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="7dp"
-                    android:text="@string/app_name"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 

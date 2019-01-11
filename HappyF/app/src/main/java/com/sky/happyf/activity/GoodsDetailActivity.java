@@ -13,7 +13,9 @@ import android.widget.Toast;
 
 import com.orhanobut.logger.Logger;
 import com.sky.happyf.Model.Goods;
+import com.sky.happyf.Model.ShopBanner;
 import com.sky.happyf.R;
+import com.sky.happyf.manager.GoodsManager;
 import com.sky.happyf.util.GlideImageLoader;
 import com.sky.happyf.util.Utils;
 import com.wuhenzhizao.titlebar.statusbar.StatusBarUtils;
@@ -25,6 +27,7 @@ import java.util.List;
 
 public class GoodsDetailActivity extends BaseActivity {
     private Goods goods;
+    private GoodsManager goodsManager;
     private ImageView ivBack, ivClose, ivMinus, ivAdd;
     private TextView tvCount;
     private Button btnBuy, btnConfirmSelect, btnConfirmService;
@@ -225,10 +228,30 @@ public class GoodsDetailActivity extends BaseActivity {
     }
 
     private void initData() {
-        List<String> images = new ArrayList<>();
-        images.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1546591312549&di=5e6a35970d026692b6fd4dbbec89cdf1&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimage%2Fc0%253Dshijue1%252C0%252C0%252C294%252C40%2Fsign%3D285966d73cd3d539d530078052ee8325%2Fb7003af33a87e950d499b5451a385343fbf2b409.jpg");
-        images.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1546591347518&di=05c38408f670c180b735a7a9d769746b&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimgad%2Fpic%2Fitem%2F9922720e0cf3d7caceea8850f81fbe096b63a9fc.jpg");
-        banner.setImages(images).setImageLoader(new GlideImageLoader()).start();
+        goodsManager = new GoodsManager(this);
+        initBanners();
+
+
+    }
+
+    private void initBanners() {
+        goodsManager.getBanners(new GoodsManager.FetchBannersCallback() {
+            @Override
+            public void onFailure(String errorMsg) {
+                Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onFinish(List<ShopBanner> data) {
+                List<String> images = new ArrayList<>();
+                for (ShopBanner sb : data) {
+                    images.add(sb.url);
+                }
+                banner.setImages(images).setImageLoader(new GlideImageLoader()).start();
+            }
+        });
+
+
     }
 
     @Override

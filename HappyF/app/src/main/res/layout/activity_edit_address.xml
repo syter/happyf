@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/main_bg"
     android:orientation="vertical"
     tools:context="com.sky.happyf.activity.EditAddressActivity">
 
@@ -22,67 +23,182 @@
         titlebar:statusBarColor="@color/white"
         titlebar:statusBarMode="dark" />
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/rl_name"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="收货人姓名" />
+        android:layout_height="44dp"
+        android:layout_below="@id/titlebar"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/input_boder">
 
         <EditText
             android:id="@+id/et_name"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp" />
+            android:layout_height="44dp"
+            android:background="@null"
+            android:hint="@string/edit_address_name_hint"
+            android:lines="1"
+            android:maxLines="1"
+            android:paddingLeft="13dp"
+            android:textColor="@color/gray_text_2"
+            android:textColorHint="@color/gray_text_1"
+            android:textCursorDrawable="@drawable/edittext_cursor"
+            android:textSize="14sp" />
 
+    </RelativeLayout>
 
-    </LinearLayout>
-
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/rl_phone"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="手机号码" />
+        android:layout_height="44dp"
+        android:layout_below="@id/titlebar"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/input_boder">
 
         <EditText
             android:id="@+id/et_phone"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp" />
+            android:layout_height="44dp"
+            android:background="@null"
+            android:hint="@string/edit_address_phone_hint"
+            android:inputType="phone"
+            android:lines="1"
+            android:maxLength="11"
+            android:maxLines="1"
+            android:paddingLeft="13dp"
+            android:textColor="@color/gray_text_2"
+            android:textColorHint="@color/gray_text_1"
+            android:textCursorDrawable="@drawable/edittext_cursor"
+            android:textSize="14sp" />
 
-
-    </LinearLayout>
+    </RelativeLayout>
 
     <LinearLayout
+        android:id="@+id/rl_pcd"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:orientation="horizontal">
+        android:layout_height="44dp"
+        android:layout_below="@id/titlebar"
 
-        <TextView
+        android:layout_marginTop="10dp"
+
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+        <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="详细地址" />
+            android:layout_height="match_parent"
+            android:layout_marginLeft="15dp"
+            android:layout_weight="1"
 
-        <EditText
-            android:id="@+id/et_address"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp" />
+            android:background="@drawable/input_boder">
+
+            <TextView
+                android:id="@+id/tv_province"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="14dp"
+                android:text="@string/edit_address_province_hint"
+                android:textColor="@color/gray_text_1"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="8dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="9dp"
+                android:src="@drawable/down" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="15dp"
+            android:layout_weight="1"
+            android:background="@drawable/input_boder">
+
+            <TextView
+                android:id="@+id/tv_city"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="14dp"
+                android:text="@string/edit_address_city_hint"
+                android:textColor="@color/gray_text_1"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="8dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="9dp"
+                android:src="@drawable/down" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_weight="1"
+            android:background="@drawable/input_boder">
+
+            <TextView
+                android:id="@+id/tv_district"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="14dp"
+                android:text="@string/edit_address_district_hint"
+                android:textColor="@color/gray_text_1"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="8dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="9dp"
+                android:src="@drawable/down" />
+
+        </RelativeLayout>
 
 
     </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_detail"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_below="@id/titlebar"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/input_boder">
+
+        <EditText
+            android:id="@+id/et_detail"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:background="@null"
+            android:hint="@string/edit_address_detail_hint"
+            android:lines="1"
+            android:maxLines="1"
+            android:paddingLeft="13dp"
+            android:textColor="@color/gray_text_2"
+            android:textColorHint="@color/gray_text_1"
+            android:textCursorDrawable="@drawable/edittext_cursor"
+            android:textSize="14sp" />
+
+    </RelativeLayout>
+
 
 </LinearLayout>

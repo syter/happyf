@@ -88,25 +88,25 @@ public class SearchGoodsActivity extends BaseActivity {
 
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
-                goodManager.init(0, new GoodsManager.FetchGoodsCallback() {
-                    @Override
-                    public void onFailure(String errorMsg) {
-                        ptrLayout.refreshComplete();
-                    }
-
-                    @Override
-                    public void onFinish(List<Goods> data) {
-                        ptrLayout.refreshComplete();
-
-                        adapter.applyData(data);
-                        adapter.notifyDataSetChanged();
-                        ptrLayout.refreshComplete();
-
-                        if (!ptrLayout.isLoadMoreEnable()) {
-                            ptrLayout.setLoadMoreEnable(true);
-                        }
-                    }
-                });
+//                goodManager.init(0, new GoodsManager.FetchGoodsCallback() {
+//                    @Override
+//                    public void onFailure(String errorMsg) {
+//                        ptrLayout.refreshComplete();
+//                    }
+//
+//                    @Override
+//                    public void onFinish(List<Goods> data) {
+//                        ptrLayout.refreshComplete();
+//
+//                        adapter.applyData(data);
+//                        adapter.notifyDataSetChanged();
+//                        ptrLayout.refreshComplete();
+//
+//                        if (!ptrLayout.isLoadMoreEnable()) {
+//                            ptrLayout.setLoadMoreEnable(true);
+//                        }
+//                    }
+//                });
             }
         });
 
@@ -115,25 +115,25 @@ public class SearchGoodsActivity extends BaseActivity {
 
             @Override
             public void loadMore() {
-                goodManager.loadMore(0, new GoodsManager.FetchGoodsCallback() {
-                    @Override
-                    public void onFailure(String errorMsg) {
-                        ptrLayout.refreshComplete();
-                    }
-
-                    @Override
-                    public void onFinish(List<Goods> data) {
-                        ptrLayout.loadMoreComplete(true);
-
-                        adapter.applyData(data);
-                        adapter.notifyDataSetChanged();
-                        ptrLayout.refreshComplete();
-
-                        if (data.isEmpty()) {
-                            ptrLayout.setLoadMoreEnable(false);
-                        }
-                    }
-                });
+//                goodManager.loadMore(0, new GoodsManager.FetchGoodsCallback() {
+//                    @Override
+//                    public void onFailure(String errorMsg) {
+//                        ptrLayout.refreshComplete();
+//                    }
+//
+//                    @Override
+//                    public void onFinish(List<Goods> data) {
+//                        ptrLayout.loadMoreComplete(true);
+//
+//                        adapter.applyData(data);
+//                        adapter.notifyDataSetChanged();
+//                        ptrLayout.refreshComplete();
+//
+//                        if (data.isEmpty()) {
+//                            ptrLayout.setLoadMoreEnable(false);
+//                        }
+//                    }
+//                });
             }
         });
 
@@ -145,26 +145,26 @@ public class SearchGoodsActivity extends BaseActivity {
                 if ((actionId == 0 || actionId == 3) && event != null) {
                     content = etSearch.getText().toString();
 
-                    goodManager.init(0, new GoodsManager.FetchGoodsCallback() {
-                        @Override
-                        public void onFailure(String errorMsg) {
-                            Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
-                            ptrLayout.refreshComplete();
-                        }
-
-                        @Override
-                        public void onFinish(List<Goods> data) {
-                            ptrLayout.refreshComplete();
-
-                            adapter.applyData(data);
-                            adapter.notifyDataSetChanged();
-                            ptrLayout.refreshComplete();
-
-                            if (!ptrLayout.isLoadMoreEnable()) {
-                                ptrLayout.setLoadMoreEnable(true);
-                            }
-                        }
-                    });
+//                    goodManager.init(0, new GoodsManager.FetchGoodsCallback() {
+//                        @Override
+//                        public void onFailure(String errorMsg) {
+//                            Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
+//                            ptrLayout.refreshComplete();
+//                        }
+//
+//                        @Override
+//                        public void onFinish(List<Goods> data) {
+//                            ptrLayout.refreshComplete();
+//
+//                            adapter.applyData(data);
+//                            adapter.notifyDataSetChanged();
+//                            ptrLayout.refreshComplete();
+//
+//                            if (!ptrLayout.isLoadMoreEnable()) {
+//                                ptrLayout.setLoadMoreEnable(true);
+//                            }
+//                        }
+//                    });
                 }
                 return false;
             }

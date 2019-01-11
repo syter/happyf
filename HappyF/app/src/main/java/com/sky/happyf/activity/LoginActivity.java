@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sky.happyf.Model.User;
 import com.sky.happyf.R;
 import com.sky.happyf.manager.UserManager;
 import com.sky.happyf.util.NetUtils;
@@ -88,20 +89,15 @@ public class LoginActivity extends AppCompatActivity {
                 // 开启60秒计时器
                 startCountingThread(60);
                 // 访问接口，获取验证码
-                userManager.getCode(etPhone.getText().toString(), new NetUtils.NetCallback() {
+                userManager.getCode(etPhone.getText().toString(), new UserManager.FetchCommonCallback() {
                     @Override
-                    public void onFailure(final String errorMsg) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
-                            }
-                        });
+                    public void onFailure(String errorMsg) {
+                        Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
                     }
 
                     @Override
-                    public void onFinish(final JSONObject data) {
-
+                    public void onFinish(String text) {
+                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.login_getcode_succ), Toast.LENGTH_LONG).show();
                     }
                 });
             }
@@ -125,26 +121,15 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
                 // 访问接口，调用登录方法
-                userManager.login(phone, code, new NetUtils.NetCallback() {
+                userManager.login(phone, code, new UserManager.FetchUserCallback() {
                     @Override
                     public void onFailure(final String errorMsg) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
-                            }
-                        });
+                        Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
                     }
 
                     @Override
-                    public void onFinish(final JSONObject data) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                // TODO
-                                finish();
-                            }
-                        });
+                    public void onFinish(final User user) {
+                        finish();
                     }
                 });
             }

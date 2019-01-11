@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sky.happyf.Model.User;
 import com.sky.happyf.R;
 import com.sky.happyf.manager.UserManager;
 import com.sky.happyf.util.NetUtils;
@@ -25,7 +26,6 @@ public class RegisterActivity extends AppCompatActivity {
     private boolean isLoginCalled = false;
     private TextView tvChangeType;
     private ImageView ivClose;
-    private Handler handler = new Handler();
     private UserManager userManager;
 
     @Override
@@ -77,26 +77,15 @@ public class RegisterActivity extends AppCompatActivity {
                 }
 
                 // 访问接口，调用登录方法
-                userManager.loginByPwd(phone, password, new NetUtils.NetCallback() {
+                userManager.loginByPwd(phone, password, new UserManager.FetchUserCallback() {
                     @Override
                     public void onFailure(final String errorMsg) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
-                            }
-                        });
+                        Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
                     }
 
                     @Override
-                    public void onFinish(final JSONObject data) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                // TODO
-                                finish();
-                            }
-                        });
+                    public void onFinish(User user) {
+                        finish();
                     }
                 });
             }

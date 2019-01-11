@@ -1,11 +1,17 @@
 package com.sky.happyf.util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.TreeMap;
@@ -176,5 +182,29 @@ public class Utils {
                 1.0f, Animation.RELATIVE_TO_SELF, 0.0f);
         mHiddenAction.setDuration(500);
         return mHiddenAction;
+    }
+
+    /**
+     * 获取默认的省市区信息
+     *
+     * @return
+     */
+    public static JSONArray getProvinceInfo(Activity act) {
+        try {
+            InputStreamReader isr = new InputStreamReader(act.getAssets().open("city.json"), "UTF-8");
+            BufferedReader br = new BufferedReader(isr);
+            String line;
+            StringBuilder builder = new StringBuilder();
+            while ((line = br.readLine()) != null) {
+                builder.append(line);
+            }
+            br.close();
+            isr.close();
+            JSONArray array = new JSONArray(builder.toString());//builder读取了JSON中的数据。
+            return array;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

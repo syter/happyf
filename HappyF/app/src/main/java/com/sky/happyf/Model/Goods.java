@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Goods implements Serializable {
     public String id;
+    public String cover;
     public String covers;
     public String title1;
     public String title2;
@@ -15,7 +16,8 @@ public class Goods implements Serializable {
     public String price;
     public String shellPrice;
     public String backPrice;
-    public int sell_count;
+    public String sellCount;
+    public boolean hasMorePrice;
     public int state;
 
     public Goods() {

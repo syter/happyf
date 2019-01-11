@@ -76,7 +76,7 @@ public class ShopSmallTypeAdapter extends BaseAdapter {
         }
 
         public void setData(final SmallType smallType) {
-            tvSmallType.setText(smallType.typeName);
+            tvSmallType.setText(smallType.name);
             if (smallType.isSelected) {
                 tvSmallType.setTextColor(ct.getColor(R.color.main_color_blue));
                 llBottomLine.setVisibility(View.VISIBLE);

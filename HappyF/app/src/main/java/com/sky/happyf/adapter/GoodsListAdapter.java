@@ -89,11 +89,9 @@ public class GoodsListAdapter extends BaseAdapter {
             tvTitle1.setText(goods.title1);
             tvTitle2.setText(goods.title2);
             tvTitle3.setText(goods.title3);
-            tvPrice.setText(goods.price);
+            tvPrice.setText(ct.getResources().getString(R.string.rmb) + goods.price);
             tvShellPrice.setText(goods.shellPrice);
-            tvSellCount.setText(goods.sell_count + " " + ct.getString(R.string.shop_selled));
-
-
+            tvSellCount.setText(goods.sellCount + " " + ct.getString(R.string.shop_selled));
         }
     }
 }
