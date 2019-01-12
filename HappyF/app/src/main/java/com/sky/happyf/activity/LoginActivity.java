@@ -116,6 +116,7 @@ public class LoginActivity extends AppCompatActivity {
                 String code = etCode.getText().toString();
                 String errorMsg = userManager.validLoginParams(phone, code);
                 if (!Utils.isEmptyString(errorMsg)) {
+                    isLoginCalled = true;
                     Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
                     return;
                 }
@@ -124,6 +125,7 @@ public class LoginActivity extends AppCompatActivity {
                 userManager.login(phone, code, new UserManager.FetchUserCallback() {
                     @Override
                     public void onFailure(final String errorMsg) {
+                        isLoginCalled = true;
                         Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
                     }
 

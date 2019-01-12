@@ -16,6 +16,9 @@
     <string name="remove">删除</string>
     <string name="common_error">出了点儿问题，请稍后再试</string>
     <string name="rmb">￥</string>
+    <string name="at_least">起</string>
+    <string name="string_null_error">请输入点儿什么...</string>
+    <string name="operation_succ">操作成功</string>
 
 
     <!-- 启动页 -->
@@ -131,17 +134,22 @@
     <string name="sd_count_one">最少得买一个</string>
     <string name="sd_count_ten">最多买十个</string>
     <string name="sd_join_cart_succ">加入购物车成功</string>
-
+    <string name="sd_selled">人已购买</string>
+    <string name="sd_select_error">请先选择规格</string>
 
     <!-- 购物车 -->
     <string name="cart_title">购物车</string>
     <string name="cart_pay">支付</string>
     <string name="cart_invalid">商品已失效</string>
+    <string name="cart_remove_succ">删除成功</string>
+    <string name="cart_select_error">请选择一件商品</string>
 
     <!-- 确认订单 -->
     <string name="confirm_order_title">确认订单</string>
     <string name="confirm_pay_shell">贝壳币支付</string>
     <string name="confirm_pay_price">人民币支付</string>
+    <string name="confirm_pay_shell_not_enough">贝壳币不足</string>
+    <string name="confirm_pay_shell_succ">贝壳币支付成功</string>
 
     <!-- 收货地址 -->
     <string name="select_address_title">选择地址</string>
@@ -150,6 +158,8 @@
     <string name="select_remark">备注：</string>
     <string name="select_remark_hint">如有特殊要求请备注说明</string>
     <string name="select_current">当前选择</string>
+    <string name="select_name_hint">收货人：</string>
+    <string name="select_address_hint">详细地址：</string>
 
     <!-- 编辑地址 or 添加地址 -->
     <string name="edit_address_title_1">添加地址</string>
@@ -160,6 +170,12 @@
     <string name="edit_address_city_hint">市</string>
     <string name="edit_address_district_hint">区、县</string>
     <string name="edit_address_detail_hint">详细地址：如道路、小区、门牌号、单元室</string>
+
+    <string name="address_name_invalid">请输入收货人姓名</string>
+    <string name="address_phone_invalid">请输入收货人电话</string>
+    <string name="address_pcd_invalid">请选择省、市、区</string>
+    <string name="address_address_invalid">请输入详细地址</string>
+
 
     <!-- 支付订单 -->
     <string name="pay_title">支付订单</string>

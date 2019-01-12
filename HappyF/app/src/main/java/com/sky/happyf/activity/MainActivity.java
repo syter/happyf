@@ -1,18 +1,13 @@
 package com.sky.happyf.activity;
 
-import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
+import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Button;
 
 import com.sky.happyf.R;
 import com.sky.happyf.mainHelper.ArticleHelper;
@@ -20,8 +15,15 @@ import com.sky.happyf.mainHelper.HappyHelper;
 import com.sky.happyf.mainHelper.MainHelper;
 import com.sky.happyf.mainHelper.MineHelper;
 import com.sky.happyf.mainHelper.ShopHelper;
+import com.sky.happyf.manager.UserManager;
 import com.wuhenzhizao.titlebar.statusbar.StatusBarUtils;
+import com.yanzhenjie.nohttp.NoHttp;
+import com.yanzhenjie.nohttp.RequestMethod;
+import com.yanzhenjie.nohttp.rest.Response;
+import com.yanzhenjie.nohttp.rest.StringRequest;
+import com.yanzhenjie.nohttp.rest.SyncRequestExecutor;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 

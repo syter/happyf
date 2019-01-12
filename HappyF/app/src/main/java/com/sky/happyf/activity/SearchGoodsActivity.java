@@ -15,6 +15,7 @@ import com.chanven.lib.cptr.PtrClassicFrameLayout;
 import com.chanven.lib.cptr.PtrDefaultHandler;
 import com.chanven.lib.cptr.PtrFrameLayout;
 import com.chanven.lib.cptr.loadmore.OnLoadMoreListener;
+import com.sky.happyf.Model.CartPrice;
 import com.sky.happyf.Model.Goods;
 import com.sky.happyf.Model.Order;
 import com.sky.happyf.R;
@@ -22,6 +23,7 @@ import com.sky.happyf.adapter.GoodsListAdapter;
 import com.sky.happyf.adapter.OrderListAdapter;
 import com.sky.happyf.manager.GoodsManager;
 import com.sky.happyf.manager.OrderManager;
+import com.sky.happyf.manager.UserManager;
 import com.sky.happyf.util.NetUtils;
 import com.sky.happyf.util.Utils;
 import com.wuhenzhizao.titlebar.statusbar.StatusBarUtils;
@@ -29,16 +31,19 @@ import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 
 import org.json.JSONObject;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class SearchGoodsActivity extends BaseActivity {
     private EditText etSearch;
     private GoodsManager goodManager;
+    private UserManager userManager;
     private PtrClassicFrameLayout ptrLayout;
     private ListView lvGoods;
     private GoodsListAdapter adapter;
     private String content;
     private RelativeLayout rlBack, rlCart;
+    private TextView tvCartPrice;
 
 
     @Override
@@ -66,6 +71,7 @@ public class SearchGoodsActivity extends BaseActivity {
         lvGoods = findViewById(R.id.lv_goods);
         adapter = new GoodsListAdapter(this);
         lvGoods.setAdapter(adapter);
+        tvCartPrice = findViewById(R.id.tv_cart_price);
     }
 
     private void initListener() {
@@ -79,8 +85,13 @@ public class SearchGoodsActivity extends BaseActivity {
         rlCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(SearchGoodsActivity.this, CartListActivity.class));
-                overridePendingTransition(R.anim.anim_enter, R.anim.bottom_silent);
+                if (userManager.isUserLogin()) {
+                    startActivity(new Intent(SearchGoodsActivity.this, CartListActivity.class));
+                    overridePendingTransition(R.anim.anim_enter, R.anim.bottom_silent);
+                } else {
+                    startActivity(new Intent(SearchGoodsActivity.this, LoginActivity.class));
+                    overridePendingTransition(R.anim.bottom_in, R.anim.bottom_silent);
+                }
             }
         });
 
@@ -88,25 +99,24 @@ public class SearchGoodsActivity extends BaseActivity {
 
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
-//                goodManager.init(0, new GoodsManager.FetchGoodsCallback() {
-//                    @Override
-//                    public void onFailure(String errorMsg) {
-//                        ptrLayout.refreshComplete();
-//                    }
-//
-//                    @Override
-//                    public void onFinish(List<Goods> data) {
-//                        ptrLayout.refreshComplete();
-//
-//                        adapter.applyData(data);
-//                        adapter.notifyDataSetChanged();
-//                        ptrLayout.refreshComplete();
-//
-//                        if (!ptrLayout.isLoadMoreEnable()) {
-//                            ptrLayout.setLoadMoreEnable(true);
-//                        }
-//                    }
-//                });
+                goodManager.searchGoods(content, new GoodsManager.FetchGoodsCallback() {
+                    @Override
+                    public void onFailure(String errorMsg) {
+                        ptrLayout.refreshComplete();
+                    }
+
+                    @Override
+                    public void onFinish(List<Goods> data) {
+                        ptrLayout.refreshComplete();
+
+                        if (data.isEmpty()) {
+                            ptrLayout.setLoadMoreEnable(false);
+                        } else {
+                            adapter.applyData(data);
+                            ptrLayout.setLoadMoreEnable(true);
+                        }
+                    }
+                });
             }
         });
 
@@ -115,25 +125,24 @@ public class SearchGoodsActivity extends BaseActivity {
 
             @Override
             public void loadMore() {
-//                goodManager.loadMore(0, new GoodsManager.FetchGoodsCallback() {
-//                    @Override
-//                    public void onFailure(String errorMsg) {
-//                        ptrLayout.refreshComplete();
-//                    }
-//
-//                    @Override
-//                    public void onFinish(List<Goods> data) {
-//                        ptrLayout.loadMoreComplete(true);
-//
-//                        adapter.applyData(data);
-//                        adapter.notifyDataSetChanged();
-//                        ptrLayout.refreshComplete();
-//
-//                        if (data.isEmpty()) {
-//                            ptrLayout.setLoadMoreEnable(false);
-//                        }
-//                    }
-//                });
+                goodManager.loadMoreSearchGoods(etSearch.getText().toString(), new GoodsManager.FetchGoodsCallback() {
+                    @Override
+                    public void onFailure(String errorMsg) {
+                        ptrLayout.loadMoreComplete(true);
+                    }
+
+                    @Override
+                    public void onFinish(List<Goods> data) {
+                        ptrLayout.loadMoreComplete(true);
+
+                        if (data.isEmpty()) {
+                            ptrLayout.setLoadMoreEnable(false);
+                        } else {
+                            adapter.addData(data);
+                            ptrLayout.setLoadMoreEnable(true);
+                        }
+                    }
+                });
             }
         });
 
@@ -144,27 +153,11 @@ public class SearchGoodsActivity extends BaseActivity {
                                           KeyEvent event) {
                 if ((actionId == 0 || actionId == 3) && event != null) {
                     content = etSearch.getText().toString();
-
-//                    goodManager.init(0, new GoodsManager.FetchGoodsCallback() {
-//                        @Override
-//                        public void onFailure(String errorMsg) {
-//                            Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
-//                            ptrLayout.refreshComplete();
-//                        }
-//
-//                        @Override
-//                        public void onFinish(List<Goods> data) {
-//                            ptrLayout.refreshComplete();
-//
-//                            adapter.applyData(data);
-//                            adapter.notifyDataSetChanged();
-//                            ptrLayout.refreshComplete();
-//
-//                            if (!ptrLayout.isLoadMoreEnable()) {
-//                                ptrLayout.setLoadMoreEnable(true);
-//                            }
-//                        }
-//                    });
+                    if (Utils.isEmptyString(content)) {
+                        Toast.makeText(SearchGoodsActivity.this, getResources().getString(R.string.string_null_error), Toast.LENGTH_LONG).show();
+                    } else {
+                        initSearchGoods();
+                    }
                 }
                 return false;
             }
@@ -184,18 +177,53 @@ public class SearchGoodsActivity extends BaseActivity {
     }
 
     private void initData() {
-        content = getIntent().getStringExtra("content");
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        content = bundle.getString("content");
+        etSearch.setText(content);
+
         goodManager = new GoodsManager(this);
+        userManager = new UserManager(this);
 
+        initSearchGoods();
 
-        if (!Utils.isEmptyString(content)) {
-            etSearch.setText(content);
-            ptrLayout.postDelayed(new Runnable() {
+        initCart();
+    }
+
+    private void initSearchGoods() {
+        ptrLayout.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ptrLayout.autoRefresh(true);
+            }
+        }, 150);
+    }
+
+    private void initCart() {
+        if (userManager.isUserLogin()) {
+            userManager.getMyCartPrice(new UserManager.FetchCartPriceCallback() {
                 @Override
-                public void run() {
-                    ptrLayout.autoRefresh(true);
+                public void onFailure(String errorMsg) {
+                    Toast.makeText(SearchGoodsActivity.this, errorMsg, Toast.LENGTH_LONG).show();
                 }
-            }, 150);
+
+                @Override
+                public void onFinish(CartPrice cp) {
+                    tvCartPrice.setVisibility(View.VISIBLE);
+                    if (Utils.isEmptyString(cp.price)) {
+                        tvCartPrice.setText(getResources().getString(R.string.rmb) + "0");
+                    } else {
+                        BigDecimal tempPrice = new BigDecimal(cp.price);
+                        if (tempPrice.compareTo(new BigDecimal("10000")) >= 0) {
+                            tvCartPrice.setText(getResources().getString(R.string.rmb) + "9999+");
+                        } else {
+                            tvCartPrice.setText(getResources().getString(R.string.rmb) + cp.price);
+                        }
+                    }
+                }
+            });
+        } else {
+            tvCartPrice.setVisibility(View.GONE);
         }
     }
 

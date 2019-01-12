@@ -44,6 +44,7 @@ import com.sky.happyf.view.MyListView;
 import com.wang.avi.AVLoadingIndicatorView;
 import com.youth.banner.Banner;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -220,7 +221,6 @@ public class ShopHelper {
                                     llLoadMore.setVisibility(View.GONE);
                                     goodsList.addAll(data);
                                     adapter.applyData(goodsList);
-                                    adapter.notifyDataSetChanged();
                                 }
                             });
                         } else {
@@ -292,7 +292,6 @@ public class ShopHelper {
                 SmallType st = currentSmallTypeList.get(i);
                 st.isSelected = true;
                 shopSmallTypeAdapter.applyData(currentSmallTypeList);
-                shopSmallTypeAdapter.notifyDataSetChanged();
             }
         });
 
@@ -302,13 +301,19 @@ public class ShopHelper {
             public boolean onEditorAction(TextView v, int actionId,
                                           KeyEvent event) {
                 if ((actionId == 0 || actionId == 3) && event != null) {
-                    // 点击搜索要做的操作
-                    Intent intent = new Intent(act, SearchGoodsActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putString("content", etSearch1.getText().toString());
-                    intent.putExtras(bundle);
-                    act.startActivity(intent);
-                    act.overridePendingTransition(R.anim.anim_enter, R.anim.bottom_silent);
+                    String content = etSearch1.getText().toString();
+                    if (Utils.isEmptyString(content)) {
+                        Toast.makeText(act, act.getResources().getString(R.string.string_null_error), Toast.LENGTH_LONG).show();
+                    } else {
+                        // 点击搜索要做的操作
+                        Intent intent = new Intent(act, SearchGoodsActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("content", content);
+                        intent.putExtras(bundle);
+                        act.startActivity(intent);
+                        act.overridePendingTransition(R.anim.anim_enter, R.anim.bottom_silent);
+                    }
+
                 }
                 return false;
             }
@@ -319,13 +324,19 @@ public class ShopHelper {
             public boolean onEditorAction(TextView v, int actionId,
                                           KeyEvent event) {
                 if ((actionId == 0 || actionId == 3) && event != null) {
-                    // 点击搜索要做的操作
-                    Intent intent = new Intent(act, SearchGoodsActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putString("content", etSearch2.getText().toString());
-                    intent.putExtras(bundle);
-                    act.startActivity(intent);
-                    act.overridePendingTransition(R.anim.anim_enter, R.anim.bottom_silent);
+                    String content = etSearch2.getText().toString();
+                    if (Utils.isEmptyString(content)) {
+                        Toast.makeText(act, act.getResources().getString(R.string.string_null_error), Toast.LENGTH_LONG).show();
+                    } else {
+                        // 点击搜索要做的操作
+                        Intent intent = new Intent(act, SearchGoodsActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("content", content);
+                        intent.putExtras(bundle);
+                        act.startActivity(intent);
+                        act.overridePendingTransition(R.anim.anim_enter, R.anim.bottom_silent);
+                    }
+
                 }
                 return false;
             }
@@ -397,7 +408,6 @@ public class ShopHelper {
                 currentSelectSmallTypeId = currentSmallTypeList.get(0).id;
 
                 shopSmallTypeAdapter.applyData(currentSmallTypeList);
-                shopSmallTypeAdapter.notifyDataSetChanged();
 
                 initGoodsData();
 
@@ -433,7 +443,6 @@ public class ShopHelper {
         loadingView.setVisibility(View.VISIBLE);
         goodsList = new ArrayList<>();
         adapter.applyData(goodsList);
-        adapter.notifyDataSetChanged();
         goodsManager.getGoodsList(currentSelectSmallTypeId, new GoodsManager.FetchGoodsCallback() {
             @Override
             public void onFailure(String errorMsg) {
@@ -446,7 +455,6 @@ public class ShopHelper {
                 loadingView.setVisibility(View.GONE);
                 goodsList = data;
                 adapter.applyData(goodsList);
-                adapter.notifyDataSetChanged();
             }
         });
     }
@@ -540,7 +548,16 @@ public class ShopHelper {
                 @Override
                 public void onFinish(CartPrice cp) {
                     tvCartPrice.setVisibility(View.VISIBLE);
-                    tvCartPrice.setText(act.getResources().getString(R.string.rmb) + cp.price);
+                    if (Utils.isEmptyString(cp.price)) {
+                        tvCartPrice.setText(act.getResources().getString(R.string.rmb) + "0");
+                    } else {
+                        BigDecimal tempPrice = new BigDecimal(cp.price);
+                        if (tempPrice.compareTo(new BigDecimal("10000")) >= 0) {
+                            tvCartPrice.setText(act.getResources().getString(R.string.rmb) + "9999+");
+                        } else {
+                            tvCartPrice.setText(act.getResources().getString(R.string.rmb) + cp.price);
+                        }
+                    }
                 }
             });
         } else {

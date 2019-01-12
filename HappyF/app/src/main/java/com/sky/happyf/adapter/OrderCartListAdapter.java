@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.sky.happyf.Model.Cart;
 import com.sky.happyf.R;
 
@@ -86,11 +87,12 @@ public class OrderCartListAdapter extends BaseAdapter {
         }
 
         public void setData(final Cart cart) {
+            Glide.with(ct).load(cart.cover).into(ivCover);
             tvTitle.setText(cart.title);
-            tvParam.setText(cart.param);
-            tvPrice.setText("￥" + cart.price);
-            tvShell.setText(cart.shell);
-            tvCount.setText(cart.count + "");
+            tvParam.setText(cart.selectedType);
+            tvPrice.setText(ct.getResources().getString(R.string.rmb) + cart.price);
+            tvShell.setText(cart.shellPrice);
+            tvCount.setText("X" + cart.count);
         }
     }
 }

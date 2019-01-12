@@ -12,15 +12,19 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.chanven.lib.cptr.PtrClassicFrameLayout;
 import com.chanven.lib.cptr.PtrDefaultHandler;
 import com.chanven.lib.cptr.PtrFrameLayout;
 import com.chanven.lib.cptr.loadmore.OnLoadMoreListener;
+import com.sky.happyf.Model.Address;
 import com.sky.happyf.Model.Cart;
 import com.sky.happyf.R;
 import com.sky.happyf.adapter.CartListAdapter;
 import com.sky.happyf.manager.CartManager;
+import com.sky.happyf.manager.UserManager;
+import com.sky.happyf.util.Utils;
 import com.sky.happyf.view.SmoothCheckBox;
 import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 
@@ -28,15 +32,18 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class CartListActivity extends BaseActivity {
     private CommonTitleBar titleBar;
     private ListView lvCart;
     private CartListAdapter adapter;
     private CartManager cartManager;
+    private UserManager userManager;
     private LinearLayout llPay, llRemove;
     private RelativeLayout rlLeft, rlCheckall;
     private SmoothCheckBox cbAll;
+    public TextView tvPrice, tvShellPrice;
     private boolean isEdit = false;
 
 
@@ -56,16 +63,17 @@ public class CartListActivity extends BaseActivity {
 
     private void initView() {
         titleBar = findViewById(R.id.titlebar);
-
         lvCart = findViewById(R.id.lv_cart);
-        adapter = new CartListAdapter(this, isEdit);
+        cartManager = new CartManager(this);
+        adapter = new CartListAdapter(this, isEdit, cartManager);
         lvCart.setAdapter(adapter);
-
         llPay = findViewById(R.id.ll_pay);
         llRemove = findViewById(R.id.ll_remove);
         rlLeft = findViewById(R.id.rl_left);
         cbAll = findViewById(R.id.cb_all);
         rlCheckall = findViewById(R.id.rl_checkall);
+        tvPrice = findViewById(R.id.tv_price);
+        tvShellPrice = findViewById(R.id.tv_shell_price);
     }
 
     private void initListener() {
@@ -110,44 +118,61 @@ public class CartListActivity extends BaseActivity {
         llPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(CartListActivity.this, ConfirmOrderActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("id", "x");
-                intent.putExtras(bundle);
-                startActivity(intent);
-                overridePendingTransition(R.anim.anim_enter, R.anim.bottom_silent);
+                String selectCartIds = adapter.getSelectCartIds();
+                if (Utils.isEmptyString(selectCartIds)) {
+                    Toast.makeText(CartListActivity.this, getResources().getString(R.string.cart_select_error), Toast.LENGTH_LONG).show();
+                } else {
+                    Intent intent = new Intent(CartListActivity.this, ConfirmOrderActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("cart_ids", selectCartIds);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.anim_enter, R.anim.bottom_silent);
+                }
+
+            }
+        });
+
+        llRemove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                adapter.removeCartGoods();
             }
         });
     }
 
     private void initData() {
-        cartManager = new CartManager(this);
+        userManager = new UserManager(this);
 
-        initCartData();
+        tvPrice.setText(getResources().getString(R.string.rmb) + "0");
     }
 
 
     private void initCartData() {
-        cartManager.init(new CartManager.FetchCartsCallback() {
+        cartManager.getCartList(new CartManager.FetchCartsCallback() {
             @Override
             public void onFailure(String errorMsg) {
-
+                Toast.makeText(CartListActivity.this, errorMsg, Toast.LENGTH_LONG).show();
             }
 
             @Override
-            public void onFinish(List<Cart> data) {
+            public void onFinish(Map<String, Object> data) {
+                Address address = (Address) data.get("address");
+                if (address != null) {
+                    // TODO ??????????????
+                }
 
-                adapter.applyData(data);
-                adapter.notifyDataSetChanged();
-
+                List<Cart> cartList = (List<Cart>) data.get("cart");
+                adapter.applyData(cartList);
             }
+
         });
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
+        initCartData();
     }
 
     @Override

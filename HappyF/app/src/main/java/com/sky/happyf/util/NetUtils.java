@@ -55,9 +55,10 @@ public class NetUtils {
                     OkHttpClient client = new OkHttpClient();
                     RequestBody body = RequestBody.create(Constants.JSON, realParams);
                     Request request = new Request.Builder()
-                            .url(url)
                             .post(body)
+                            .url(url)
                             .build();
+                    request.method();
                     Response response = client.newCall(request).execute();
                     String bodyStr = response.body().string();
                     Logger.d("NetUtils post --- current response = " + bodyStr);
@@ -67,7 +68,7 @@ public class NetUtils {
                     if (code == 0) {
                         if (responseObject.has("data")) {
                             if (callback != null) {
-                                JSONObject data = responseObject.getJSONObject("data");
+                                JSONObject data = responseObject.optJSONObject("data");
                                 callback.onFinish(data);
                             }
                         }
@@ -129,7 +130,7 @@ public class NetUtils {
                     if (code == 0) {
                         if (responseObject.has("data")) {
                             if (callback != null) {
-                                JSONObject data = responseObject.getJSONObject("data");
+                                JSONObject data = responseObject.optJSONObject("data");
                                 callback.onFinish(data);
                             }
                         }

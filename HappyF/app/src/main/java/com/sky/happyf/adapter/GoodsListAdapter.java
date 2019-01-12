@@ -9,8 +9,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.sky.happyf.Model.Goods;
 import com.sky.happyf.R;
+import com.sky.happyf.activity.GoodsDetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,11 +38,12 @@ public class GoodsListAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    public void updateItem(int index, Goods goods) {
-        goodsList.remove(index);
-        goodsList.add(index, goods);
+    public void addData(List<Goods> goodss) {
+        goodsList.addAll(goodss);
+
         notifyDataSetChanged();
     }
+
 
     @Override
     public int getCount() {
@@ -76,21 +79,28 @@ public class GoodsListAdapter extends BaseAdapter {
         public GoodsListItem(Context ct) {
             super(ct);
             inflate(getContext(), R.layout.lvitem_goods, this);
-            ivCover = (ImageView) findViewById(R.id.iv_cover);
-            tvTitle1 = (TextView) findViewById(R.id.tv_title1);
-            tvTitle2 = (TextView) findViewById(R.id.tv_title2);
-            tvTitle3 = (TextView) findViewById(R.id.tv_title3);
-            tvPrice = (TextView) findViewById(R.id.tv_price);
-            tvShellPrice = (TextView) findViewById(R.id.tv_shell_price);
-            tvSellCount = (TextView) findViewById(R.id.tv_sell_count);
+            ivCover = findViewById(R.id.iv_cover);
+            tvTitle1 = findViewById(R.id.tv_title1);
+            tvTitle2 = findViewById(R.id.tv_title2);
+            tvTitle3 = findViewById(R.id.tv_title3);
+            tvPrice = findViewById(R.id.tv_price);
+            tvShellPrice = findViewById(R.id.tv_shell_price);
+            tvSellCount = findViewById(R.id.tv_sell_count);
         }
 
         public void setData(final Goods goods) {
+            Glide.with(ct).load(goods.cover).into(ivCover);
             tvTitle1.setText(goods.title1);
             tvTitle2.setText(goods.title2);
             tvTitle3.setText(goods.title3);
-            tvPrice.setText(ct.getResources().getString(R.string.rmb) + goods.price);
-            tvShellPrice.setText(goods.shellPrice);
+            if (goods.hasMorePrice) {
+                tvPrice.setText(ct.getResources().getString(R.string.rmb) + goods.price + ct.getResources().getString(R.string.at_least));
+                tvShellPrice.setText(goods.shellPrice + ct.getResources().getString(R.string.at_least));
+            } else {
+                tvPrice.setText(ct.getResources().getString(R.string.rmb) + goods.price);
+                tvShellPrice.setText(goods.shellPrice);
+            }
+
             tvSellCount.setText(goods.sellCount + " " + ct.getString(R.string.shop_selled));
         }
     }

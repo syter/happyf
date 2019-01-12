@@ -3,6 +3,7 @@ package com.sky.happyf.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -39,10 +40,8 @@ public class AddressListAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    public void updateItem(int index, Address address) {
-        addressList.remove(index);
-        addressList.add(index, address);
-        notifyDataSetChanged();
+    public Address getAddress(int index) {
+        return addressList.get(index);
     }
 
     @Override
@@ -92,6 +91,11 @@ public class AddressListAdapter extends BaseAdapter {
             tvEdit.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    Intent intent = new Intent(act, EditAddressActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("is_new", "0");
+                    intent.putExtra("address", address);
+                    intent.putExtras(bundle);
                     act.startActivity(new Intent(act, EditAddressActivity.class));
                     act.overridePendingTransition(R.anim.anim_enter, R.anim.bottom_silent);
                 }

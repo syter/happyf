@@ -94,7 +94,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="14dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginRight="5dp"
                 android:background="@color/cart_button_bg"
                 android:text="￥9999+"
                 android:textColor="@color/white"

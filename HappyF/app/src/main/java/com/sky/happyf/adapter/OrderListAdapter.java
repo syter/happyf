@@ -90,8 +90,8 @@ public class OrderListAdapter extends BaseAdapter {
             tvDesc.setText(order.desc);
             tvSize.setText(order.size);
             tvState.setText(order.state + "");
-            tvAmount.setText("￥" + order.amount);
-            tvCount.setText("*" + order.count);
+            tvAmount.setText(ct.getResources().getString(R.string.rmb) + order.amount);
+            tvCount.setText("X" + order.count);
             tvDate.setText(order.date);
 
 

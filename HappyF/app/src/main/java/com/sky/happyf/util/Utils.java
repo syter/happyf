@@ -103,7 +103,7 @@ public class Utils {
      * 判断空字符串
      */
     public static boolean isEmptyString(String str) {
-        if (str == null || str.length() == 0 || str.trim().length() == 0) {
+        if (str == null || str.length() == 0 || str.trim().length() == 0 || str.equals("null")) {
             return true;
         } else {
             return false;
@@ -207,4 +207,6 @@ public class Utils {
         }
         return null;
     }
+
+
 }

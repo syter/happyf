@@ -33,7 +33,6 @@
                 android:id="@+id/rl_select_address"
                 android:layout_width="match_parent"
                 android:layout_height="85dp"
-
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="15dp"
@@ -49,6 +48,7 @@
                     android:src="@drawable/address" />
 
                 <RelativeLayout
+                    android:id="@+id/rl_hasaddress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -58,34 +58,31 @@
                     android:visibility="gone">
 
                     <TextView
-                        android:id="@+id/address_name"
+                        android:id="@+id/tv_address_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="14dp"
-                        android:text="收货人：伤心大猪蹄"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
 
                     <TextView
-                        android:id="@+id/address_detail"
+                        android:id="@+id/tv_address_detail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/address_name"
+                        android:layout_below="@+id/tv_address_name"
                         android:layout_marginTop="5dp"
 
                         android:maxLines="2"
-                        android:text="详细地址：浙江省宁波市镇海区汇智大厦1201室"
                         android:textColor="@color/black"
                         android:textSize="14sp" />
 
                     <TextView
-                        android:id="@+id/address_phone"
+                        android:id="@+id/tv_address_phone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="25dp"
                         android:layout_marginTop="16dp"
-                        android:layout_toRightOf="@+id/address_name"
-                        android:text="18612250777"
+                        android:layout_toRightOf="@+id/tv_address_name"
                         android:textColor="@color/black"
                         android:textSize="14sp" />
 
@@ -154,6 +151,7 @@
                         android:textSize="14sp" />
 
                     <TextView
+                        android:id="@+id/tv_postage"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
@@ -194,6 +192,7 @@
                         android:textSize="14sp" />
 
                     <EditText
+                        android:id="@+id/et_remark"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
@@ -238,9 +237,9 @@
                 android:textSize="14sp" />
 
             <TextView
+                android:id="@+id/tv_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="￥9999.00"
                 android:textColor="@color/white"
                 android:textSize="12sp" />
 
@@ -258,6 +257,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/tv_shell_pay"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/confirm_pay_shell"
@@ -276,9 +276,9 @@
                     android:src="@drawable/logo" />
 
                 <TextView
+                    android:id="@+id/tv_shell_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="99990"
                     android:layout_marginLeft="3dp"
                     android:textColor="@color/white"
                     android:textSize="12sp" />

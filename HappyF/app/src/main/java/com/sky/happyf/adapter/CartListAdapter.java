@@ -15,12 +15,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.orhanobut.logger.Logger;
 import com.sky.happyf.Model.Cart;
 import com.sky.happyf.R;
+import com.sky.happyf.activity.CartListActivity;
 import com.sky.happyf.activity.GoodsDetailActivity;
+import com.sky.happyf.manager.CartManager;
+import com.sky.happyf.util.Utils;
 import com.sky.happyf.view.SmoothCheckBox;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,14 +35,16 @@ import java.util.Map;
 public class CartListAdapter extends BaseAdapter {
     private List<Cart> cartList;
     private Map<String, Cart> cartMap;
-    private Activity act;
+    private CartListActivity act;
     private boolean isEdit;
+    private CartManager cartManager;
 
-    public CartListAdapter(Activity act, boolean isEdit) {
+    public CartListAdapter(CartListActivity act, boolean isEdit, CartManager cartManager) {
         this.act = act;
         this.isEdit = isEdit;
         cartList = new ArrayList<Cart>();
         cartMap = new HashMap<>();
+        this.cartManager = cartManager;
     }
 
     public List<Cart> getList() {
@@ -103,8 +110,6 @@ public class CartListAdapter extends BaseAdapter {
         private RelativeLayout rlBottom;
         private SmoothCheckBox cb1, cb2;
 
-        private EditText etCount;
-
         public CartListItem(final Context ct) {
             super(ct);
             inflate(getContext(), R.layout.lvitem_cart, this);
@@ -129,13 +134,13 @@ public class CartListAdapter extends BaseAdapter {
         }
 
         public void setData(final Cart cart) {
+            Glide.with(act).load(cart.cover).into(ivCover);
             tvTitle.setText(cart.title);
-            tvParam.setText(cart.param);
-            tvShell.setText(cart.shell);
-            tvPrice.setText("￥" + cart.price);
+            tvParam.setText(cart.selectedType);
+            tvShell.setText(cart.shellPrice);
+            tvPrice.setText(act.getResources().getString(R.string.rmb) + cart.price);
             tvCount.setText(cart.count + "");
 
-            Logger.e("card_id=" + cart.id + "-----removeSelected=" + cart.removeSelected);
             cb2.setCheckedAttr(cart.removeSelected, true);
             cb2.setTag(cart.id);
             cb1.setCheckedAttr(cart.selected, true);
@@ -150,13 +155,13 @@ public class CartListAdapter extends BaseAdapter {
             }
 
 
-            if (cart.state == 0) {
+            if (cart.isInvalid) {
                 llCartItem.setBackgroundColor(act.getColor(R.color.cart_invalid_gray));
                 rlBottom.setVisibility(View.GONE);
                 tvInvalid.setVisibility(View.VISIBLE);
 
             } else {
-                if (cart.type == 1) {
+                if (cart.isSeaFood) {
                     llCartItem.setBackgroundColor(act.getColor(R.color.fish_green));
                 } else {
                     llCartItem.setBackgroundColor(act.getColor(R.color.white));
@@ -168,6 +173,7 @@ public class CartListAdapter extends BaseAdapter {
                     public void onCheckedChanged(SmoothCheckBox checkBox, boolean isChecked) {
                         String id = (String) checkBox.getTag();
                         cartMap.get(id).selected = isChecked;
+                        processPriceAndShellPrice();
                     }
                 });
                 llRight.setOnClickListener(new OnClickListener() {
@@ -175,7 +181,7 @@ public class CartListAdapter extends BaseAdapter {
                     public void onClick(View view) {
                         Intent intent = new Intent(act, GoodsDetailActivity.class);
                         Bundle bundle = new Bundle();
-                        bundle.putString("id", cart.goods_id);
+                        bundle.putString("id", cart.goodsId);
                         intent.putExtras(bundle);
                         act.startActivity(intent);
                         act.overridePendingTransition(R.anim.anim_enter, R.anim.bottom_silent);
@@ -187,34 +193,125 @@ public class CartListAdapter extends BaseAdapter {
                 public void onCheckedChanged(SmoothCheckBox checkBox, boolean isChecked) {
                     String id = (String) checkBox.getTag();
                     cartMap.get(id).removeSelected = isChecked;
-                    Logger.e("card_id=" + cartMap.get(id).id + "-----isChecked=" + isChecked + "-----removeSelected=" + cartMap.get(id).removeSelected);
                 }
             });
 
+            ivMinus.setTag(cart.id);
             ivMinus.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    int count = cart.count;
+                    int count = Integer.parseInt(cart.count);
                     if (count == 1) {
                         Toast.makeText(act, getResources().getString(R.string.sd_count_one), Toast.LENGTH_LONG).show();
                         return;
                     }
-                    cart.count--;
-                    tvCount.setText(cart.count + "");
+                    count--;
+                    cart.count = count + "";
+                    tvCount.setText(cart.count);
+                    processPriceAndShellPrice();
+
+                    String cartId = (String) view.getTag();
+                    cartManager.updateCount(cartId, cart.count, new CartManager.FetchCommonCallback() {
+                        @Override
+                        public void onFailure(String errorMsg) {
+                            Toast.makeText(act, errorMsg, Toast.LENGTH_LONG).show();
+                        }
+
+                        @Override
+                        public void onFinish(String text) {
+
+                        }
+                    });
                 }
             });
+            ivAdd.setTag(cart.id);
             ivAdd.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    int count = cart.count;
+                    int count = Integer.parseInt(cart.count);
                     if (count == 10) {
                         Toast.makeText(act, getResources().getString(R.string.sd_count_ten), Toast.LENGTH_LONG).show();
                         return;
                     }
-                    cart.count++;
-                    tvCount.setText(cart.count + "");
+                    count++;
+                    cart.count = count + "";
+                    tvCount.setText(cart.count);
+                    processPriceAndShellPrice();
+
+                    String cartId = (String) view.getTag();
+                    cartManager.updateCount(cartId, cart.count, new CartManager.FetchCommonCallback() {
+                        @Override
+                        public void onFailure(String errorMsg) {
+                            Toast.makeText(act, errorMsg, Toast.LENGTH_LONG).show();
+                        }
+
+                        @Override
+                        public void onFinish(String text) {
+
+                        }
+                    });
                 }
             });
+
+            processPriceAndShellPrice();
         }
     }
+
+    public void processPriceAndShellPrice() {
+        BigDecimal price = BigDecimal.ZERO;
+        BigDecimal shellPrice = BigDecimal.ZERO;
+
+        for (Cart c : cartList) {
+            if (c.selected) {
+                price = price.add(new BigDecimal(c.count).multiply(new BigDecimal(c.price)));
+                shellPrice = price.add(new BigDecimal(c.count).multiply(new BigDecimal(c.shellPrice)));
+            }
+        }
+        act.tvPrice.setText(act.getResources().getString(R.string.rmb) + price.toString());
+        act.tvShellPrice.setText(shellPrice.toString());
+    }
+
+    public void removeCartGoods() {
+        String cartIds = "";
+        for (Cart c : cartList) {
+            if (c.removeSelected) {
+                cartIds = cartIds + c.id + ",";
+                cartList.remove(c);
+            }
+        }
+        if (Utils.isEmptyString(cartIds)) {
+            return;
+        }
+        cartIds = cartIds.substring(0, cartIds.length() - 1);
+
+        applyData(cartList);
+        processPriceAndShellPrice();
+        cartManager.removeCarts(cartIds, new CartManager.FetchCommonCallback() {
+            @Override
+            public void onFailure(String errorMsg) {
+                Toast.makeText(act, errorMsg, Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onFinish(String text) {
+                Toast.makeText(act, act.getResources().getString(R.string.cart_remove_succ), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    public String getSelectCartIds() {
+        String cartIds = "";
+        for (Cart c : cartList) {
+            if (c.selected) {
+                cartIds = cartIds + c.id + ",";
+            }
+        }
+        if (Utils.isEmptyString(cartIds)) {
+            return "";
+        }
+        cartIds = cartIds.substring(0, cartIds.length() - 1);
+        return cartIds;
+    }
+
+
 }

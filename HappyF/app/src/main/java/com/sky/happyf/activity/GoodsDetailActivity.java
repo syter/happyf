@@ -11,30 +11,42 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.orhanobut.logger.Logger;
+import com.sky.happyf.Model.CartPrice;
 import com.sky.happyf.Model.Goods;
+import com.sky.happyf.Model.SelectType;
 import com.sky.happyf.Model.ShopBanner;
 import com.sky.happyf.R;
 import com.sky.happyf.manager.GoodsManager;
+import com.sky.happyf.manager.UserManager;
+import com.sky.happyf.util.Constants;
 import com.sky.happyf.util.GlideImageLoader;
 import com.sky.happyf.util.Utils;
 import com.wuhenzhizao.titlebar.statusbar.StatusBarUtils;
 import com.youth.banner.Banner;
 import com.youth.banner.listener.OnBannerListener;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GoodsDetailActivity extends BaseActivity {
     private Goods goods;
     private GoodsManager goodsManager;
-    private ImageView ivBack, ivClose, ivMinus, ivAdd;
-    private TextView tvCount;
+    private UserManager userManager;
+    private ImageView ivBack, ivClose, ivMinus, ivAdd, ivGoodsCover;
+    private TextView tvCount, tvTitle1, tvPostageRule, tvSellCount, tvDetail, tvSelectParam, tvPrice,
+            tvShellPrice, tvCartPrice, tvGoodsPrice, tvGoodsShellPrice, tvSelected;
     private Button btnBuy, btnConfirmSelect, btnConfirmService;
     private Banner banner;
     private RelativeLayout rlSelect, rlService, rlServiceDialog, rlSelectDialog, rlEmptySelect, rlEmptyService;
-    private LinearLayout llCart;
+    private LinearLayout llCart, lvImage, llSelectParam;
     private boolean isShowDialog;
+    private Goods currentGoods;
+    private SelectType currentSelectType;
+    private List<Button> allSelectTypeButtons;
+    private int currentNumber = 1;
 
 
     @Override
@@ -64,6 +76,20 @@ public class GoodsDetailActivity extends BaseActivity {
         params.height = realBannerHeight;
         banner.setLayoutParams(params);
 
+        ivGoodsCover = findViewById(R.id.iv_goods_cover);
+        tvGoodsPrice = findViewById(R.id.tv_goods_price);
+        tvGoodsShellPrice = findViewById(R.id.tv_goods_shell_price);
+        tvSelected = findViewById(R.id.tv_selectd);
+        llSelectParam = findViewById(R.id.ll_select_param);
+        tvTitle1 = findViewById(R.id.tv_title1);
+        tvPrice = findViewById(R.id.tv_price);
+        tvShellPrice = findViewById(R.id.tv_shell_price);
+        tvCartPrice = findViewById(R.id.tv_cart_price);
+        tvDetail = findViewById(R.id.tv_detail);
+        lvImage = findViewById(R.id.lv_images);
+        tvPostageRule = findViewById(R.id.tv_postage_rule);
+        tvSelectParam = findViewById(R.id.tv_select_param);
+        tvSellCount = findViewById(R.id.tv_sell_count);
         ivBack = findViewById(R.id.iv_back);
         ivClose = findViewById(R.id.iv_close);
         ivMinus = findViewById(R.id.iv_minus);
@@ -101,8 +127,27 @@ public class GoodsDetailActivity extends BaseActivity {
         btnBuy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO
-                Toast.makeText(getApplicationContext(), getResources().getString(R.string.sd_join_cart_succ), Toast.LENGTH_LONG).show();
+                if (currentSelectType == null) {
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.sd_select_error), Toast.LENGTH_LONG).show();
+                } else {
+                    if (userManager.isUserLogin()) {
+                        goodsManager.joinGoodsToCart(currentGoods.id, currentSelectType.id, currentNumber, new GoodsManager.FetchCommonCallback() {
+                            @Override
+                            public void onFailure(String errorMsg) {
+                                Toast.makeText(GoodsDetailActivity.this, errorMsg, Toast.LENGTH_LONG).show();
+                            }
+
+                            @Override
+                            public void onFinish(String text) {
+                                Toast.makeText(getApplicationContext(), getResources().getString(R.string.sd_join_cart_succ), Toast.LENGTH_LONG).show();
+                                initCart();
+                            }
+                        });
+                    } else {
+                        startActivity(new Intent(GoodsDetailActivity.this, LoginActivity.class));
+                        overridePendingTransition(R.anim.bottom_in, R.anim.bottom_silent);
+                    }
+                }
             }
         });
         banner.setOnBannerListener(new OnBannerListener() {
@@ -164,6 +209,7 @@ public class GoodsDetailActivity extends BaseActivity {
                     return;
                 }
                 count--;
+                currentNumber = count;
                 tvCount.setText(count + "");
             }
         });
@@ -177,17 +223,25 @@ public class GoodsDetailActivity extends BaseActivity {
                     return;
                 }
                 count++;
+                currentNumber = count;
                 tvCount.setText(count + "");
             }
         });
 
+
         llCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(GoodsDetailActivity.this, CartListActivity.class));
-                overridePendingTransition(R.anim.anim_enter, R.anim.bottom_silent);
+                if (userManager.isUserLogin()) {
+                    startActivity(new Intent(GoodsDetailActivity.this, CartListActivity.class));
+                    overridePendingTransition(R.anim.anim_enter, R.anim.bottom_silent);
+                } else {
+                    startActivity(new Intent(GoodsDetailActivity.this, LoginActivity.class));
+                    overridePendingTransition(R.anim.bottom_in, R.anim.bottom_silent);
+                }
             }
         });
+
 
     }
 
@@ -228,30 +282,164 @@ public class GoodsDetailActivity extends BaseActivity {
     }
 
     private void initData() {
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        String id = bundle.getString("id");
+
         goodsManager = new GoodsManager(this);
-        initBanners();
+        userManager = new UserManager(this);
 
+        initGoods(id);
 
+        initCart();
     }
 
-    private void initBanners() {
-        goodsManager.getBanners(new GoodsManager.FetchBannersCallback() {
+    private void initGoods(String id) {
+        goodsManager.getGoodsDetail(id, new GoodsManager.FetchGoodsCallback() {
             @Override
             public void onFailure(String errorMsg) {
                 Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
             }
 
             @Override
-            public void onFinish(List<ShopBanner> data) {
-                List<String> images = new ArrayList<>();
-                for (ShopBanner sb : data) {
-                    images.add(sb.url);
+            public void onFinish(List<Goods> data) {
+                currentGoods = data.get(0);
+                allSelectTypeButtons = new ArrayList<>();
+                tvTitle1.setText(currentGoods.title1);
+                tvPostageRule.setText(currentGoods.postageRule);
+                tvSellCount.setText(currentGoods.sellCount + getResources().getString(R.string.sd_selled));
+                banner.setImages(currentGoods.covers).setImageLoader(new GlideImageLoader()).start();
+                if (currentGoods.serviceType.equals(Constants.SERVICE_TYPE_ONE)) {
+                    // TODO
+                } else {
+
                 }
-                banner.setImages(images).setImageLoader(new GlideImageLoader()).start();
+//                tvSelectParam
+                tvDetail.setText(currentGoods.desc);
+                for (String coverUrl : currentGoods.descCovers) {
+                    ImageView ivDescCover = new ImageView(GoodsDetailActivity.this);
+                    Glide.with(GoodsDetailActivity.this).load(coverUrl).into(ivDescCover);
+                    lvImage.addView(ivDescCover);
+                }
+
+                List<SelectType> stList = currentGoods.selectTypes;
+                String lowestPrice = "";
+                String lowestShellPrice = "";
+                for (int i = 0; i < stList.size(); i++) {
+                    SelectType st = stList.get(i);
+
+                    String price = st.price;
+                    String shellPrice = st.shellPrice;
+                    if (Utils.isEmptyString(lowestPrice)) {
+                        lowestPrice = price;
+                        lowestShellPrice = shellPrice;
+                    } else {
+                        BigDecimal tempLowPrice = new BigDecimal(lowestPrice);
+                        BigDecimal tempLowShellPrice = new BigDecimal(lowestShellPrice);
+                        BigDecimal tempPrice = new BigDecimal(lowestPrice);
+                        BigDecimal tempShellPrice = new BigDecimal(lowestShellPrice);
+                        if (tempLowPrice.compareTo(tempPrice) > 0) {
+                            lowestPrice = price;
+                        }
+                        if (tempLowShellPrice.compareTo(tempShellPrice) > 0) {
+                            lowestShellPrice = shellPrice;
+                        }
+                    }
+
+                    Button btnSelectType = new Button(GoodsDetailActivity.this);
+                    btnSelectType.setText(st.name);
+                    btnSelectType.setBackground(getDrawable(R.drawable.shop_unselect_param_button));
+                    btnSelectType.setTextSize(14);
+                    btnSelectType.setTextColor(getColor(R.color.black));
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                            Utils.dip2px(GoodsDetailActivity.this, 36));
+                    params.topMargin = Utils.dip2px(GoodsDetailActivity.this, 12);
+                    llSelectParam.addView(btnSelectType, params);
+                    btnSelectType.setTag(st.id);
+
+                    btnSelectType.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            String stId = (String) view.getTag();
+                            for (SelectType st : currentGoods.selectTypes) {
+                                if (st.id.equals(stId)) {
+                                    currentSelectType = st;
+                                    break;
+                                }
+                            }
+
+                            for (Button btn : allSelectTypeButtons) {
+                                btn.setBackground(getDrawable(R.drawable.shop_unselect_param_button));
+                                btn.setTextColor(getColor(R.color.black));
+                            }
+                            view.setBackground(getDrawable(R.drawable.shop_select_param_button));
+                            ((Button) view).setTextColor(getColor(R.color.white));
+
+                            processSelectType();
+
+
+                        }
+                    });
+                    allSelectTypeButtons.add(btnSelectType);
+                }
+                if (stList.size() == 1) {
+                    tvPrice.setText(getResources().getString(R.string.rmb) + lowestPrice);
+                    tvShellPrice.setText(lowestShellPrice);
+                    tvGoodsPrice.setText(getResources().getString(R.string.rmb) + lowestPrice);
+                    tvGoodsShellPrice.setText(lowestShellPrice);
+                    currentSelectType = stList.get(0);
+
+                    allSelectTypeButtons.get(0).setBackground(getDrawable(R.drawable.shop_select_param_button));
+                    allSelectTypeButtons.get(0).setTextColor(getColor(R.color.white));
+                    processSelectType();
+                } else {
+                    tvPrice.setText(getResources().getString(R.string.rmb) + lowestPrice + getResources().getString(R.string.at_least));
+                    tvShellPrice.setText(lowestShellPrice + getResources().getString(R.string.at_least));
+                    tvGoodsPrice.setText(getResources().getString(R.string.rmb) + lowestPrice + getResources().getString(R.string.at_least));
+                    tvGoodsShellPrice.setText(lowestShellPrice + getResources().getString(R.string.at_least));
+                }
+
+                Glide.with(GoodsDetailActivity.this).load(currentGoods.covers.get(0)).into(ivGoodsCover);
             }
         });
+    }
 
+    private void processSelectType() {
+        tvSelected.setText(currentSelectType.name);
+        tvGoodsPrice.setText(getResources().getString(R.string.rmb) + currentSelectType.price);
+        tvGoodsShellPrice.setText(currentSelectType.shellPrice);
+        tvPrice.setText(getResources().getString(R.string.rmb) + currentSelectType.price);
+        tvShellPrice.setText(currentSelectType.shellPrice);
+        tvSelectParam.setText(currentSelectType.name);
+//        tvSelectParam.setTextColor(getColor(R.color.black));
+    }
 
+    private void initCart() {
+        if (userManager.isUserLogin()) {
+            userManager.getMyCartPrice(new UserManager.FetchCartPriceCallback() {
+                @Override
+                public void onFailure(String errorMsg) {
+                    Toast.makeText(GoodsDetailActivity.this, errorMsg, Toast.LENGTH_LONG).show();
+                }
+
+                @Override
+                public void onFinish(CartPrice cp) {
+                    tvCartPrice.setVisibility(View.VISIBLE);
+                    if (Utils.isEmptyString(cp.price)) {
+                        tvCartPrice.setText(getResources().getString(R.string.rmb) + "0");
+                    } else {
+                        BigDecimal tempPrice = new BigDecimal(cp.price);
+                        if (tempPrice.compareTo(new BigDecimal("10000")) >= 0) {
+                            tvCartPrice.setText(getResources().getString(R.string.rmb) + "9999+");
+                        } else {
+                            tvCartPrice.setText(getResources().getString(R.string.rmb) + cp.price);
+                        }
+                    }
+                }
+            });
+        } else {
+            tvCartPrice.setText(getResources().getString(R.string.rmb) + "0");
+        }
     }
 
     @Override

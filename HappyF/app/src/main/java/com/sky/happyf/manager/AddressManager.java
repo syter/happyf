@@ -4,227 +4,341 @@ import android.content.Context;
 import android.os.Handler;
 
 import com.sky.happyf.Model.Address;
+import com.sky.happyf.Model.Cart;
+import com.sky.happyf.R;
 import com.sky.happyf.util.Constants;
+import com.sky.happyf.util.NetUtils;
+import com.sky.happyf.util.SpfHelper;
+import com.sky.happyf.util.Utils;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Observable;
+import java.util.TreeMap;
 
 public class AddressManager extends Observable {
     private ArrayList<Address> addressList = new ArrayList<Address>();
     private Handler handler;
     private Context ct;
-    private final static int POST_LIMIT = 20;
-    private int page = 0;
-    private int totalAddressCount = 0;
 
     public AddressManager(Context ct) {
         this.ct = ct;
         handler = new Handler();
     }
 
-    public List<Address> getLocalAddresss() {
-        List<Address> AddressList = null;
-        return AddressList;
-    }
-
-    public void init(final FetchAddresssCallback callback) {
-        page = 0;
-        addressList = new ArrayList<Address>();
+    public void getDefaultAddress(final FetchAddressCallback callback) {
         if (Constants.IS_DEBUG) {
-            getLocalAddresss(callback);
+            getLocalDefaultAddress(callback);
             return;
         }
-        fetchRemoteAddresss(++page, new FetchAddresssCallback() {
+        Map<String, String> params = new TreeMap<String, String>();
+        params.put("user_id", SpfHelper.getInstance(ct).getMyUserInfo().id);
+        NetUtils.get(ct, params, Constants.PATH_GET_DEFAULT_ADDRESS, new NetUtils.NetCallback() {
             @Override
-            public void onFailure(String errorMsg) {
-                if (callback != null) {
-                    callback.onFailure(errorMsg);
-                }
+            public void onFailure(final String errorMsg) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (callback != null) {
+                            callback.onFailure(errorMsg);
+                        }
+                    }
+                });
             }
 
             @Override
-            public void onFinish(List<Address> data) {
-                addressList.addAll(data);
-                if (callback != null) {
-                    callback.onFinish(data);
+            public void onFinish(JSONObject data) {
+                try {
+                    final List<Address> addressList = new ArrayList<>();
+                    Address address = new Address();
+                    address.id = data.optString("id");
+                    address.name = data.optString("name");
+                    address.province = data.optString("province");
+                    address.city = data.optString("city");
+                    address.district = data.optString("district");
+                    address.address = data.optString("address");
+                    address.phone = data.optString("phone");
+                    addressList.add(address);
+
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (callback != null) {
+                                callback.onFinish(addressList);
+                            }
+                        }
+                    });
+                } catch (Exception e) {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (callback != null) {
+                                callback.onFailure(ct.getResources().getString(R.string.common_error));
+                            }
+                        }
+                    });
                 }
             }
         });
     }
 
-    public void loadMore(final FetchAddresssCallback callback) {
+
+    private void getLocalDefaultAddress(final FetchAddressCallback callback) {
+        if (callback != null) {
+            callback.onFinish(new ArrayList<Address>());
+        }
+    }
+
+
+    public void getAddressList(final FetchAddressCallback callback) {
         if (Constants.IS_DEBUG) {
-            loadMoreLocalAddresss(callback, ++page);
+            getLocalAddressList(callback);
             return;
         }
-        fetchRemoteAddresss(++page, new FetchAddresssCallback() {
+        Map<String, String> params = new TreeMap<String, String>();
+        params.put("user_id", SpfHelper.getInstance(ct).getMyUserInfo().id);
+        NetUtils.get(ct, params, Constants.PATH_GET_ADDRESS_LIST, new NetUtils.NetCallback() {
             @Override
-            public void onFailure(String errorMsg) {
-                page--;
-                if (callback != null) {
-                    callback.onFailure(errorMsg);
-                }
+            public void onFailure(final String errorMsg) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (callback != null) {
+                            callback.onFailure(errorMsg);
+                        }
+                    }
+                });
             }
 
             @Override
-            public void onFinish(List<Address> data) {
-                addressList.addAll(data);
-                if (callback != null) {
-                    callback.onFinish(addressList);
+            public void onFinish(JSONObject data) {
+                try {
+                    final List<Address> addressList = new ArrayList<>();
+
+                    JSONArray listArray = data.getJSONArray("list");
+                    for (int i = 0; i < listArray.length(); i++) {
+                        JSONObject obj = listArray.getJSONObject(i);
+                        Address address = new Address();
+                        address.id = obj.optString("id");
+                        address.name = obj.optString("name");
+                        address.province = obj.optString("province");
+                        address.city = obj.optString("city");
+                        address.district = obj.optString("district");
+                        address.address = obj.optString("address");
+                        address.phone = obj.optString("phone");
+                        address.isUsed = obj.optBoolean("isUsed");
+                        addressList.add(address);
+                    }
+
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (callback != null) {
+                                callback.onFinish(addressList);
+                            }
+                        }
+                    });
+                } catch (Exception e) {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (callback != null) {
+                                callback.onFailure(ct.getResources().getString(R.string.common_error));
+                            }
+                        }
+                    });
                 }
             }
         });
     }
 
 
-    private void getLocalAddresss(final FetchAddresssCallback callback) {
-        new Thread(new Runnable() {
+    private void getLocalAddressList(final FetchAddressCallback callback) {
+        if (callback != null) {
+            callback.onFinish(new ArrayList<Address>());
+        }
+    }
+
+
+    public void setDefaultAddress(final String addressId, final FetchCommonCallback callback) {
+        if (Constants.IS_DEBUG) {
+            setLocalDefaultAddress(addressId, callback);
+            return;
+        }
+        Map<String, String> params = new TreeMap<String, String>();
+        params.put("user_id", SpfHelper.getInstance(ct).getMyUserInfo().id);
+        params.put("address_id", addressId);
+        NetUtils.get(ct, params, Constants.PATH_SET_DEFAULT_ADDRESS, new NetUtils.NetCallback() {
             @Override
-            public void run() {
-                for (int i = 0; i < 17; i++) {
-                    Address o = new Address();
-                    o.name = "xxx";
-                    o.phone = "18612250174";
-                    o.address = "浙江省宁波市xx区xxxx街道xxxx号";
-                    addressList.add(o);
-                }
-                handler.postDelayed(new Runnable() {
+            public void onFailure(final String errorMsg) {
+                handler.post(new Runnable() {
                     @Override
                     public void run() {
                         if (callback != null) {
-                            callback.onFinish(addressList);
+                            callback.onFailure(errorMsg);
                         }
                     }
-                }, 1500);
+                });
             }
-        }).start();
-    }
 
-    private void loadMoreLocalAddresss(final FetchAddresssCallback callback, final int page) {
-        new Thread(new Runnable() {
             @Override
-            public void run() {
-                Address o = new Address();
-                o.name = "xxx";
-                o.phone = "18612250174";
-                o.address = "浙江省宁波市xx区xxxx街道xxxx号";
-                addressList.add(o);
-                handler.postDelayed(new Runnable() {
+            public void onFinish(JSONObject data) {
+                handler.post(new Runnable() {
                     @Override
                     public void run() {
                         if (callback != null) {
-                            callback.onFinish(addressList);
+                            callback.onFinish("");
                         }
                     }
-                }, 1000);
+                });
+
             }
-        }).start();
-    }
-
-    private void fetchRemoteAddresss(final int page, final FetchAddresssCallback callback) {
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                Map<String, Object> params = new HashMap<String, Object>();
-//                params.put("page", page);
-//                params.put("limit", POST_LIMIT);
-//                params.put("sort", "-created_at");
-//                params.put("type", Constant.BULLETIN_TYPE);
-//                Map<String, String> customFields = new HashMap<String, String>();
-//                customFields.put("state", "1");
-//                params.put("custom_fields", customFields);
-//                params.put("like_user_id", UserManager.getInstance(ct).getCurrentUser().userId);
-//
-//                try {
-//                    anSocial.sendRequest("posts/query.json", AnSocialMethod.GET, params, new IAnSocialCallback() {
-//                        @Override
-//                        public void onFailure(final JSONObject arg0) {
-//                            try {
-//                                String message = arg0.getJSONObject("meta").getString("message");
-//                                Toast.makeText(ct, message, Toast.LENGTH_SHORT).show();
-//                            } catch (JSONException e) {
-//                                e.printStackTrace();
-//                            }
-//                            handler.post(new Runnable() {
-//                                @Override
-//                                public void run() {
-//                                    if (callback != null) {
-//                                        callback.onFailure(arg0.toString());
-//                                    }
-//                                }
-//                            });
-//                        }
-//
-//                        @Override
-//                        public void onSuccess(JSONObject arg0) {
-//                            try {
-//                                totalAddressCount = arg0.getJSONObject("meta").getInt("total");
-//
-//                                final List<Address> addresss = new ArrayList<Address>();
-//                                JSONArray addressArray = arg0.getJSONObject("response").getJSONArray("posts");
-//                                for (int i = 0; i < addressArray.length(); i++) {
-//                                    JSONObject addressJson = addressArray.getJSONObject(i);
-//                                    Address address = new Address();
-//                                    address.parseJSON(addressJson,
-//                                            UserManager.getInstance(ct).getCurrentUser().userId);
-//                                    address.update();
-//                                    addresss.add(address);
-//
-//                                    if (addressJson.has("like")) {
-//                                        address.deleteAllLikes(UserManager.getInstance(ct).getCurrentUser().userId);
-//                                        JSONObject likeJson = addressJson.getJSONObject("like");
-//                                        Like like = new Like();
-//                                        like.address = address.getFromTable(UserManager.getInstance(ct)
-//                                                .getCurrentUser().userId);
-//                                        like.parseJSON(likeJson, UserManager.getInstance(ct).getCurrentUser()
-//                                                .getFromTable(), UserManager.getInstance(ct).getCurrentUser().userId);
-//                                        boolean updated = like.update();
-//                                        DBug.e("like.update", updated + "?");
-//                                    }
-//                                }
-//
-//                                handler.post(new Runnable() {
-//                                    @Override
-//                                    public void run() {
-//                                        if (callback != null) {
-//                                            callback.onFinish(addresss);
-//                                        }
-//                                    }
-//                                });
-//
-//                            } catch (final JSONException e) {
-//                                e.printStackTrace();
-//                                handler.post(new Runnable() {
-//                                    @Override
-//                                    public void run() {
-//                                        if (callback != null) {
-//                                            callback.onFailure(e.getMessage());
-//                                        }
-//                                    }
-//                                });
-//                            }
-//                        }
-//                    });
-//                } catch (final ArrownockException e) {
-//                    e.printStackTrace();
-//                    handler.post(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            if (callback != null) {
-//                                callback.onFailure(e.getMessage());
-//                            }
-//                        }
-//                    });
-//                }
-//            }
-//        }).start();
+        });
     }
 
 
-    public interface FetchAddresssCallback {
+    private void setLocalDefaultAddress(final String addressId, final FetchCommonCallback callback) {
+        if (callback != null) {
+            callback.onFinish("");
+        }
+    }
+
+
+    public void createNewAddress(final Address address, final FetchCommonCallback callback) {
+        if (Constants.IS_DEBUG) {
+            createLocalAddress(address, callback);
+            return;
+        }
+        Map<String, String> params = new TreeMap<String, String>();
+        params.put("user_id", SpfHelper.getInstance(ct).getMyUserInfo().id);
+        params.put("name", address.name);
+        params.put("phone", address.phone);
+        params.put("province", address.province);
+        params.put("city", address.city);
+        params.put("district", address.district);
+        params.put("address", address.address);
+
+        NetUtils.post(ct, params, Constants.PATH_CREATE_ADDRESS, new NetUtils.NetCallback() {
+            @Override
+            public void onFailure(final String errorMsg) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (callback != null) {
+                            callback.onFailure(errorMsg);
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onFinish(JSONObject data) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (callback != null) {
+                            callback.onFinish("");
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+
+    private void createLocalAddress(final Address address, final FetchCommonCallback callback) {
+        if (callback != null) {
+            callback.onFinish("");
+        }
+    }
+
+
+    public void updateAddress(final Address address, final FetchCommonCallback callback) {
+        if (Constants.IS_DEBUG) {
+            updateLocalAddress(address, callback);
+            return;
+        }
+        Map<String, String> params = new TreeMap<String, String>();
+        params.put("user_id", SpfHelper.getInstance(ct).getMyUserInfo().id);
+        params.put("address_id", address.id);
+        params.put("name", address.name);
+        params.put("phone", address.phone);
+        params.put("province", address.province);
+        params.put("city", address.city);
+        params.put("district", address.district);
+        params.put("address", address.address);
+        NetUtils.post(ct, params, Constants.PATH_UPDATE_ADDRESS, new NetUtils.NetCallback() {
+            @Override
+            public void onFailure(final String errorMsg) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (callback != null) {
+                            callback.onFailure(errorMsg);
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onFinish(JSONObject data) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (callback != null) {
+                            callback.onFinish("");
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+
+    private void updateLocalAddress(final Address address, final FetchCommonCallback callback) {
+        if (callback != null) {
+            callback.onFinish("");
+        }
+    }
+
+
+    public String validAddressParams(String name, String phone, String province, String city, String district, String address) {
+        if (Utils.isEmptyString(name)) {
+            return ct.getResources().getString(R.string.address_name_invalid);
+        }
+        if (phone.length() != 11) {
+            return ct.getResources().getString(R.string.address_phone_invalid);
+        }
+        if (Utils.isEmptyString(province)) {
+            return ct.getResources().getString(R.string.address_pcd_invalid);
+        }
+        if (Utils.isEmptyString(city)) {
+            return ct.getResources().getString(R.string.address_pcd_invalid);
+        }
+        if (Utils.isEmptyString(district)) {
+            return ct.getResources().getString(R.string.address_pcd_invalid);
+        }
+        if (Utils.isEmptyString(address)) {
+            return ct.getResources().getString(R.string.address_address_invalid);
+        }
+        return null;
+    }
+
+
+    public interface FetchAddressCallback {
         public void onFailure(String errorMsg);
 
         public void onFinish(List<Address> data);
+    }
+
+    public interface FetchCommonCallback {
+        public void onFailure(String errorMsg);
+
+        public void onFinish(String text);
     }
 }

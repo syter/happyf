@@ -5,12 +5,14 @@ import android.os.Handler;
 
 import com.sky.happyf.Model.Goods;
 import com.sky.happyf.Model.QuickwayType;
+import com.sky.happyf.Model.SelectType;
 import com.sky.happyf.Model.ShopBanner;
 import com.sky.happyf.Model.SmallType;
 import com.sky.happyf.Model.Type;
 import com.sky.happyf.R;
 import com.sky.happyf.util.Constants;
 import com.sky.happyf.util.NetUtils;
+import com.sky.happyf.util.SpfHelper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,6 +30,7 @@ public class GoodsManager extends Observable {
     private Context ct;
     private final static int POST_LIMIT = 20;
     private int goodsPage = 1;
+    private int searchGoodsPage = 1;
     private int totalGoodsCount = 0;
 
     public GoodsManager(Context ct) {
@@ -333,7 +336,7 @@ public class GoodsManager extends Observable {
 
     public void getQuickways(final FetchQuickwayTypesCallback callback) {
         if (Constants.IS_DEBUG) {
-            getLocalTypes(callback);
+            getLocalQuickways(callback);
             return;
         }
         Map<String, String> params = new TreeMap<String, String>();
@@ -386,7 +389,7 @@ public class GoodsManager extends Observable {
         });
     }
 
-    public void getLocalTypes(final FetchQuickwayTypesCallback callback) {
+    public void getLocalQuickways(final FetchQuickwayTypesCallback callback) {
         // TODO local data
 
         if (callback != null) {
@@ -395,19 +398,285 @@ public class GoodsManager extends Observable {
     }
 
 
-    public void searchGoods(final String content, final NetUtils.NetCallback callback) {
+    public void getGoodsDetail(final String goodsId, final FetchGoodsCallback callback) {
+        goodsPage = 1;
         if (Constants.IS_DEBUG) {
-            searchLocalGoods(content, callback);
+            getLocalGoodsDetail(goodsId, callback);
             return;
         }
-        Map<String, String> params = new TreeMap<>();
-        params.put("content", content);
-        NetUtils.post(ct.getApplicationContext(), params, Constants.PATH_SEARCH_GOODS, callback);
+        Map<String, String> params = new TreeMap<String, String>();
+        params.put("goods_id", goodsId);
+        NetUtils.get(ct, params, Constants.PATH_GET_GOODS_DETAIL, new NetUtils.NetCallback() {
+            @Override
+            public void onFailure(final String errorMsg) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (callback != null) {
+                            callback.onFailure(errorMsg);
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onFinish(JSONObject data) {
+                try {
+                    JSONObject obj = data.getJSONObject("goods");
+                    final List<Goods> goodsList = new ArrayList<>();
+                    Goods g = new Goods();
+                    g.id = obj.getString("id");
+                    g.title1 = obj.optString("title");
+                    g.isSeaFood = obj.optBoolean("isSeaFood");
+                    g.unit = obj.optString("unit");
+                    g.postageRule = obj.optString("postageRule");
+                    g.sellCount = obj.optString("sellCount");
+                    g.desc = obj.optString("desc_text");
+                    g.serviceType = obj.optString("serviceType");
+                    List<String> covers = new ArrayList<>();
+                    JSONArray coversArray = obj.getJSONArray("covers");
+                    for (int i = 0; i < coversArray.length(); i++) {
+                        covers.add(coversArray.getString(i));
+                    }
+                    g.covers = covers;
+                    List<String> descCovers = new ArrayList<>();
+                    JSONArray descCoversArray = obj.getJSONArray("desc_cover");
+                    for (int i = 0; i < descCoversArray.length(); i++) {
+                        descCovers.add(descCoversArray.getString(i));
+                    }
+                    g.descCovers = descCovers;
+                    List<SelectType> selectTypes = new ArrayList<>();
+                    JSONArray selectTypesArray = obj.getJSONArray("selectType");
+                    for (int i = 0; i < selectTypesArray.length(); i++) {
+                        SelectType st = new SelectType();
+                        JSONObject stObj = selectTypesArray.getJSONObject(i);
+                        st.id = stObj.getString("id");
+                        st.name = stObj.getString("name");
+                        st.price = stObj.getString("price");
+                        st.shellPrice = stObj.getString("sellPrice");
+                        selectTypes.add(st);
+                    }
+                    g.selectTypes = selectTypes;
+
+                    goodsList.add(g);
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (callback != null) {
+                                callback.onFinish(goodsList);
+                            }
+                        }
+                    });
+                } catch (JSONException e) {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (callback != null) {
+                                callback.onFailure(ct.getResources().getString(R.string.common_error));
+                            }
+                        }
+                    });
+                }
+            }
+        });
     }
 
-    public void searchLocalGoods(final String content, final NetUtils.NetCallback callback) {
+    public void getLocalGoodsDetail(final String goodsId, final FetchGoodsCallback callback) {
+        // TODO local data
+
         if (callback != null) {
-            callback.onFinish(new JSONObject());
+            callback.onFinish(new ArrayList<Goods>());
+        }
+    }
+
+
+    public void joinGoodsToCart(final String goodsId, final String stId, final int number, final FetchCommonCallback callback) {
+        if (Constants.IS_DEBUG) {
+            joinGoodsToCartLocal(goodsId, stId, number, callback);
+            return;
+        }
+        Map<String, String> params = new TreeMap<String, String>();
+        params.put("goods_id", goodsId);
+        params.put("user_id", SpfHelper.getInstance(ct).getMyUserInfo().id);
+        params.put("selectType_id", stId);
+        params.put("number", number + "");
+        NetUtils.post(ct, params, Constants.PATH_ADD_TO_CART, new NetUtils.NetCallback() {
+            @Override
+            public void onFailure(final String errorMsg) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (callback != null) {
+                            callback.onFailure(errorMsg);
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onFinish(JSONObject data) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (callback != null) {
+                            callback.onFinish("");
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    public void joinGoodsToCartLocal(final String goodsId, final String stId, final int number, final FetchCommonCallback callback) {
+        // TODO local data
+
+        if (callback != null) {
+            callback.onFinish("");
+        }
+    }
+
+
+    public void searchGoods(final String content, final FetchGoodsCallback callback) {
+        searchGoodsPage = 1;
+        if (Constants.IS_DEBUG) {
+            searchLocalGoodss(content, callback);
+            return;
+        }
+        Map<String, String> params = new TreeMap<String, String>();
+        params.put("limit", "10");
+        params.put("page", "1");
+        params.put("content", content);
+        NetUtils.get(ct, params, Constants.PATH_SEARCH_GOODS, new NetUtils.NetCallback() {
+            @Override
+            public void onFailure(final String errorMsg) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (callback != null) {
+                            callback.onFailure(errorMsg);
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onFinish(JSONObject data) {
+                try {
+                    final List<Goods> goodsList = new ArrayList<>();
+                    JSONArray listArray = data.getJSONArray("list");
+                    for (int i = 0; i < listArray.length(); i++) {
+                        JSONObject obj = listArray.getJSONObject(i);
+                        Goods g = new Goods();
+                        g.id = obj.getString("id");
+                        g.title1 = obj.optString("title1");
+                        g.title2 = obj.optString("title2");
+                        g.title3 = obj.optString("title3");
+                        g.cover = obj.optString("cover");
+                        g.sellCount = obj.optString("sellCount");
+                        g.price = obj.optString("price");
+                        g.shellPrice = obj.optString("shellPrice");
+                        g.hasMorePrice = obj.optBoolean("hasMorePrice");
+
+                        goodsList.add(g);
+                    }
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (callback != null) {
+                                callback.onFinish(goodsList);
+                            }
+                        }
+                    });
+                } catch (JSONException e) {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (callback != null) {
+                                callback.onFailure(ct.getResources().getString(R.string.common_error));
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    public void searchLocalGoodss(final String content, final FetchGoodsCallback callback) {
+        if (callback != null) {
+            callback.onFinish(new ArrayList<Goods>());
+        }
+    }
+
+    public void loadMoreSearchGoods(final String content, final FetchGoodsCallback callback) {
+        searchGoodsPage++;
+        if (Constants.IS_DEBUG) {
+            loadMoreSearchLocalGoodss(content, callback);
+            return;
+        }
+        Map<String, String> params = new TreeMap<String, String>();
+        params.put("limit", "10");
+        params.put("page", searchGoodsPage + "");
+        params.put("content", content);
+        NetUtils.get(ct, params, Constants.PATH_SEARCH_GOODS, new NetUtils.NetCallback() {
+            @Override
+            public void onFailure(final String errorMsg) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (callback != null) {
+                            callback.onFailure(errorMsg);
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onFinish(JSONObject data) {
+                try {
+                    final List<Goods> goodsList = new ArrayList<>();
+                    JSONArray listArray = data.getJSONArray("list");
+                    for (int i = 0; i < listArray.length(); i++) {
+                        JSONObject obj = listArray.getJSONObject(i);
+                        Goods g = new Goods();
+                        g.id = obj.getString("id");
+                        g.title1 = obj.optString("title1");
+                        g.title2 = obj.optString("title2");
+                        g.title3 = obj.optString("title3");
+                        g.cover = obj.optString("cover");
+                        g.sellCount = obj.optString("sellCount");
+                        g.price = obj.optString("price");
+                        g.shellPrice = obj.optString("shellPrice");
+                        g.hasMorePrice = obj.optBoolean("hasMorePrice");
+
+                        goodsList.add(g);
+                    }
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (callback != null) {
+                                callback.onFinish(goodsList);
+                            }
+                        }
+                    });
+                } catch (JSONException e) {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (callback != null) {
+                                callback.onFailure(ct.getResources().getString(R.string.common_error));
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    private void loadMoreSearchLocalGoodss(final String content, final FetchGoodsCallback callback) {
+        // TODO local data
+
+        if (callback != null) {
+            callback.onFinish(new ArrayList<Goods>());
         }
     }
 
@@ -434,6 +703,12 @@ public class GoodsManager extends Observable {
         public void onFailure(String errorMsg);
 
         public void onFinish(List<QuickwayType> data);
+    }
+
+    public interface FetchCommonCallback {
+        public void onFailure(String errorMsg);
+
+        public void onFinish(String text);
     }
 
 

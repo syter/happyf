@@ -37,7 +37,17 @@
             android:layout_marginLeft="12dp"
             android:src="@drawable/address" />
 
+        <TextView
+            android:id="@+id/tv_empty_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="@string/select_new_address_title"
+            android:textColor="@color/gray" />
+
         <RelativeLayout
+            android:id="@+id/rl_hasaddress"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="20dp"
@@ -49,7 +59,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="伤心猪蹄子"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 
@@ -60,7 +69,6 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="28dp"
                 android:layout_toRightOf="@id/tv_address_name"
-                android:text="18612254457"
                 android:textColor="@color/gray_text_1"
                 android:textSize="12sp" />
 
@@ -71,7 +79,6 @@
                 android:layout_below="@id/tv_address_name"
                 android:layout_marginTop="14dp"
                 android:maxLines="2"
-                android:text="收货地址：浙江省宁波市镇海区汇智大厦1201楼房凑字"
                 android:textColor="@color/gray_text_2"
                 android:textSize="12sp" />
 

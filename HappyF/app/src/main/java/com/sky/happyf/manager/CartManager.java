@@ -3,283 +3,315 @@ package com.sky.happyf.manager;
 import android.content.Context;
 import android.os.Handler;
 
+import com.sky.happyf.Model.Address;
 import com.sky.happyf.Model.Cart;
+import com.sky.happyf.R;
 import com.sky.happyf.util.Constants;
+import com.sky.happyf.util.NetUtils;
+import com.sky.happyf.util.SpfHelper;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Observable;
+import java.util.TreeMap;
 
 public class CartManager extends Observable {
-    private ArrayList<Cart> cartList = new ArrayList<Cart>();
     private Handler handler;
     private Context ct;
-    private final static int POST_LIMIT = 20;
-    private int page = 0;
-    private int totalCartCount = 0;
 
     public CartManager(Context ct) {
         this.ct = ct;
         handler = new Handler();
     }
 
-    public List<Cart> getLocalCarts() {
-        List<Cart> CartList = null;
-        return CartList;
-    }
-
-    public void init(final FetchCartsCallback callback) {
-        page = 0;
-        cartList = new ArrayList<Cart>();
+    public void getCartList(final FetchCartsCallback callback) {
         if (Constants.IS_DEBUG) {
-            getLocalCarts(callback);
+            getLocalCartList(callback);
             return;
         }
-        fetchRemoteCarts(++page, new FetchCartsCallback() {
+        Map<String, String> params = new TreeMap<String, String>();
+        params.put("user_id", SpfHelper.getInstance(ct).getMyUserInfo().id);
+        NetUtils.get(ct, params, Constants.PATH_GET_CART_LIST, new NetUtils.NetCallback() {
             @Override
-            public void onFailure(String errorMsg) {
-                if (callback != null) {
-                    callback.onFailure(errorMsg);
-                }
+            public void onFailure(final String errorMsg) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (callback != null) {
+                            callback.onFailure(errorMsg);
+                        }
+                    }
+                });
             }
 
             @Override
-            public void onFinish(List<Cart> data) {
-                cartList.addAll(data);
-                if (callback != null) {
-                    callback.onFinish(data);
+            public void onFinish(JSONObject data) {
+                try {
+                    final Map<String, Object> resultMap = new HashMap<>();
+                    Address address = null;
+                    JSONObject addressObj = data.optJSONObject("address");
+                    if (addressObj != null) {
+                        address = new Address();
+                        address.id = addressObj.optString("id");
+                        address.name = addressObj.optString("name");
+                        address.province = addressObj.optString("province");
+                        address.city = addressObj.optString("city");
+                        address.district = addressObj.optString("district");
+                        address.address = addressObj.optString("address");
+                        address.phone = addressObj.optString("phone");
+                    }
+
+                    List<Cart> cartList = new ArrayList<>();
+                    JSONArray listArray = data.optJSONArray("cart");
+                    for (int i = 0; i < listArray.length(); i++) {
+                        JSONObject obj = listArray.optJSONObject(i);
+                        Cart c = new Cart();
+                        c.id = obj.optString("id");
+                        c.goodsId = obj.optString("goods_id");
+                        c.cover = obj.optString("cover");
+                        c.title = obj.optString("title");
+                        c.selectedType = obj.optString("selectedType");
+                        c.price = obj.optString("price");
+                        c.shellPrice = obj.optString("shellPrice");
+                        c.count = obj.optString("count");
+                        c.isSeaFood = obj.optBoolean("isSeaFood");
+                        c.isFreePost = obj.optBoolean("isFreePost");
+                        c.isInvalid = obj.optBoolean("isInvalid");
+                        cartList.add(c);
+                    }
+                    resultMap.put("cart", cartList);
+                    resultMap.put("address", address);
+
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (callback != null) {
+                                callback.onFinish(resultMap);
+                            }
+                        }
+                    });
+                } catch (Exception e) {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (callback != null) {
+                                callback.onFailure(ct.getResources().getString(R.string.common_error));
+                            }
+                        }
+                    });
                 }
             }
         });
     }
 
-    public void loadMore(final FetchCartsCallback callback) {
+
+    private void getLocalCartList(final FetchCartsCallback callback) {
+        if (callback != null) {
+            callback.onFinish(new HashMap<String, Object>());
+        }
+    }
+
+
+    public void getOrderCartList(final String cartIds, final FetchCartsCallback callback) {
         if (Constants.IS_DEBUG) {
-            loadMoreLocalCarts(callback, ++page);
+            getLocalOrderCartList(cartIds, callback);
             return;
         }
-        fetchRemoteCarts(++page, new FetchCartsCallback() {
+        Map<String, String> params = new TreeMap<String, String>();
+        params.put("user_id", SpfHelper.getInstance(ct).getMyUserInfo().id);
+        params.put("cart_ids", cartIds);
+        NetUtils.get(ct, params, Constants.PATH_GET_ORDER_CART_LIST, new NetUtils.NetCallback() {
             @Override
-            public void onFailure(String errorMsg) {
-                page--;
-                if (callback != null) {
-                    callback.onFailure(errorMsg);
-                }
+            public void onFailure(final String errorMsg) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (callback != null) {
+                            callback.onFailure(errorMsg);
+                        }
+                    }
+                });
             }
 
             @Override
-            public void onFinish(List<Cart> data) {
-                cartList.addAll(data);
-                if (callback != null) {
-                    callback.onFinish(cartList);
+            public void onFinish(JSONObject data) {
+                try {
+                    final Map<String, Object> resultMap = new HashMap<>();
+                    Address address = null;
+                    JSONObject addressObj = data.optJSONObject("address");
+                    if (addressObj != null) {
+                        address = new Address();
+                        address.id = addressObj.optString("id");
+                        address.name = addressObj.optString("name");
+                        address.province = addressObj.optString("province");
+                        address.city = addressObj.optString("city");
+                        address.district = addressObj.optString("district");
+                        address.address = addressObj.optString("address");
+                        address.phone = addressObj.optString("phone");
+                    }
+
+                    List<Cart> cartList = new ArrayList<>();
+                    JSONArray listArray = data.optJSONArray("cart");
+                    for (int i = 0; i < listArray.length(); i++) {
+                        JSONObject obj = listArray.optJSONObject(i);
+                        Cart c = new Cart();
+                        c.id = obj.optString("id");
+                        c.goodsId = obj.optString("goods_id");
+                        c.cover = obj.optString("cover");
+                        c.title = obj.optString("title");
+                        c.selectedType = obj.optString("selectedType");
+                        c.price = obj.optString("price");
+                        c.shellPrice = obj.optString("shellPrice");
+                        c.count = obj.optString("count");
+                        c.isSeaFood = obj.optBoolean("isSeaFood");
+                        c.isFreePost = obj.optBoolean("isFreePost");
+                        c.isInvalid = obj.optBoolean("isInvalid");
+                        cartList.add(c);
+                    }
+                    resultMap.put("cart", cartList);
+                    resultMap.put("address", address);
+
+                    resultMap.put("postagePrice", data.optString("postagePrice"));
+                    resultMap.put("postPrice", data.optString("postPrice"));
+                    resultMap.put("postShellPrice", data.optString("postShellPrice"));
+                    resultMap.put("totalPrice", data.optString("totalPrice"));
+                    resultMap.put("totalShellPrice", data.optString("totalShellPrice"));
+                    resultMap.put("canPayByShell", data.optBoolean("canPayByShell"));
+                    resultMap.put("isSameType", data.optBoolean("isSameType"));
+
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (callback != null) {
+                                callback.onFinish(resultMap);
+                            }
+                        }
+                    });
+                } catch (Exception e) {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (callback != null) {
+                                callback.onFailure(ct.getResources().getString(R.string.common_error));
+                            }
+                        }
+                    });
                 }
             }
         });
     }
 
 
-    private void getLocalCarts(final FetchCartsCallback callback) {
-        new Thread(new Runnable() {
+    private void getLocalOrderCartList(final String cartIds, final FetchCartsCallback callback) {
+        if (callback != null) {
+            callback.onFinish(new HashMap<String, Object>());
+        }
+    }
+
+
+    public void updateCount(final String cartId, final String count, final FetchCommonCallback callback) {
+        if (Constants.IS_DEBUG) {
+            updateLocalCount(cartId, count, callback);
+            return;
+        }
+        Map<String, String> params = new TreeMap<String, String>();
+        params.put("cart_id", cartId);
+        params.put("user_id", SpfHelper.getInstance(ct).getMyUserInfo().id);
+        params.put("count", count);
+        NetUtils.post(ct, params, Constants.PATH_UPDATE_CART_COUNT, new NetUtils.NetCallback() {
             @Override
-            public void run() {
-                for (int i = 0; i < 10; i++) {
-                    if (i == 0) {
-                        Cart o = new Cart();
-//                        o.removeSelected = true;
-//                        o.selected = true;
-                        o.id = i + "";
-                        o.goods_id = i + "";
-                        o.title = "title";
-                        o.state = 0;
-                        o.param = "选定参数";
-                        o.price = "100";
-                        o.shell = "200";
-                        o.type = 1;
-                        o.count = 1;
-                        o.date = "2019-01-10";
-                        cartList.add(o);
-                    } else if (i == 1) {
-                        Cart o = new Cart();
-                        o.id = i + "";
-                        o.goods_id = i + "";
-                        o.title = "title";
-                        o.state = 0;
-                        o.param = "选定参数";
-                        o.price = "100";
-                        o.shell = "200";
-                        o.type = 2;
-                        o.count = 1;
-                        o.date = "2019-01-10";
-                        cartList.add(o);
-                    } else if (i == 2) {
-                        Cart o = new Cart();
-                        o.id = i + "";
-                        o.goods_id = i + "";
-                        o.title = "title";
-                        o.state = 1;
-                        o.param = "选定参数";
-                        o.price = "100";
-                        o.shell = "200";
-                        o.type = 2;
-                        o.count = 1;
-                        o.date = "2019-01-10";
-                        cartList.add(o);
-                    } else {
-                        Cart o = new Cart();
-                        o.id = i + "";
-                        o.goods_id = i + "";
-                        o.title = "title";
-                        o.state = 1;
-                        o.param = "选定参数";
-                        o.price = "100";
-                        o.shell = "200";
-                        o.type = 1;
-                        o.count = 1;
-                        o.date = "2019-01-10";
-                        cartList.add(o);
-                    }
-                }
-                handler.postDelayed(new Runnable() {
+            public void onFailure(final String errorMsg) {
+                handler.post(new Runnable() {
                     @Override
                     public void run() {
                         if (callback != null) {
-                            callback.onFinish(cartList);
+                            callback.onFailure(errorMsg);
                         }
                     }
-                }, 500);
+                });
             }
-        }).start();
-    }
 
-    private void loadMoreLocalCarts(final FetchCartsCallback callback, final int page) {
-        new Thread(new Runnable() {
             @Override
-            public void run() {
-                Cart o = new Cart();
-                o.title = "title";
-                o.state = 1;
-                o.param = "选定参数";
-                o.price = "100";
-                o.shell = "200";
-                o.type = 1;
-                o.count = 1;
-                o.date = "2019-01-10";
-                cartList.add(o);
-                handler.postDelayed(new Runnable() {
+            public void onFinish(JSONObject data) {
+                handler.post(new Runnable() {
                     @Override
                     public void run() {
                         if (callback != null) {
-                            callback.onFinish(cartList);
+                            callback.onFinish("");
                         }
                     }
-                }, 1000);
+                });
             }
-        }).start();
+        });
     }
 
-    private void fetchRemoteCarts(final int page, final FetchCartsCallback callback) {
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                Map<String, Object> params = new HashMap<String, Object>();
-//                params.put("page", page);
-//                params.put("limit", POST_LIMIT);
-//                params.put("sort", "-created_at");
-//                params.put("type", Constant.BULLETIN_TYPE);
-//                Map<String, String> customFields = new HashMap<String, String>();
-//                customFields.put("state", "1");
-//                params.put("custom_fields", customFields);
-//                params.put("like_user_id", UserManager.getInstance(ct).getCurrentUser().userId);
-//
-//                try {
-//                    anSocial.sendRequest("posts/query.json", AnSocialMethod.GET, params, new IAnSocialCallback() {
-//                        @Override
-//                        public void onFailure(final JSONObject arg0) {
-//                            try {
-//                                String message = arg0.getJSONObject("meta").getString("message");
-//                                Toast.makeText(ct, message, Toast.LENGTH_SHORT).show();
-//                            } catch (JSONException e) {
-//                                e.printStackTrace();
-//                            }
-//                            handler.post(new Runnable() {
-//                                @Override
-//                                public void run() {
-//                                    if (callback != null) {
-//                                        callback.onFailure(arg0.toString());
-//                                    }
-//                                }
-//                            });
-//                        }
-//
-//                        @Override
-//                        public void onSuccess(JSONObject arg0) {
-//                            try {
-//                                totalCartCount = arg0.getJSONObject("meta").getInt("total");
-//
-//                                final List<Cart> carts = new ArrayList<Cart>();
-//                                JSONArray cartArray = arg0.getJSONObject("response").getJSONArray("posts");
-//                                for (int i = 0; i < cartArray.length(); i++) {
-//                                    JSONObject cartJson = cartArray.getJSONObject(i);
-//                                    Cart cart = new Cart();
-//                                    cart.parseJSON(cartJson,
-//                                            UserManager.getInstance(ct).getCurrentUser().userId);
-//                                    cart.update();
-//                                    carts.add(cart);
-//
-//                                    if (cartJson.has("like")) {
-//                                        cart.deleteAllLikes(UserManager.getInstance(ct).getCurrentUser().userId);
-//                                        JSONObject likeJson = cartJson.getJSONObject("like");
-//                                        Like like = new Like();
-//                                        like.cart = cart.getFromTable(UserManager.getInstance(ct)
-//                                                .getCurrentUser().userId);
-//                                        like.parseJSON(likeJson, UserManager.getInstance(ct).getCurrentUser()
-//                                                .getFromTable(), UserManager.getInstance(ct).getCurrentUser().userId);
-//                                        boolean updated = like.update();
-//                                        DBug.e("like.update", updated + "?");
-//                                    }
-//                                }
-//
-//                                handler.post(new Runnable() {
-//                                    @Override
-//                                    public void run() {
-//                                        if (callback != null) {
-//                                            callback.onFinish(carts);
-//                                        }
-//                                    }
-//                                });
-//
-//                            } catch (final JSONException e) {
-//                                e.printStackTrace();
-//                                handler.post(new Runnable() {
-//                                    @Override
-//                                    public void run() {
-//                                        if (callback != null) {
-//                                            callback.onFailure(e.getMessage());
-//                                        }
-//                                    }
-//                                });
-//                            }
-//                        }
-//                    });
-//                } catch (final ArrownockException e) {
-//                    e.printStackTrace();
-//                    handler.post(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            if (callback != null) {
-//                                callback.onFailure(e.getMessage());
-//                            }
-//                        }
-//                    });
-//                }
-//            }
-//        }).start();
+
+    private void updateLocalCount(final String cartId, final String count, final FetchCommonCallback callback) {
+        if (callback != null) {
+            callback.onFinish("");
+        }
+    }
+
+
+    public void removeCarts(final String cartIds, final FetchCommonCallback callback) {
+        if (Constants.IS_DEBUG) {
+            removeLocalCarts(cartIds, callback);
+            return;
+        }
+        Map<String, String> params = new TreeMap<String, String>();
+        params.put("cart_ids", cartIds);
+        params.put("user_id", SpfHelper.getInstance(ct).getMyUserInfo().id);
+        NetUtils.post(ct, params, Constants.PATH_REMOVE_CART_GOODS, new NetUtils.NetCallback() {
+            @Override
+            public void onFailure(final String errorMsg) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (callback != null) {
+                            callback.onFailure(errorMsg);
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onFinish(JSONObject data) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (callback != null) {
+                            callback.onFinish("");
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+
+    private void removeLocalCarts(final String cartIds, final FetchCommonCallback callback) {
+        if (callback != null) {
+            callback.onFinish("");
+        }
     }
 
 
     public interface FetchCartsCallback {
         public void onFailure(String errorMsg);
 
-        public void onFinish(List<Cart> data);
+        public void onFinish(Map<String, Object> data);
     }
+
+    public interface FetchCommonCallback {
+        public void onFailure(String errorMsg);
+
+        public void onFinish(String text);
+    }
+
+
 }
