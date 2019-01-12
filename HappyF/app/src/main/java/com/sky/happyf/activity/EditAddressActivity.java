@@ -148,8 +148,6 @@ public class EditAddressActivity extends BaseActivity {
                             }
                         });
                     }
-
-                    finish();
                 }
             }
         });
