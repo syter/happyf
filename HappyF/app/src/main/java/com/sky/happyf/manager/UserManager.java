@@ -101,7 +101,7 @@ public class UserManager extends Observable {
         Map<String, String> params = new TreeMap<String, String>();
         params.put("phone", phone);
         params.put("type", "login");
-        NetUtils.get(ct, params, Constants.PATH_GET_LOGIN_CODE, new NetUtils.NetCallback() {
+        NetUtils.post(ct, params, Constants.PATH_GET_LOGIN_CODE, new NetUtils.NetCallback() {
             @Override
             public void onFailure(final String errorMsg) {
                 handler.post(new Runnable() {
@@ -153,7 +153,7 @@ public class UserManager extends Observable {
         Map<String, String> params = new TreeMap<String, String>();
         params.put("phone", phone);
         params.put("valid_code", code);
-        NetUtils.get(ct, params, Constants.PATH_LOGIN, new NetUtils.NetCallback() {
+        NetUtils.post(ct, params, Constants.PATH_LOGIN, new NetUtils.NetCallback() {
             @Override
             public void onFailure(final String errorMsg) {
                 handler.post(new Runnable() {
@@ -218,7 +218,7 @@ public class UserManager extends Observable {
         Map<String, String> params = new TreeMap<String, String>();
         params.put("phone", phone);
         params.put("password", password);
-        NetUtils.get(ct, params, Constants.PATH_LOGIN_BY_PWD, new NetUtils.NetCallback() {
+        NetUtils.post(ct, params, Constants.PATH_LOGIN_BY_PWD, new NetUtils.NetCallback() {
             @Override
             public void onFailure(final String errorMsg) {
                 handler.post(new Runnable() {

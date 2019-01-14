@@ -264,7 +264,7 @@ public class CartListAdapter extends BaseAdapter {
         for (Cart c : cartList) {
             if (c.selected) {
                 price = price.add(new BigDecimal(c.count).multiply(new BigDecimal(c.price)));
-                shellPrice = price.add(new BigDecimal(c.count).multiply(new BigDecimal(c.shellPrice)));
+                shellPrice = shellPrice.add(new BigDecimal(c.count).multiply(new BigDecimal(c.shellPrice)));
             }
         }
         act.tvPrice.setText(act.getResources().getString(R.string.rmb) + price.toString());

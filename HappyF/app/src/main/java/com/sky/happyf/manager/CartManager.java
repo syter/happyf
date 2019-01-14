@@ -81,7 +81,12 @@ public class CartManager extends Observable {
                         c.count = obj.optString("count");
                         c.isSeaFood = obj.optBoolean("isSeaFood");
                         c.isFreePost = obj.optBoolean("isFreePost");
-                        c.isInvalid = obj.optBoolean("isInvalid");
+                        String status = obj.optString("status");
+                        if ("Y".equals(status)) {
+                            c.isInvalid = false;
+                        } else {
+                            c.isInvalid = true;
+                        }
                         cartList.add(c);
                     }
                     resultMap.put("cart", cartList);
@@ -170,7 +175,12 @@ public class CartManager extends Observable {
                         c.count = obj.optString("count");
                         c.isSeaFood = obj.optBoolean("isSeaFood");
                         c.isFreePost = obj.optBoolean("isFreePost");
-                        c.isInvalid = obj.optBoolean("isInvalid");
+                        String status = obj.optString("status");
+                        if ("Y".equals(status)) {
+                            c.isInvalid = false;
+                        } else {
+                            c.isInvalid = true;
+                        }
                         cartList.add(c);
                     }
                     resultMap.put("cart", cartList);

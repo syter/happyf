@@ -12,6 +12,7 @@ import java.security.PublicKey;
 import java.util.Calendar;
 import java.util.Map;
 
+import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -38,22 +39,32 @@ public class NetUtils {
                     Map<String, String> resultMap = Utils.sortMapByKey(params);
                     StringBuilder sb = new StringBuilder();
                     for (Map.Entry<String, String> entry : resultMap.entrySet()) {
-                        sb.append(entry.getKey() + "=" + entry.getValue() + "&");
+                        sb.append("&" + entry.getKey() + "=" + entry.getValue());
                     }
-                    String source = sb.substring(0, sb.length() - 1);
+                    String source = sb.substring(1, sb.length());
                     InputStream inPublic = ct.getResources().getAssets().open("pub_key.pem");
                     PublicKey publicKey = RSAUtils.loadPublicKey(inPublic);
                     // 加密
-                    byte[] encryptByte = RSAUtils.encryptData(source.getBytes(), publicKey);
+
+                    byte[] encryptByte = RSAUtils.encryptByPublic(source.getBytes(), publicKey);
                     String sign = Base64Utils.encode(encryptByte);
                     String realParams = source + "&sign=" + sign;
 
                     String url = Constants.IS_HTTP ? Constants.HTTP + Constants.HOST + path : Constants.HTTPS + Constants.HOST + path;
                     Logger.d("NetUtils post --- current url = " + url);
                     Logger.d("NetUtils post --- current realParams = " + realParams);
+                    String params[] = realParams.split("&");
+                    FormBody.Builder builder = new FormBody.Builder();
+                    for (int i = 0; i < params.length; i++) {
+                        String ps = params[i];
+                        String[] psArray = ps.split("=");
+                        String key = psArray[0];
+                        String value = psArray[1];
+                        builder.add(key, value);
+                    }
 
                     OkHttpClient client = new OkHttpClient();
-                    RequestBody body = RequestBody.create(Constants.JSON, realParams);
+                    RequestBody body = builder.build();
                     Request request = new Request.Builder()
                             .post(body)
                             .url(url)
@@ -78,7 +89,10 @@ public class NetUtils {
                         }
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    Logger.e("NetUtils post --- e = " + e.toString());
+                    if (callback != null) {
+                        callback.onFailure(ct.getResources().getString(R.string.common_error));
+                    }
                 }
             }
         }).start();
@@ -108,7 +122,7 @@ public class NetUtils {
                     InputStream inPublic = ct.getResources().getAssets().open("pub_key.pem");
                     PublicKey publicKey = RSAUtils.loadPublicKey(inPublic);
                     // 加密
-                    byte[] encryptByte = RSAUtils.encryptData(source.getBytes(), publicKey);
+                    byte[] encryptByte = RSAUtils.encryptByPublic(source.getBytes(), publicKey);
                     String sign = Base64Utils.encode(encryptByte);
                     String realParams = source + "&sign=" + sign;
 
@@ -141,7 +155,9 @@ public class NetUtils {
                     }
                 } catch (Exception e) {
                     Logger.e("NetUtils get --- e = " + e.toString());
-                    e.printStackTrace();
+                    if (callback != null) {
+                        callback.onFailure(ct.getResources().getString(R.string.common_error));
+                    }
                 }
             }
         }).start();

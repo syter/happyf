@@ -70,10 +70,7 @@ public class SelectAddressActivity extends BaseActivity {
                     finish();
                 } else if (action == CommonTitleBar.ACTION_RIGHT_TEXT) {
                     Intent intent = new Intent(SelectAddressActivity.this, EditAddressActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putString("is_new", "1");
-//                    intent.putExtra("address", currentAddress);
-                    intent.putExtras(bundle);
+                    intent.putExtra("is_new", "1");
                     startActivity(intent);
                     overridePendingTransition(R.anim.anim_enter, R.anim.bottom_silent);
                 }

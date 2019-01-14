@@ -17,18 +17,24 @@ import com.sky.happyf.R;
 import com.sky.happyf.adapter.CartListAdapter;
 import com.sky.happyf.adapter.OrderCartListAdapter;
 import com.sky.happyf.manager.CartManager;
+import com.sky.happyf.manager.FinishActivityManager;
 import com.sky.happyf.manager.OrderManager;
 import com.sky.happyf.util.Constants;
 import com.sky.happyf.view.MyListView;
+import com.sky.happyf.view.PayDialog;
 import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 
 import java.util.List;
 import java.util.Map;
 
+import io.github.mayubao.pay_library.AliPayReq2;
+import io.github.mayubao.pay_library.PayAPI;
+import io.github.mayubao.pay_library.WechatPayReq;
+
 public class ConfirmOrderActivity extends BaseActivity {
     private CommonTitleBar titleBar;
     private RelativeLayout rlSelectAddress, rlHasaddress;
-    private MyListView lvCart;
+    private ListView lvCart;
     private OrderCartListAdapter adapter;
     private CartManager cartManager;
     private OrderManager orderManager;
@@ -36,6 +42,8 @@ public class ConfirmOrderActivity extends BaseActivity {
             tvPrice, tvShellPrice, tvShellPay;
     private LinearLayout llShellPay, llPricePay;
     private EditText etRemark;
+    private String cartIds;
+    private PayDialog payDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +77,7 @@ public class ConfirmOrderActivity extends BaseActivity {
         lvCart = findViewById(R.id.lv_cart);
         adapter = new OrderCartListAdapter(this);
         lvCart.setAdapter(adapter);
+        payDialog = new PayDialog(ConfirmOrderActivity.this, R.style.PayDialog);
     }
 
     private void initListener() {
@@ -88,17 +97,110 @@ public class ConfirmOrderActivity extends BaseActivity {
                 overridePendingTransition(R.anim.anim_enter, R.anim.bottom_silent);
             }
         });
+
+        payDialog.setAliOnclickListener(new PayDialog.onAliOnclickListener() {
+            @Override
+            public void onAliClick() {
+//                // 1.创建支付宝支付订单的信息
+//                String rawAliOrderInfo = new AliPayReq2.AliOrderInfo()
+//                        .setPartner(partner) //商户PID || 签约合作者身份ID
+//                        .setSeller(seller)  // 商户收款账号 || 签约卖家支付宝账号
+//                        .setOutTradeNo(outTradeNo) //设置唯一订单号
+//                        .setSubject(orderSubject) //设置订单标题
+//                        .setBody(orderBody) //设置订单内容
+//                        .setPrice(price) //设置订单价格
+//                        .setCallbackUrl(callbackUrl) //设置回调链接
+//                        .createOrderInfo(); //创建支付宝支付订单信息
+//
+//
+//                //2.签名  支付宝支付订单的信息 ===>>>  商户私钥签名之后的订单信息
+//                //TODO 这里需要从服务器获取用商户私钥签名之后的订单信息
+//                String signAliOrderInfo = getSignAliOrderInfoFromServer(rawAliOrderInfo);
+//
+//                //3.发送支付宝支付请求
+//                AliPayReq2 aliPayReq = new AliPayReq2.Builder()
+//                        .with(ConfirmOrderActivity.this)//Activity实例
+//                        .setRawAliPayOrderInfo(rawAliOrderInfo)//支付宝支付订单信息
+//                        .setSignedAliPayOrderInfo(signAliOrderInfo) //设置 商户私钥RSA加密后的支付宝支付订单信息
+//                        .create()//
+//                        .setOnAliPayListener(null);//
+//                PayAPI.getInstance().sendPayRequest(aliPayReq);
+//
+//                //关于支付宝支付的回调
+//                aliPayReq.setOnAliPayListener(new AliPayReq2.OnAliPayListener() {
+//                    @Override
+//                    public void onPaySuccess(String resultInfo) {
+//                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.pay_succ), Toast.LENGTH_LONG).show();
+//                        payDialog.dismiss();
+//                    }
+//
+//                    @Override
+//                    public void onPayFailure(String resultInfo) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onPayConfirmimg(String resultInfo) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onPayCheck(String status) {
+//
+//                    }
+//                });
+            }
+        });
+
+        payDialog.setWechatOnclickListener(new PayDialog.onWechatOnclickListener() {
+            @Override
+            public void onWechatOnclick() {
+
+
+////                //1.创建微信支付请求
+////                WechatPayReq wechatPayReq = new WechatPayReq.Builder()
+////                        .with(ConfirmOrderActivity.this) //activity实例
+////                        .setAppId(appid) //微信支付AppID
+////                        .setPartnerId(partnerid)//微信支付商户号
+////                        .setPrepayId(prepayid)//预支付码
+//////								.setPackageValue(wechatPayReq.get)//"Sign=WXPay"
+////                        .setNonceStr(noncestr)
+////                        .setTimeStamp(timestamp)//时间戳
+////                        .setSign(sign)//签名
+////                        .create();
+////                //2.发送微信支付请求
+////                PayAPI.getInstance().sendPayRequest(wechatPayReq);
+//
+//
+//                //关于微信支付的回调
+//                wechatPayReq.setOnWechatPayListener(new WechatPayReq.OnWechatPayListener() {
+//                    @Override
+//                    public void onPaySuccess(int errorCode) {
+//                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.pay_succ), Toast.LENGTH_LONG).show();
+//                        payDialog.dismiss();
+//                        // TODO
+//                    }
+//
+//                    @Override
+//                    public void onPayFailure(int errorCode) {
+//                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.pay_fail), Toast.LENGTH_LONG).show();
+//                        payDialog.dismiss();
+//
+//                    }
+//                });
+            }
+        });
     }
 
     private void initData() {
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
-        String cartIds = bundle.getString("cart_ids");
+        cartIds = bundle.getString("cart_ids");
 
         cartManager = new CartManager(this);
         orderManager = new OrderManager(this);
 
-        initCartData(cartIds);
+
     }
 
     private void initCartData(final String cartIds) {
@@ -140,8 +242,7 @@ public class ConfirmOrderActivity extends BaseActivity {
                                 public void onFinish(Map<String, String> data) {
                                     if ("Y".equals(data.get("status"))) {
                                         Toast.makeText(getApplicationContext(), getResources().getString(R.string.confirm_pay_shell_succ), Toast.LENGTH_LONG).show();
-                                        // TODO 可能也需要关闭上一个页面???
-                                        finish();
+                                        processPaySuccess();
                                     } else {
                                         Toast.makeText(getApplicationContext(), getResources().getString(R.string.confirm_pay_shell_not_enough), Toast.LENGTH_LONG).show();
                                         initCartData(cartIds);
@@ -153,25 +254,19 @@ public class ConfirmOrderActivity extends BaseActivity {
                     llPricePay.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            String remark = etRemark.getText().toString();
-                            orderManager.createOrder(cartIds, Constants.ORDER_PAY_TYPE_PRICE, remark, new OrderManager.CreateOrderCallback() {
-                                @Override
-                                public void onFailure(String errorMsg) {
-                                    Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
-                                }
-
-                                @Override
-                                public void onFinish(Map<String, String> data) {
-                                    // TODO 选择微信或支付宝付款
-//                                    Intent intent = new Intent(ConfirmOrderActivity.this, PayActivity.class);
-//                                    Bundle bundle = new Bundle();
-//                                    bundle.putString("order_id", data.get("orderId"));
-//                                    intent.putExtras(bundle);
-//                                    startActivity(intent);
-//                                    overridePendingTransition(R.anim.anim_enter, R.anim.bottom_silent);
-
-                                }
-                            });
+                            payDialog.show();
+//                            String remark = etRemark.getText().toString();
+//                            orderManager.createOrder(cartIds, Constants.ORDER_PAY_TYPE_PRICE, remark, new OrderManager.CreateOrderCallback() {
+//                                @Override
+//                                public void onFailure(String errorMsg) {
+//                                    Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
+//                                }
+//
+//                                @Override
+//                                public void onFinish(Map<String, String> data) {
+//                                    payDialog.show();
+//                                }
+//                            });
                         }
                     });
                 } else {
@@ -182,11 +277,16 @@ public class ConfirmOrderActivity extends BaseActivity {
         });
     }
 
+    private void processPaySuccess() {
+        FinishActivityManager.getManager().finishActivity(GoodsDetailActivity.class);
+        FinishActivityManager.getManager().finishActivity(CartListActivity.class);
+        finish();
+    }
 
     @Override
     protected void onResume() {
         super.onResume();
-
+        initCartData(cartIds);
     }
 
     @Override
@@ -194,4 +294,6 @@ public class ConfirmOrderActivity extends BaseActivity {
         super.finish();
         overridePendingTransition(R.anim.bottom_silent, R.anim.anim_exit);
     }
+
+
 }

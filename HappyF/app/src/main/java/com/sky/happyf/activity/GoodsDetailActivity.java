@@ -16,8 +16,8 @@ import com.orhanobut.logger.Logger;
 import com.sky.happyf.Model.CartPrice;
 import com.sky.happyf.Model.Goods;
 import com.sky.happyf.Model.SelectType;
-import com.sky.happyf.Model.ShopBanner;
 import com.sky.happyf.R;
+import com.sky.happyf.manager.FinishActivityManager;
 import com.sky.happyf.manager.GoodsManager;
 import com.sky.happyf.manager.UserManager;
 import com.sky.happyf.util.Constants;
@@ -32,7 +32,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GoodsDetailActivity extends BaseActivity {
-    private Goods goods;
     private GoodsManager goodsManager;
     private UserManager userManager;
     private ImageView ivBack, ivClose, ivMinus, ivAdd, ivGoodsCover;
@@ -53,6 +52,8 @@ public class GoodsDetailActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_goods_detail);
+
+        FinishActivityManager.getManager().addActivity(this);
 
         //设置标题栏和状态栏
         getSupportActionBar().hide();

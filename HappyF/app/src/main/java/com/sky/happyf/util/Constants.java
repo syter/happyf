@@ -8,10 +8,8 @@ public class Constants {
     public static final String EXP_URL = "http://www.ruiqisky.com";
     public static final String BUGLY_APPKEY = "3bf0ab6970";
     public static final String HOST = "dev.ruiqisky.com/shop";
+    //  public static final String HOST = "192.168.0.151/shop";
     public static final boolean IS_HTTP = true;
-
-
-
 
 
     public static final String HTTP = "http://";
@@ -20,11 +18,10 @@ public class Constants {
             = MediaType.get("application/json; charset=utf-8");
 
 
-
     public static final String PATH_GET_LOGIN_CODE = "/Api/User/sendMsg";
     public static final String PATH_LOGIN = "/Api/User/register";
     public static final String PATH_LOGIN_BY_PWD = "/Api/User/login";
-    public static final String PATH_SEARCH_GOODS = "/Api/User/login";
+    public static final String PATH_SEARCH_GOODS = "/Api/Shop/searchList";
     public static final String PATH_GET_SHOP_BANNER = "/Api/Shop/getBanners";
     public static final String PATH_GET_SHOP_TYPES = "/Api/Shop/getShopCates";
     public static final String PATH_GET_SHOP_GOODS = "/Api/Shop/getList";
@@ -42,9 +39,6 @@ public class Constants {
     public static final String PATH_SET_DEFAULT_ADDRESS = "/Api/User/setDefaultAddress";
     public static final String PATH_CREATE_ADDRESS = "/Api/User/addAddress";
     public static final String PATH_UPDATE_ADDRESS = "/Api/User/editAddress";
-
-
-
 
 
     public static final String SERVICE_TYPE_ONE = "1"; //

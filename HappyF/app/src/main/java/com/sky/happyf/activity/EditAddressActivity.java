@@ -124,11 +124,13 @@ public class EditAddressActivity extends BaseActivity {
                         addressManager.createNewAddress(addr, new AddressManager.FetchCommonCallback() {
                             @Override
                             public void onFailure(String errorMsg) {
+                                isBtnCalled = false;
                                 Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
                             }
 
                             @Override
                             public void onFinish(String text) {
+                                isBtnCalled = false;
                                 Toast.makeText(getApplicationContext(), getResources().getString(R.string.operation_succ), Toast.LENGTH_LONG).show();
                                 finish();
                             }
@@ -138,11 +140,13 @@ public class EditAddressActivity extends BaseActivity {
                         addressManager.updateAddress(addr, new AddressManager.FetchCommonCallback() {
                             @Override
                             public void onFailure(String errorMsg) {
+                                isBtnCalled = false;
                                 Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
                             }
 
                             @Override
                             public void onFinish(String text) {
+                                isBtnCalled = false;
                                 Toast.makeText(getApplicationContext(), getResources().getString(R.string.operation_succ), Toast.LENGTH_LONG).show();
                                 finish();
                             }
@@ -155,8 +159,7 @@ public class EditAddressActivity extends BaseActivity {
 
     private void initData() {
         Intent intent = getIntent();
-        Bundle bundle = intent.getExtras();
-        isNew = bundle.getString("is_new");
+        isNew = intent.getStringExtra("is_new");
         if ("1".equals(isNew)) {
             titleBar.getCenterTextView().setText(getResources().getString(R.string.edit_address_title_1));
         } else {

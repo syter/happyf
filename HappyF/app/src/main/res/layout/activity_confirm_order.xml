@@ -111,7 +111,7 @@
 
             </RelativeLayout>
 
-            <com.sky.happyf.view.MyListView
+            <ListView
                 android:id="@+id/lv_cart"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

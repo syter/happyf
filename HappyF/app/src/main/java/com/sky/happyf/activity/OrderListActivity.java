@@ -72,25 +72,7 @@ public class OrderListActivity extends BaseActivity {
 
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
-                orderManager.init(selectIndex, new OrderManager.FetchOrdersCallback() {
-                    @Override
-                    public void onFailure(String errorMsg) {
-                        ptrLayout.refreshComplete();
-                    }
 
-                    @Override
-                    public void onFinish(List<Order> data) {
-                        ptrLayout.refreshComplete();
-
-                        adapter.applyData(data);
-                        adapter.notifyDataSetChanged();
-                        ptrLayout.refreshComplete();
-
-                        if (!ptrLayout.isLoadMoreEnable()) {
-                            ptrLayout.setLoadMoreEnable(true);
-                        }
-                    }
-                });
             }
         });
 
@@ -99,25 +81,7 @@ public class OrderListActivity extends BaseActivity {
 
             @Override
             public void loadMore() {
-                orderManager.loadMore(selectIndex, new OrderManager.FetchOrdersCallback() {
-                    @Override
-                    public void onFailure(String errorMsg) {
-                        ptrLayout.refreshComplete();
-                    }
 
-                    @Override
-                    public void onFinish(List<Order> data) {
-                        ptrLayout.loadMoreComplete(true);
-
-                        adapter.applyData(data);
-                        adapter.notifyDataSetChanged();
-                        ptrLayout.refreshComplete();
-
-                        if (data.isEmpty()) {
-                            ptrLayout.setLoadMoreEnable(false);
-                        }
-                    }
-                });
             }
         });
 

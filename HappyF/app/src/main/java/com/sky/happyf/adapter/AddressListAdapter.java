@@ -86,17 +86,15 @@ public class AddressListAdapter extends BaseAdapter {
         public void setData(final Address address) {
             tvName.setText(address.name);
             tvPhone.setText(address.phone);
-            tvAddress.setText(address.address);
+            tvAddress.setText(address.province + address.city + address.district + address.address);
 
             tvEdit.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(act, EditAddressActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putString("is_new", "0");
+                    intent.putExtra("is_new", "0");
                     intent.putExtra("address", address);
-                    intent.putExtras(bundle);
-                    act.startActivity(new Intent(act, EditAddressActivity.class));
+                    act.startActivity(intent);
                     act.overridePendingTransition(R.anim.anim_enter, R.anim.bottom_silent);
                 }
             });

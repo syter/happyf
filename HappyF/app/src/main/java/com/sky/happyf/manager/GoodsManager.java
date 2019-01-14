@@ -179,8 +179,6 @@ public class GoodsManager extends Observable {
     }
 
     public void getLocalTypes(final FetchTypesCallback callback) {
-        // TODO local data
-
         if (callback != null) {
             callback.onFinish(new ArrayList<Type>());
         }
@@ -252,8 +250,6 @@ public class GoodsManager extends Observable {
     }
 
     public void getLocalGoodss(final String smallTypeId, final FetchGoodsCallback callback) {
-        // TODO local data
-
         if (callback != null) {
             callback.onFinish(new ArrayList<Goods>());
         }
@@ -326,8 +322,6 @@ public class GoodsManager extends Observable {
     }
 
     private void loadMoreLocalGoodss(final String smallTypeId, final FetchGoodsCallback callback) {
-        // TODO local data
-
         if (callback != null) {
             callback.onFinish(new ArrayList<Goods>());
         }
@@ -390,8 +384,6 @@ public class GoodsManager extends Observable {
     }
 
     public void getLocalQuickways(final FetchQuickwayTypesCallback callback) {
-        // TODO local data
-
         if (callback != null) {
             callback.onFinish(new ArrayList<QuickwayType>());
         }
@@ -482,8 +474,6 @@ public class GoodsManager extends Observable {
     }
 
     public void getLocalGoodsDetail(final String goodsId, final FetchGoodsCallback callback) {
-        // TODO local data
-
         if (callback != null) {
             callback.onFinish(new ArrayList<Goods>());
         }
@@ -528,8 +518,6 @@ public class GoodsManager extends Observable {
     }
 
     public void joinGoodsToCartLocal(final String goodsId, final String stId, final int number, final FetchCommonCallback callback) {
-        // TODO local data
-
         if (callback != null) {
             callback.onFinish("");
         }
@@ -545,7 +533,7 @@ public class GoodsManager extends Observable {
         Map<String, String> params = new TreeMap<String, String>();
         params.put("limit", "10");
         params.put("page", "1");
-        params.put("content", content);
+        params.put("keyword", content);
         NetUtils.get(ct, params, Constants.PATH_SEARCH_GOODS, new NetUtils.NetCallback() {
             @Override
             public void onFailure(final String errorMsg) {
@@ -616,7 +604,7 @@ public class GoodsManager extends Observable {
         Map<String, String> params = new TreeMap<String, String>();
         params.put("limit", "10");
         params.put("page", searchGoodsPage + "");
-        params.put("content", content);
+        params.put("keyword", content);
         NetUtils.get(ct, params, Constants.PATH_SEARCH_GOODS, new NetUtils.NetCallback() {
             @Override
             public void onFailure(final String errorMsg) {
@@ -673,8 +661,6 @@ public class GoodsManager extends Observable {
     }
 
     private void loadMoreSearchLocalGoodss(final String content, final FetchGoodsCallback callback) {
-        // TODO local data
-
         if (callback != null) {
             callback.onFinish(new ArrayList<Goods>());
         }

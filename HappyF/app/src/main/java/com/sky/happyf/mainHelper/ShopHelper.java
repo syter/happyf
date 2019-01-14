@@ -37,12 +37,16 @@ import com.sky.happyf.adapter.GoodsListAdapter;
 import com.sky.happyf.adapter.ShopSmallTypeAdapter;
 import com.sky.happyf.manager.GoodsManager;
 import com.sky.happyf.manager.UserManager;
+import com.sky.happyf.message.MessageEvent;
 import com.sky.happyf.util.GlideImageLoader;
 import com.sky.happyf.util.Utils;
 import com.sky.happyf.view.HorizontalListView;
 import com.sky.happyf.view.MyListView;
 import com.wang.avi.AVLoadingIndicatorView;
 import com.youth.banner.Banner;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -197,7 +201,6 @@ public class ShopHelper {
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                // TODO Auto-generated method stub
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_MOVE: {
 
@@ -455,6 +458,7 @@ public class ShopHelper {
                 loadingView.setVisibility(View.GONE);
                 goodsList = data;
                 adapter.applyData(goodsList);
+                svMain.smoothScrollTo(0, 0);
             }
         });
     }
@@ -537,7 +541,7 @@ public class ShopHelper {
         });
     }
 
-    private void initCart() {
+    public void initCart() {
         if (userManager.isUserLogin()) {
             userManager.getMyCartPrice(new UserManager.FetchCartPriceCallback() {
                 @Override
@@ -587,4 +591,5 @@ public class ShopHelper {
         currentSelectSmallTypeId = currentSmallTypeList.get(index).id;
         initGoodsData();
     }
+
 }

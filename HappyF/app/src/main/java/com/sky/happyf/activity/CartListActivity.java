@@ -23,6 +23,7 @@ import com.sky.happyf.Model.Cart;
 import com.sky.happyf.R;
 import com.sky.happyf.adapter.CartListAdapter;
 import com.sky.happyf.manager.CartManager;
+import com.sky.happyf.manager.FinishActivityManager;
 import com.sky.happyf.manager.UserManager;
 import com.sky.happyf.util.Utils;
 import com.sky.happyf.view.SmoothCheckBox;
@@ -51,6 +52,8 @@ public class CartListActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart_list);
+
+        FinishActivityManager.getManager().addActivity(this);
 
         getSupportActionBar().hide();//隐藏标题栏
 

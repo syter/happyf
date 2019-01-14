@@ -223,7 +223,7 @@ public class AddressManager extends Observable {
         params.put("district", address.district);
         params.put("address", address.address);
 
-        NetUtils.post(ct, params, Constants.PATH_CREATE_ADDRESS, new NetUtils.NetCallback() {
+        NetUtils.get(ct, params, Constants.PATH_CREATE_ADDRESS, new NetUtils.NetCallback() {
             @Override
             public void onFailure(final String errorMsg) {
                 handler.post(new Runnable() {
@@ -272,7 +272,7 @@ public class AddressManager extends Observable {
         params.put("city", address.city);
         params.put("district", address.district);
         params.put("address", address.address);
-        NetUtils.post(ct, params, Constants.PATH_UPDATE_ADDRESS, new NetUtils.NetCallback() {
+        NetUtils.get(ct, params, Constants.PATH_UPDATE_ADDRESS, new NetUtils.NetCallback() {
             @Override
             public void onFailure(final String errorMsg) {
                 handler.post(new Runnable() {
