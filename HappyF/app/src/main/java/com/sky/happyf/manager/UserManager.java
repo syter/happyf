@@ -308,6 +308,61 @@ public class UserManager extends Observable {
     }
 
 
+    public void editUserInfo(final String name, final FetchCommonCallback callback) {
+        if (Constants.IS_DEBUG) {
+            editUserInfoLocal(name, callback);
+            return;
+        }
+        Map<String, String> params = new TreeMap<String, String>();
+        params.put("user_id", SpfHelper.getInstance(ct).getMyUserInfo().id);
+        params.put("name", name);
+        NetUtils.post(ct, params, Constants.PATH_EDIT_USER, new NetUtils.NetCallback() {
+            @Override
+            public void onFailure(final String errorMsg) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (callback != null) {
+                            callback.onFailure(errorMsg);
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onFinish(final JSONObject data) {
+                try {
+                    SpfHelper.getInstance(ct).saveMyUserInfo(null, null, name, null, null, null, null, null);
+
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (callback != null) {
+                                callback.onFinish("");
+                            }
+                        }
+                    });
+                } catch (Exception e) {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (callback != null) {
+                                callback.onFailure(ct.getResources().getString(R.string.common_error));
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    public void editUserInfoLocal(final String name, final FetchCommonCallback callback) {
+        if (callback != null) {
+            callback.onFinish("");
+        }
+    }
+
+
     public interface FetchCartPriceCallback {
         public void onFailure(String errorMsg);
 

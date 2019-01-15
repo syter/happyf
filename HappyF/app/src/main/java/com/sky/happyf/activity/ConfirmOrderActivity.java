@@ -19,10 +19,13 @@ import com.sky.happyf.adapter.OrderCartListAdapter;
 import com.sky.happyf.manager.CartManager;
 import com.sky.happyf.manager.FinishActivityManager;
 import com.sky.happyf.manager.OrderManager;
+import com.sky.happyf.message.MessageEvent;
 import com.sky.happyf.util.Constants;
 import com.sky.happyf.view.MyListView;
 import com.sky.happyf.view.PayDialog;
 import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 import java.util.Map;
@@ -130,6 +133,7 @@ public class ConfirmOrderActivity extends BaseActivity {
 //                aliPayReq.setOnAliPayListener(new AliPayReq2.OnAliPayListener() {
 //                    @Override
 //                    public void onPaySuccess(String resultInfo) {
+//                        EventBus.getDefault().post(new MessageEvent(Constants.EVENT_MESSAGE_EDIT_USER));
 //                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.pay_succ), Toast.LENGTH_LONG).show();
 //                        payDialog.dismiss();
 //                    }
@@ -178,6 +182,7 @@ public class ConfirmOrderActivity extends BaseActivity {
 //                    public void onPaySuccess(int errorCode) {
 //                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.pay_succ), Toast.LENGTH_LONG).show();
 //                        payDialog.dismiss();
+//                        EventBus.getDefault().post(new MessageEvent(Constants.EVENT_MESSAGE_EDIT_USER));
 //                        // TODO
 //                    }
 //
@@ -254,19 +259,18 @@ public class ConfirmOrderActivity extends BaseActivity {
                     llPricePay.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            payDialog.show();
-//                            String remark = etRemark.getText().toString();
-//                            orderManager.createOrder(cartIds, Constants.ORDER_PAY_TYPE_PRICE, remark, new OrderManager.CreateOrderCallback() {
-//                                @Override
-//                                public void onFailure(String errorMsg) {
-//                                    Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
-//                                }
-//
-//                                @Override
-//                                public void onFinish(Map<String, String> data) {
-//                                    payDialog.show();
-//                                }
-//                            });
+                            String remark = etRemark.getText().toString();
+                            orderManager.createOrder(cartIds, Constants.ORDER_PAY_TYPE_PRICE, remark, new OrderManager.CreateOrderCallback() {
+                                @Override
+                                public void onFailure(String errorMsg) {
+                                    Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
+                                }
+
+                                @Override
+                                public void onFinish(Map<String, String> data) {
+                                    payDialog.show();
+                                }
+                            });
                         }
                     });
                 } else {

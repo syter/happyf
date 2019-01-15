@@ -133,12 +133,13 @@
                         android:textSize="12sp" />
 
                     <TextView
+                        android:id="@+id/tv_service"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="24dp"
                         android:layout_toRightOf="@+id/tv_service_title"
-                        android:text="@string/sd_service_default"
+                        android:text="@string/sd_service1"
                         android:textColor="@color/gray_text_1"
                         android:textSize="12sp" />
 
@@ -528,17 +529,19 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/tv_service_title1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="40dp"
-                    android:text="@string/sd_service"
+                    android:text="@string/sd_service_baotui"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
                 <TextView
+                    android:id="@+id/tv_service_desc1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="坏蛋包退签收后24小时内，商品腐坏编制，上架成功诺24小时内处理"
+                    android:text="@string/sd_service_baotui_desc"
                     android:textColor="@color/gray_text_2"
                     android:textSize="12sp" />
 
@@ -553,17 +556,35 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/tv_service_title2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="40dp"
-                    android:text="标题title"
+                    android:text="@string/sd_service_base"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
                 <TextView
+                    android:id="@+id/tv_service_desc2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="不支持6天退换：次商品不支持7天无理由退换货物"
+                    android:text="@string/sd_service_base_1"
+                    android:textColor="@color/gray_text_2"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tv_service_desc3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sd_service_base_2"
+                    android:textColor="@color/gray_text_2"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tv_service_desc4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sd_service_base_3"
                     android:textColor="@color/gray_text_2"
                     android:textSize="12sp" />
 

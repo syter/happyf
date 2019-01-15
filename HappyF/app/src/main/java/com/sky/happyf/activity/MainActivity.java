@@ -17,6 +17,7 @@ import com.sky.happyf.mainHelper.MineHelper;
 import com.sky.happyf.mainHelper.ShopHelper;
 import com.sky.happyf.manager.UserManager;
 import com.sky.happyf.message.MessageEvent;
+import com.sky.happyf.util.Constants;
 import com.wuhenzhizao.titlebar.statusbar.StatusBarUtils;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.RequestMethod;
@@ -200,6 +201,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent messageEvent) {
-        shopHelper.initCart();
+        if (Constants.EVENT_MESSAGE_EDIT_USER.equals(messageEvent.getMessage())) {
+            mineHelper.initData();
+        } else {
+            shopHelper.initCart();
+        }
     }
 }

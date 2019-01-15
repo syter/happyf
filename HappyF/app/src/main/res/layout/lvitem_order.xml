@@ -2,8 +2,41 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/bulletin_item"
     android:layout_width="match_parent"
-    android:layout_height="90dp"
-    android:orientation="horizontal">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="35dp">
+
+        <TextView
+            android:id="@+id/tv_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="12dp"
+            android:text="待付款" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="12dp"
+            android:text="29:59后关闭"
+            android:textColor="@color/price_red"
+            android:textSize="12sp" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
 
     <ImageView
         android:id="@+id/iv_cover"
@@ -22,6 +55,7 @@
             android:id="@+id/rl_top"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <TextView
                 android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
@@ -29,16 +63,15 @@
                 android:text="title" />
 
             <TextView
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="10dp"
                 android:id="@+id/tv_state"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/indianred"
-                android:text="已付款"/>
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:text="已付款"
+                android:textColor="@color/indianred" />
 
         </RelativeLayout>
-
 
 
         <TextView
@@ -68,22 +101,22 @@
                 android:id="@+id/tv_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/orangered"
-                android:text="￥100" />
+                android:text="￥100"
+                android:textColor="@color/orangered" />
 
             <TextView
                 android:id="@+id/tv_count"
-                android:layout_marginLeft="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="*1"/>
+                android:layout_marginLeft="10dp"
+                android:text="*1" />
 
             <TextView
-                android:layout_marginLeft="40dp"
                 android:id="@+id/tv_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2019-01-10"/>
+                android:layout_marginLeft="40dp"
+                android:text="2019-01-10" />
         </LinearLayout>
 
     </RelativeLayout>

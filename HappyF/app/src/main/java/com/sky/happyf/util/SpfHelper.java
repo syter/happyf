@@ -38,14 +38,30 @@ public class SpfHelper {
     }
 
     public void saveMyUserInfo(String id, String phone, String name, String cover, String shellCount, String exp, String maxExp, String level) {
-        editor.putString(KEY_USER_USERID, id).commit();
-        editor.putString(KEY_USER_PHONE, phone).commit();
-        editor.putString(KEY_USER_NAME, name).commit();
-        editor.putString(KEY_USER_COVER, cover).commit();
-        editor.putString(KEY_USER_SHELLCOUNT, shellCount).commit();
-        editor.putString(KEY_USER_EXP, exp).commit();
-        editor.putString(KEY_USER_MAXEXP, maxExp).commit();
-        editor.putString(KEY_USER_LEVEL, level).commit();
+        if (!Utils.isEmptyString(id)) {
+            editor.putString(KEY_USER_USERID, id).commit();
+        }
+        if (!Utils.isEmptyString(phone)) {
+            editor.putString(KEY_USER_PHONE, phone).commit();
+        }
+        if (!Utils.isEmptyString(name)) {
+            editor.putString(KEY_USER_NAME, name).commit();
+        }
+        if (!Utils.isEmptyString(cover)) {
+            editor.putString(KEY_USER_COVER, cover).commit();
+        }
+        if (!Utils.isEmptyString(shellCount)) {
+            editor.putString(KEY_USER_SHELLCOUNT, shellCount).commit();
+        }
+        if (!Utils.isEmptyString(exp)) {
+            editor.putString(KEY_USER_EXP, exp).commit();
+        }
+        if (!Utils.isEmptyString(maxExp)) {
+            editor.putString(KEY_USER_MAXEXP, maxExp).commit();
+        }
+        if (!Utils.isEmptyString(level)) {
+            editor.putString(KEY_USER_LEVEL, level).commit();
+        }
     }
 
     public void saveMyUserInfo(User user) {

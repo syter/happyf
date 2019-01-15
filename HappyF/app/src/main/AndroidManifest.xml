@@ -57,9 +57,6 @@
             android:name=".activity.SetActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.VipActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".activity.PayActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -95,6 +92,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.SearchGoodsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.ClubActivity"
             android:screenOrientation="portrait" />
 
     </application>

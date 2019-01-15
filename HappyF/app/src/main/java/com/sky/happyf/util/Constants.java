@@ -39,6 +39,7 @@ public class Constants {
     public static final String PATH_SET_DEFAULT_ADDRESS = "/Api/User/setDefaultAddress";
     public static final String PATH_CREATE_ADDRESS = "/Api/User/addAddress";
     public static final String PATH_UPDATE_ADDRESS = "/Api/User/editAddress";
+    public static final String PATH_EDIT_USER = "/Api/User/setUname";
 
 
     public static final String SERVICE_TYPE_ONE = "1"; //
@@ -46,4 +47,8 @@ public class Constants {
 
     public static final String ORDER_PAY_TYPE_SHELL = "1"; //
     public static final String ORDER_PAY_TYPE_PRICE = "2"; //
+
+
+    public static final String EVENT_MESSAGE_EDIT_USER = "1";
+    public static final String EVENT_MESSAGE_LOGIN = "2";
 }

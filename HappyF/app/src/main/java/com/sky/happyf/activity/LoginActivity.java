@@ -17,6 +17,7 @@ import com.sky.happyf.Model.User;
 import com.sky.happyf.R;
 import com.sky.happyf.manager.UserManager;
 import com.sky.happyf.message.MessageEvent;
+import com.sky.happyf.util.Constants;
 import com.sky.happyf.util.NetUtils;
 import com.sky.happyf.util.Utils;
 import com.wuhenzhizao.titlebar.statusbar.StatusBarUtils;
@@ -133,7 +134,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     @Override
                     public void onFinish(final User user) {
-                        EventBus.getDefault().post(new MessageEvent(""));
+                        EventBus.getDefault().post(new MessageEvent(Constants.EVENT_MESSAGE_LOGIN));
                         finish();
                     }
                 });

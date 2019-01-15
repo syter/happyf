@@ -3,275 +3,312 @@
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/main_bg"
     android:orientation="vertical">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:orientation="horizontal">
+        android:layout_height="match_parent">
 
-        <de.hdodenhof.circleimageview.CircleImageView xmlns:circleimageview="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/iv_user_photo"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginTop="20dp"
-            android:src="@drawable/default_user" />
-
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="120dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="20dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/ll_name"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:background="@drawable/mine_bg"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <de.hdodenhof.circleimageview.CircleImageView xmlns:circleimageview="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/iv_image"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="36dp"
+                    android:src="@drawable/default_user" />
 
                 <TextView
+                    android:id="@+id/tv_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/mine_name" />
+                    android:layout_marginTop="10dp"
+                    android:text="name"
+                    android:textColor="@color/gray_text_2"
+                    android:textSize="14sp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:id="@+id/rl_exp_total"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:text="匿名(33012520)" />
+                    android:layout_marginTop="10dp">
+
+
+                    <ImageView
+                        android:id="@+id/iv_lv"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_toLeftOf="@+id/rl_exp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/logo" />
+
+                    <RelativeLayout
+                        android:id="@+id/rl_exp"
+                        android:layout_width="200dp"
+                        android:layout_height="10dp"
+                        android:layout_centerInParent="true">
+
+                        <LinearLayout
+                            android:id="@+id/ll_max_exp"
+                            android:layout_width="200dp"
+                            android:layout_height="10dp"
+                            android:background="@drawable/input_boder"
+                            android:orientation="vertical"></LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/ll_current_exp"
+                            android:layout_width="100dp"
+                            android:layout_height="10dp"
+                            android:background="@drawable/input_boder_2"
+                            android:orientation="vertical"></LinearLayout>
+
+                    </RelativeLayout>
+
+
+                    <TextView
+                        android:id="@+id/tv_exp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@+id/rl_exp"
+                        android:text="530/1000"
+                        android:textColor="@color/white"
+                        android:textSize="9sp" />
+                </RelativeLayout>
+
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/ll_phone"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/ll_name"
+                android:id="@+id/ll_shell"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/input_boder_3"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/mine_phone" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:text="18612250711" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_money"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/ll_phone"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/mine_money" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:text="553" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_level"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/ll_money"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/mine_level" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:text="海老王" />
 
                 <ImageView
-                    android:id="@+id/iv_vip"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
-                    android:layout_gravity="center"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:layout_marginLeft="10dp"
-                    android:src="@drawable/ic_fourth" />
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/logo" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="@string/mine_shell"
+                    android:textColor="@color/gray_text_2"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:gravity="right"
+                    android:text="余额：10万+"
+                    android:textColor="@color/gray_text_1"
+                    android:textSize="12sp" />
+
             </LinearLayout>
 
-        </RelativeLayout>
-    </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_club"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/input_boder_3"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/mine_exp" />
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/logo" />
 
-    <com.daimajia.numberprogressbar.NumberProgressBar
-        android:id="@+id/bar_exp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        custom:progress_current="80"
-        custom:progress_max="100"
-        custom:progress_reached_bar_height="1.5dp"
-        custom:progress_reached_color="#3498DB"
-        custom:progress_text_color="#3498DB"
-        custom:progress_text_offset="1dp"
-        custom:progress_text_size="10sp"
-        custom:progress_text_visibility="visible"
-        custom:progress_unreached_bar_height="0.75dp"
-        custom:progress_unreached_color="#CCCCCC" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="@string/mine_club"
+                    android:textColor="@color/gray_text_2"
+                    android:textSize="14sp" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginRight="10dp"
-        android:background="@color/darkgray"></LinearLayout>
 
-    <RelativeLayout
-        android:id="@+id/rl_edit"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
+            </LinearLayout>
 
-        >
+            <LinearLayout
+                android:id="@+id/ll_order"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/input_boder_3"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/mine_edit" />
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/logo" />
 
-    </RelativeLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="@string/mine_order"
+                    android:textColor="@color/gray_text_2"
+                    android:textSize="14sp" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:background="@color/darkgray"></LinearLayout>
 
-    <RelativeLayout
-        android:id="@+id/rl_order"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
+            </LinearLayout>
 
-        >
+            <LinearLayout
+                android:id="@+id/ll_cart"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/input_boder_3"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/mine_order" />
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/logo" />
 
-    </RelativeLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="@string/mine_cart"
+                    android:textColor="@color/gray_text_2"
+                    android:textSize="14sp" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:background="@color/darkgray"></LinearLayout>
 
-    <RelativeLayout
-        android:id="@+id/rl_cart"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
+            </LinearLayout>
 
-        >
+            <LinearLayout
+                android:id="@+id/ll_happy"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/input_boder_3"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/mine_cart" />
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/logo" />
 
-    </RelativeLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="@string/mine_record"
+                    android:textColor="@color/gray_text_2"
+                    android:textSize="14sp" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:background="@color/darkgray"></LinearLayout>
 
-    <RelativeLayout
-        android:id="@+id/rl_happy"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
+            </LinearLayout>
 
-        >
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/mine_record" />
+            <LinearLayout
+                android:id="@+id/ll_rank"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/input_boder_3"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-    </RelativeLayout>
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/logo" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:background="@color/darkgray"></LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="@string/mine_rank"
+                    android:textColor="@color/gray_text_2"
+                    android:textSize="14sp" />
 
-    <RelativeLayout
-        android:id="@+id/rl_rank"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
 
-        >
+            </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/mine_rank" />
+            <LinearLayout
+                android:id="@+id/ll_set"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/input_boder_3"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-    </RelativeLayout>
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/logo" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:background="@color/darkgray"></LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="@string/mine_set"
+                    android:textColor="@color/gray_text_2"
+                    android:textSize="14sp" />
 
-    <RelativeLayout
-        android:id="@+id/rl_set"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
 
-        >
+            </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/mine_set" />
+        </LinearLayout>
 
-    </RelativeLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:background="@color/darkgray"></LinearLayout>
+    </ScrollView>
+
 
 </LinearLayout>

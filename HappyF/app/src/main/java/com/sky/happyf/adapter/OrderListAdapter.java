@@ -75,14 +75,14 @@ public class OrderListAdapter extends BaseAdapter {
         public OrderListItem(Context ct) {
             super(ct);
             inflate(getContext(), R.layout.lvitem_order, this);
-            ivCover = (ImageView) findViewById(R.id.iv_cover);
-            tvTitle = (TextView) findViewById(R.id.tv_title);
-            tvDesc = (TextView) findViewById(R.id.tv_desc);
-            tvSize = (TextView) findViewById(R.id.tv_size);
-            tvState = (TextView) findViewById(R.id.tv_state);
-            tvAmount = (TextView) findViewById(R.id.tv_amount);
-            tvCount = (TextView) findViewById(R.id.tv_count);
-            tvDate = (TextView) findViewById(R.id.tv_date);
+            ivCover = findViewById(R.id.iv_cover);
+            tvTitle = findViewById(R.id.tv_title);
+            tvDesc = findViewById(R.id.tv_desc);
+            tvSize = findViewById(R.id.tv_size);
+            tvState = findViewById(R.id.tv_state);
+            tvAmount = findViewById(R.id.tv_amount);
+            tvCount = findViewById(R.id.tv_count);
+            tvDate = findViewById(R.id.tv_date);
         }
 
         public void setData(final Order order) {

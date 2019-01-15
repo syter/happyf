@@ -36,7 +36,8 @@ public class GoodsDetailActivity extends BaseActivity {
     private UserManager userManager;
     private ImageView ivBack, ivClose, ivMinus, ivAdd, ivGoodsCover;
     private TextView tvCount, tvTitle1, tvPostageRule, tvSellCount, tvDetail, tvSelectParam, tvPrice,
-            tvShellPrice, tvCartPrice, tvGoodsPrice, tvGoodsShellPrice, tvSelected;
+            tvShellPrice, tvCartPrice, tvGoodsPrice, tvGoodsShellPrice, tvSelected, tvServiceTitle1, tvServiceTitle2,
+            tvServiceDesc1, tvServiceDesc2, tvServiceDesc3, tvServiceDesc4, tvService;
     private Button btnBuy, btnConfirmSelect, btnConfirmService;
     private Banner banner;
     private RelativeLayout rlSelect, rlService, rlServiceDialog, rlSelectDialog, rlEmptySelect, rlEmptyService;
@@ -77,6 +78,13 @@ public class GoodsDetailActivity extends BaseActivity {
         params.height = realBannerHeight;
         banner.setLayoutParams(params);
 
+        tvService = findViewById(R.id.tv_service);
+        tvServiceTitle1 = findViewById(R.id.tv_service_title1);
+        tvServiceTitle2 = findViewById(R.id.tv_service_title2);
+        tvServiceDesc1 = findViewById(R.id.tv_service_desc1);
+        tvServiceDesc2 = findViewById(R.id.tv_service_desc2);
+        tvServiceDesc3 = findViewById(R.id.tv_service_desc3);
+        tvServiceDesc4 = findViewById(R.id.tv_service_desc4);
         ivGoodsCover = findViewById(R.id.iv_goods_cover);
         tvGoodsPrice = findViewById(R.id.tv_goods_price);
         tvGoodsShellPrice = findViewById(R.id.tv_goods_shell_price);
@@ -311,11 +319,22 @@ public class GoodsDetailActivity extends BaseActivity {
                 tvSellCount.setText(currentGoods.sellCount + getResources().getString(R.string.sd_selled));
                 banner.setImages(currentGoods.covers).setImageLoader(new GlideImageLoader()).start();
                 if (currentGoods.serviceType.equals(Constants.SERVICE_TYPE_ONE)) {
-                    // TODO
+                    tvService.setText(getResources().getString(R.string.sd_service1));
+                    tvServiceTitle1.setText(getResources().getString(R.string.sd_service_baotui));
+                    tvServiceTitle2.setText(getResources().getString(R.string.sd_service_base));
+                    tvServiceDesc1.setText(getResources().getString(R.string.sd_service_baotui_desc));
+                    tvServiceDesc2.setText(getResources().getString(R.string.sd_service_base_1));
+                    tvServiceDesc3.setText(getResources().getString(R.string.sd_service_base_2));
+                    tvServiceDesc4.setText(getResources().getString(R.string.sd_service_base_3));
                 } else {
-
+                    tvService.setText(getResources().getString(R.string.sd_service2));
+                    tvServiceTitle1.setText(getResources().getString(R.string.sd_service_tuihuan));
+                    tvServiceTitle2.setText(getResources().getString(R.string.sd_service_base));
+                    tvServiceDesc1.setText(getResources().getString(R.string.sd_service_tuihuan_desc));
+                    tvServiceDesc2.setText(getResources().getString(R.string.sd_service_base_4));
+                    tvServiceDesc3.setText(getResources().getString(R.string.sd_service_base_5));
+                    tvServiceDesc4.setText(getResources().getString(R.string.sd_service_base_6));
                 }
-//                tvSelectParam
                 tvDetail.setText(currentGoods.desc);
                 for (String coverUrl : currentGoods.descCovers) {
                     ImageView ivDescCover = new ImageView(GoodsDetailActivity.this);

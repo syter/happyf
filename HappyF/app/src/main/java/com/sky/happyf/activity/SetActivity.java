@@ -31,11 +31,11 @@ public class SetActivity extends BaseActivity {
     }
 
     private void initView() {
-        titleBar = (CommonTitleBar) findViewById(R.id.titlebar);
-        rlUpdatePwd = (RelativeLayout) findViewById(R.id.rl_updatepwd);
-        rlRemove = (RelativeLayout) findViewById(R.id.rl_remove);
-        rlAbout = (RelativeLayout) findViewById(R.id.rl_about);
-        rlQuit = (RelativeLayout) findViewById(R.id.rl_quit);
+        titleBar = findViewById(R.id.titlebar);
+        rlUpdatePwd = findViewById(R.id.rl_updatepwd);
+        rlRemove = findViewById(R.id.rl_remove);
+        rlAbout = findViewById(R.id.rl_about);
+        rlQuit = findViewById(R.id.rl_quit);
     }
 
     private void initListener() {
