@@ -3,14 +3,20 @@ package com.sky.happyf.activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.sky.happyf.R;
+import com.sky.happyf.manager.ArticleManager;
 import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
+
+import org.w3c.dom.Text;
 
 public class ArticleDetailActivity extends BaseActivity {
     private CommonTitleBar titleBar;
-    private EditText etName;
-
+    private TextView tvTitle, tvAuthorName, tvdate;
+    private LinearLayout llContent;
+    private ArticleManager articleManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,27 +29,30 @@ public class ArticleDetailActivity extends BaseActivity {
 
         initListener();
 
-
+        initData();
     }
 
     private void initView() {
-        etName = (EditText) findViewById(R.id.et_name);
-        titleBar = (CommonTitleBar) findViewById(R.id.titlebar);
+        tvTitle = findViewById(R.id.tv_title);
+        tvAuthorName = findViewById(R.id.tv_author_name);
+        tvdate = findViewById(R.id.tv_date);
+        llContent = findViewById(R.id.ll_content);
+        titleBar = findViewById(R.id.titlebar);
     }
 
     private void initListener() {
-//        titleBar.setBackgroundResource(R.drawable.shape_gradient);
         titleBar.setListener(new CommonTitleBar.OnTitleBarListener() {
             @Override
             public void onClicked(View v, int action, String extra) {
                 if (action == CommonTitleBar.ACTION_LEFT_TEXT) {
                     finish();
-                } else if (action == CommonTitleBar.ACTION_RIGHT_TEXT) {
-                    // TODO save
-                    finish();
                 }
             }
         });
+    }
+
+    private void initData() {
+        articleManager = new ArticleManager(this);
     }
 
     @Override

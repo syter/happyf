@@ -2,16 +2,27 @@ package com.sky.happyf.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.orhanobut.logger.Logger;
 import com.sky.happyf.R;
+import com.sky.happyf.util.GlideImageLoader;
 import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
+import com.youth.banner.Banner;
+import com.youth.banner.listener.OnBannerListener;
 
 public class WannaHappyActivity extends BaseActivity {
     private CommonTitleBar titleBar;
     private Button btnWanna;
+    private Banner banner;
+    private RelativeLayout rlSelectDialog, rlSelectType, rlSelectDate;
+    private TextView tvPrice;
 
 
     @Override
@@ -25,16 +36,23 @@ public class WannaHappyActivity extends BaseActivity {
 
         initListener();
 
-
+        initData();
     }
 
     private void initView() {
-        btnWanna = (Button) findViewById(R.id.btn_wanna);
-        titleBar = (CommonTitleBar) findViewById(R.id.titlebar);
+        btnWanna = findViewById(R.id.btn_wanna);
+        titleBar = findViewById(R.id.titlebar);
+
+        banner = findViewById(R.id.banner);
+        DisplayMetrics dm = getResources().getDisplayMetrics();
+        int screenWidth = dm.widthPixels;
+        int realBannerHeight = 250 * screenWidth / 375;
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) banner.getLayoutParams();
+        params.height = realBannerHeight;
+        banner.setLayoutParams(params);
     }
 
     private void initListener() {
-//        titleBar.setBackgroundResource(R.drawable.shape_gradient);
         titleBar.setListener(new CommonTitleBar.OnTitleBarListener() {
             @Override
             public void onClicked(View v, int action, String extra) {
@@ -55,6 +73,19 @@ public class WannaHappyActivity extends BaseActivity {
                 overridePendingTransition(R.anim.anim_enter, R.anim.bottom_silent);
             }
         });
+
+        banner.setOnBannerListener(new OnBannerListener() {
+            @Override
+            public void OnBannerClick(int position) {
+                Logger.d("点击了banner - " + position);
+            }
+        });
+    }
+
+    private void initData() {
+        titleBar.getCenterTextView().setText("xx海鱼");
+
+//        banner.setImages(currentGoods.covers).setImageLoader(new GlideImageLoader()).start();
     }
 
     @Override

@@ -28,7 +28,7 @@ public class ArticleManager extends Observable {
         return ArticleList;
     }
 
-    public void init(final int type, final FetchArticleCallback callback) {
+    public void getArticleList(final int type, final FetchArticleCallback callback) {
         page = 0;
         articleList = new ArrayList<Article>();
         if (Constants.IS_DEBUG) {

@@ -43,7 +43,7 @@ public class UserManager extends Observable {
         }
         Map<String, String> params = new TreeMap<String, String>();
         params.put("user_id", SpfHelper.getInstance(ct).getMyUserInfo().id);
-        NetUtils.get(ct, params, Constants.PATH_GET_USER_CART, new NetUtils.NetCallback() {
+        NetUtils.post(ct, params, Constants.PATH_GET_USER_CART, new NetUtils.NetCallback() {
             @Override
             public void onFailure(final String errorMsg) {
                 handler.post(new Runnable() {

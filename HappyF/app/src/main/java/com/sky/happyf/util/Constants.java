@@ -40,6 +40,9 @@ public class Constants {
     public static final String PATH_CREATE_ADDRESS = "/Api/User/addAddress";
     public static final String PATH_UPDATE_ADDRESS = "/Api/User/editAddress";
     public static final String PATH_EDIT_USER = "/Api/User/setUname";
+    public static final String PATH_GET_ORDER_LIST = "/Api/Shop/orderList";
+    public static final String PATH_RECEIVE_GOODS = "/Api/Shop/receiveGoods";
+    public static final String PATH_GET_CONTACT_INFO = "/Api/Index/getCustomerServer";
 
 
     public static final String SERVICE_TYPE_ONE = "1"; //
@@ -51,4 +54,14 @@ public class Constants {
 
     public static final String EVENT_MESSAGE_EDIT_USER = "1";
     public static final String EVENT_MESSAGE_LOGIN = "2";
+
+    public static final String ORDER_STATUS_DAIFUKUAN = "0";
+    public static final String ORDER_STATUS_YIFUKUAN = "1";
+    public static final String ORDER_STATUS_YIFAHUO = "2";
+    public static final String ORDER_STATUS_YISHOUHUO = "3";
+    public static final String ORDER_STATUS_YIPINGJIA = "4";
+    public static final String ORDER_STATUS_TUIHUOZHONG = "5";
+    public static final String ORDER_STATUS_YITUIHUO = "6";
+    public static final String ORDER_STATUS_YIQUXIAO = "7";
+
 }

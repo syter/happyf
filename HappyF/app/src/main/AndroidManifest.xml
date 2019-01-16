@@ -96,6 +96,9 @@
         <activity
             android:name=".activity.ClubActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.SearchArticlesActivity"
+            android:screenOrientation="portrait" />
 
     </application>
 

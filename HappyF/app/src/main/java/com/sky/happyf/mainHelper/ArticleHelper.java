@@ -34,7 +34,7 @@ public class ArticleHelper {
     private ListView lvArticle;
     private ArticleListAdapter adapter;
     private ArticleManager articleManager;
-    private TextView tvOne, tvTwo;
+    private TextView tvClass, tvInfo;
     private int selectIndex = 0;
 
     public ArticleHelper(Activity act, View view) {
@@ -51,11 +51,11 @@ public class ArticleHelper {
     }
 
     private void initView() {
-        tvOne = (TextView) view.findViewById(R.id.tv_one);
-        tvTwo = (TextView) view.findViewById(R.id.tv_two);
+        tvClass = view.findViewById(R.id.tv_class);
+        tvInfo = view.findViewById(R.id.tv_info);
 
-        ptrLayout = (PtrClassicFrameLayout) view.findViewById(R.id.ptr_layout);
-        lvArticle = (ListView) view.findViewById(R.id.lv_article);
+        ptrLayout = view.findViewById(R.id.ptr_layout);
+        lvArticle = view.findViewById(R.id.lv_article);
         adapter = new ArticleListAdapter(act);
         lvArticle.setAdapter(adapter);
 
@@ -66,25 +66,25 @@ public class ArticleHelper {
 
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
-                articleManager.init(selectIndex, new ArticleManager.FetchArticleCallback() {
-                    @Override
-                    public void onFailure(String errorMsg) {
-                        ptrLayout.refreshComplete();
-                    }
-
-                    @Override
-                    public void onFinish(List<Article> data) {
-                        ptrLayout.refreshComplete();
-
-                        adapter.applyData(data);
-                        adapter.notifyDataSetChanged();
-                        ptrLayout.refreshComplete();
-
-                        if (!ptrLayout.isLoadMoreEnable()) {
-                            ptrLayout.setLoadMoreEnable(true);
-                        }
-                    }
-                });
+                ptrLayout.refreshComplete();
+//                articleManager.getArticleList(selectIndex, new ArticleManager.FetchArticleCallback() {
+//                    @Override
+//                    public void onFailure(String errorMsg) {
+//                        ptrLayout.refreshComplete();
+//                    }
+//
+//                    @Override
+//                    public void onFinish(List<Article> data) {
+//                        ptrLayout.refreshComplete();
+//
+//                        adapter.applyData(data);
+//                        ptrLayout.refreshComplete();
+//
+//                        if (!ptrLayout.isLoadMoreEnable()) {
+//                            ptrLayout.setLoadMoreEnable(true);
+//                        }
+//                    }
+//                });
             }
         });
 
@@ -93,52 +93,44 @@ public class ArticleHelper {
 
             @Override
             public void loadMore() {
-                articleManager.loadMore(selectIndex, new ArticleManager.FetchArticleCallback() {
-                    @Override
-                    public void onFailure(String errorMsg) {
-                        ptrLayout.refreshComplete();
-                    }
-
-                    @Override
-                    public void onFinish(List<Article> data) {
-                        ptrLayout.loadMoreComplete(true);
-
-                        adapter.applyData(data);
-                        adapter.notifyDataSetChanged();
-                        ptrLayout.refreshComplete();
-
-                        if (data.isEmpty()) {
-                            ptrLayout.setLoadMoreEnable(false);
-                        }
-                    }
-                });
+//                articleManager.loadMore(selectIndex, new ArticleManager.FetchArticleCallback() {
+//                    @Override
+//                    public void onFailure(String errorMsg) {
+//                        ptrLayout.refreshComplete();
+//                    }
+//
+//                    @Override
+//                    public void onFinish(List<Article> data) {
+//                        ptrLayout.loadMoreComplete(true);
+//
+//                        adapter.applyData(data);
+//                        ptrLayout.refreshComplete();
+//
+//                        if (data.isEmpty()) {
+//                            ptrLayout.setLoadMoreEnable(false);
+//                        }
+//                    }
+//                });
             }
         });
 
 
-        tvOne.setOnClickListener(new View.OnClickListener() {
+        tvClass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 selectIndex = 0;
-                adapter.applyData(new ArrayList<Article>());
-                adapter.notifyDataSetChanged();
-                ptrLayout.setLoadMoreEnable(false);
                 processSelectIndexView();
                 initArticleData();
             }
         });
-        tvTwo.setOnClickListener(new View.OnClickListener() {
+        tvInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 selectIndex = 1;
-                adapter.applyData(new ArrayList<Article>());
-                adapter.notifyDataSetChanged();
-                ptrLayout.setLoadMoreEnable(false);
                 processSelectIndexView();
                 initArticleData();
             }
         });
-
 
 
         lvArticle.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -163,11 +155,11 @@ public class ArticleHelper {
 
     private void processSelectIndexView() {
         if (selectIndex == 0) {
-            tvOne.setTextColor(act.getColor(R.color.orangered));
-            tvTwo.setTextColor(act.getColor(R.color.black));
+            tvClass.setTextColor(act.getColor(R.color.main_color_blue));
+            tvInfo.setTextColor(act.getColor(R.color.black));
         } else if (selectIndex == 1) {
-            tvOne.setTextColor(act.getColor(R.color.black));
-            tvTwo.setTextColor(act.getColor(R.color.orangered));
+            tvClass.setTextColor(act.getColor(R.color.black));
+            tvInfo.setTextColor(act.getColor(R.color.main_color_blue));
         }
     }
 

@@ -19,6 +19,8 @@
     <string name="at_least">起</string>
     <string name="string_null_error">请输入点儿什么...</string>
     <string name="operation_succ">操作成功</string>
+    <string name="copy_succ">复制成功</string>
+    <string name="contact">客服</string>
 
 
     <!-- 启动页 -->
@@ -82,6 +84,24 @@
 
     <!-- 历史订单 -->
     <string name="order_title">商城订单</string>
+    <string name="order_total_amount">合计：</string>
+    <string name="order_status_daifukuan">待付款</string>
+    <string name="order_status_yifukuan">待发货</string>
+    <string name="order_status_yifahuo">已发货</string>
+    <string name="order_status_yishouhuo">已收货</string>
+    <string name="order_status_yipingjia">已评价</string>
+    <string name="order_status_tuihuozhong">退货中</string>
+    <string name="order_status_yituihuo">已退货</string>
+    <string name="order_status_yiquxiao">已取消</string>
+    <string name="order_time_close">分钟后关闭</string>
+    <string name="order_no">订单号</string>
+    <string name="order_btn_pay">支付</string>
+    <string name="order_btn_cuidan">催单</string>
+    <string name="order_btn_confirm">确认收货</string>
+    <string name="order_btn_contact">申请售后</string>
+    <string name="order_cuidan_succ">催单成功，请耐心等待客服处理</string>
+    <string name="order_contact_phone">客服电话</string>
+    <string name="order_contact_weixin">客服微信</string>
 
     <!-- vip -->
     <string name="vip_title">VIP</string>
@@ -200,9 +220,15 @@
     <string name="pay_fail">支付失败</string>
 
     <!-- 热点 -->
-    <string name="article_type_one">海钓教学</string>
-    <string name="article_type_two">钓友渔获</string>
-    <string name="article_title">热点详情</string>
+    <string name="article_type_class">教程</string>
+    <string name="article_type_info">资讯</string>
+    <string name="article_title">详情</string>
+    <string name="article_read_count">点击</string>
+    <string name="article_search_hint">搜索文章</string>
+    <string name="ad_select_default">选择 船只类型</string>
+    <string name="ad_select">选择</string>
+    <string name="ad_date">出发时间</string>
+    <string name="ad_wanna">提交意向金</string>
 
     <!-- 预约出海 -->
     <string name="happy_title">预约出海</string>

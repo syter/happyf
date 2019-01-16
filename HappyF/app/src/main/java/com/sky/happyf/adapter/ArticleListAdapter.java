@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.sky.happyf.Model.Article;
 import com.sky.happyf.R;
 
@@ -71,23 +72,26 @@ public class ArticleListAdapter extends BaseAdapter {
 
     public class ArticleListItem extends LinearLayout {
         private ImageView ivCover;
-        private TextView tvTitle, tvDesc, tvReadCount, tvDate;
+        private TextView tvTitle1, tvtitle2, tvReadCount, tvDate, tvAuthorName;
 
         public ArticleListItem(Context ct) {
             super(ct);
             inflate(getContext(), R.layout.lvitem_article, this);
-            ivCover = (ImageView) findViewById(R.id.iv_cover);
-            tvTitle = (TextView) findViewById(R.id.tv_title);
-            tvDesc = (TextView) findViewById(R.id.tv_desc);
-            tvDate = (TextView) findViewById(R.id.tv_date);
-            tvReadCount = (TextView) findViewById(R.id.tv_read_count);
+            ivCover = findViewById(R.id.iv_cover);
+            tvTitle1 = findViewById(R.id.tv_title1);
+            tvtitle2 = findViewById(R.id.tv_title2);
+            tvAuthorName = findViewById(R.id.tv_author_name);
+            tvDate = findViewById(R.id.tv_date);
+            tvReadCount = findViewById(R.id.tv_read_count);
         }
 
         public void setData(final Article article) {
-            tvTitle.setText(article.title);
-            tvDesc.setText(article.desc);
+            Glide.with(ct).load(article.cover).into(ivCover);
+            tvTitle1.setText(article.title);
+            tvtitle2.setText(article.desc);
+            tvAuthorName.setText(article.authorName);
             tvDate.setText(article.date);
-            tvReadCount.setText("阅读量" + article.read_count);
+            tvReadCount.setText(article.read_count + ct.getResources().getString(R.string.article_read_count));
 
 
         }
