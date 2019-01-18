@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.sky.happyf.activity.VipActivity">
+    tools:context="com.sky.happyf.activity.ClubActivity">
 
     <com.wuhenzhizao.titlebar.widget.CommonTitleBar
         android:id="@+id/titlebar"
@@ -16,8 +16,8 @@
         titlebar:leftDrawablePadding="0dp"
         titlebar:leftText="@string/back"
         titlebar:leftType="textView"
-        titlebar:statusBarColor="@color/skyblue"
-        titlebar:statusBarMode="light" />
+        titlebar:statusBarColor="@color/white"
+        titlebar:statusBarMode="dark" />
 
     <TextView
         android:id="@+id/tv_desc1"
@@ -26,8 +26,8 @@
         android:layout_below="@+id/titlebar"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
         android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
         android:text="vip权限" />
 
     <TextView
@@ -37,8 +37,8 @@
         android:layout_below="@+id/tv_desc1"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
         android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
         android:text="vip权限说明，BGAProgressBar-Android 带百分比数字的水平、圆形进度条 \n1. 类似 iOS 带弹簧效果的左右滑动控件，可作为 AbsListView 和 RecyclerView 的 item
 谷爹的 support 包 \n2. BGABaseAdapter-Android 在 AdapterView 和 RecyclerView 中通用的 Adapter 和 ViewHolder。RecyclerView 支持 DataBinding 、多种 Item 类型、添加 Header 和 Footer。RecyclerView 竖直方向通用分割线 BGADivider，吸顶分类 \n3. BGAProgressBar-Android 带百分比数字的水平、圆形进度条 \n4. 代码是最好的老师，更多详细用法请查看" />
 
@@ -48,8 +48,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_desc2"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="40dp">
+        android:layout_marginTop="40dp"
+        android:layout_marginRight="20dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -71,8 +71,8 @@
         android:layout_height="80dp"
         android:layout_below="@+id/rl_middle"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
         android:layout_marginTop="40dp"
+        android:layout_marginRight="20dp"
         android:background="@drawable/border_style"
         android:orientation="horizontal"
         android:weightSum="3">

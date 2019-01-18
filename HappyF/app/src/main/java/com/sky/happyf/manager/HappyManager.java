@@ -4,11 +4,23 @@ import android.content.Context;
 import android.os.Handler;
 
 import com.sky.happyf.Model.Happy;
+import com.sky.happyf.Model.SelectType;
+import com.sky.happyf.Model.SmallType;
+import com.sky.happyf.Model.Type;
+import com.sky.happyf.R;
 import com.sky.happyf.util.Constants;
+import com.sky.happyf.util.NetUtils;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Observable;
+import java.util.TreeMap;
 
 public class HappyManager extends Observable {
     private ArrayList<Happy> happyList = new ArrayList<Happy>();
@@ -23,212 +35,166 @@ public class HappyManager extends Observable {
         handler = new Handler();
     }
 
-    public List<Happy> getLocalHappys() {
-        List<Happy> HappyList = null;
-        return HappyList;
-    }
-
-    public void init(final int state, final FetchHappysCallback callback) {
-        page = 0;
-        happyList = new ArrayList<Happy>();
+    public void getMapInfo(final FetchHappysCallback callback) {
         if (Constants.IS_DEBUG) {
-            getLocalHappys(state, callback);
+            getLocalMapInfo(callback);
             return;
         }
-        fetchRemoteHappys(state, ++page, new FetchHappysCallback() {
+        Map<String, String> params = new TreeMap<String, String>();
+        NetUtils.get(ct, params, Constants.PATH_GET_MAP_INFO, new NetUtils.NetCallback() {
             @Override
-            public void onFailure(String errorMsg) {
-                if (callback != null) {
-                    callback.onFailure(errorMsg);
-                }
+            public void onFailure(final String errorMsg) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (callback != null) {
+                            callback.onFailure(errorMsg);
+                        }
+                    }
+                });
             }
 
             @Override
-            public void onFinish(List<Happy> data) {
-                happyList.addAll(data);
-                if (callback != null) {
-                    callback.onFinish(data);
+            public void onFinish(JSONObject data) {
+                try {
+                    final List<Happy> happyList = new ArrayList<>();
+                    JSONArray objList = data.getJSONArray("list");
+                    for (int i = 0; i < objList.length(); i++) {
+                        JSONObject obj = objList.getJSONObject(i);
+                        Happy happy = new Happy();
+                        happy.id = obj.getString("id");
+                        happy.title1 = obj.optString("title");
+                        happy.title2 = obj.optString("title2");
+                        happy.title3 = obj.optString("title3");
+                        happy.longitude = obj.optString("lon");
+                        happy.latitude = obj.optString("lat");
+                        happyList.add(happy);
+                    }
+
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (callback != null) {
+                                callback.onFinish(happyList);
+                            }
+                        }
+                    });
+                } catch (Exception e) {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (callback != null) {
+                                callback.onFailure(ct.getResources().getString(R.string.common_error));
+                            }
+                        }
+                    });
                 }
             }
         });
     }
 
-    public void loadMore(final int state, final FetchHappysCallback callback) {
+    public void getLocalMapInfo(final FetchHappysCallback callback) {
+        if (callback != null) {
+            callback.onFinish(new ArrayList<Happy>());
+        }
+    }
+
+
+    public void getHappyInfo(final String id, final FetchHappyCallback callback) {
         if (Constants.IS_DEBUG) {
-            loadMoreLocalHappys(state, callback, ++page);
+            getLocalHappyInfo(callback);
             return;
         }
-        fetchRemoteHappys(state, ++page, new FetchHappysCallback() {
+        Map<String, String> params = new TreeMap<String, String>();
+        params.put("area_id", id);
+        NetUtils.get(ct, params, Constants.PATH_GET_HAPPY_INFO, new NetUtils.NetCallback() {
             @Override
-            public void onFailure(String errorMsg) {
-                page--;
-                if (callback != null) {
-                    callback.onFailure(errorMsg);
-                }
+            public void onFailure(final String errorMsg) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (callback != null) {
+                            callback.onFailure(errorMsg);
+                        }
+                    }
+                });
             }
 
             @Override
-            public void onFinish(List<Happy> data) {
-                happyList.addAll(data);
-                if (callback != null) {
-                    callback.onFinish(happyList);
+            public void onFinish(JSONObject data) {
+                try {
+                    final Happy happy = new Happy();
+
+                    happy.id = data.getString("id");
+                    happy.title1 = data.optString("title");
+                    happy.title2 = data.optString("title2");
+                    happy.title3 = data.optString("title3");
+                    happy.price = data.optString("price");
+                    happy.content = data.optString("content");
+                    JSONArray coverArray = data.optJSONArray("covers");
+                    List<String> covers = new ArrayList<>();
+                    for (int i = 0; i < coverArray.length(); i++) {
+                        String cover = coverArray.getString(i);
+                        covers.add(cover);
+                    }
+                    happy.covers = covers;
+
+                    JSONArray descCoverArray = data.optJSONArray("desc_cover");
+                    List<String> descCovers = new ArrayList<>();
+                    for (int i = 0; i < descCoverArray.length(); i++) {
+                        String cover = descCoverArray.getString(i);
+                        descCovers.add(cover);
+                    }
+                    happy.descCovers = descCovers;
+
+                    JSONArray selectTypeArray = data.optJSONArray("selectType");
+                    List<SelectType> selectTypeList = new ArrayList<>();
+                    for (int i = 0; i < selectTypeArray.length(); i++) {
+                        JSONObject obj = selectTypeArray.getJSONObject(i);
+                        SelectType st = new SelectType();
+                        st.id = obj.getString("id");
+                        st.name = obj.getString("name");
+                        selectTypeList.add(st);
+                    }
+                    happy.selectTypeList = selectTypeList;
+
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (callback != null) {
+                                callback.onFinish(happy);
+                            }
+                        }
+                    });
+                } catch (Exception e) {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (callback != null) {
+                                callback.onFailure(ct.getResources().getString(R.string.common_error));
+                            }
+                        }
+                    });
                 }
             }
         });
     }
 
-
-    private void getLocalHappys(final int state, final FetchHappysCallback callback) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                for (int i = 0; i < 17; i++) {
-                    Happy o = new Happy();
-                    o.address = "目标地址";
-                    o.state = 1;
-                    o.fish = "目标鱼";
-                    o.count = 6;
-                    o.date = "2019-01-10";
-                    happyList.add(o);
-                }
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (callback != null) {
-                            callback.onFinish(happyList);
-                        }
-                    }
-                }, 1500);
-            }
-        }).start();
+    public void getLocalHappyInfo(final FetchHappyCallback callback) {
+        if (callback != null) {
+            callback.onFinish(new Happy());
+        }
     }
-
-    private void loadMoreLocalHappys(final int state, final FetchHappysCallback callback, final int page) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Happy o = new Happy();
-                o.address = "目标地址";
-                o.state = 1;
-                o.fish = "目标鱼";
-                o.count = 6;
-                o.date = "2019-01-10";
-                happyList.add(o);
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (callback != null) {
-                            callback.onFinish(happyList);
-                        }
-                    }
-                }, 1000);
-            }
-        }).start();
-    }
-
-    private void fetchRemoteHappys(final int state, final int page, final FetchHappysCallback callback) {
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                Map<String, Object> params = new HashMap<String, Object>();
-//                params.put("page", page);
-//                params.put("limit", POST_LIMIT);
-//                params.put("sort", "-created_at");
-//                params.put("type", Constant.BULLETIN_TYPE);
-//                Map<String, String> customFields = new HashMap<String, String>();
-//                customFields.put("state", "1");
-//                params.put("custom_fields", customFields);
-//                params.put("like_user_id", UserManager.getInstance(ct).getCurrentUser().userId);
-//
-//                try {
-//                    anSocial.sendRequest("posts/query.json", AnSocialMethod.GET, params, new IAnSocialCallback() {
-//                        @Override
-//                        public void onFailure(final JSONObject arg0) {
-//                            try {
-//                                String message = arg0.getJSONObject("meta").getString("message");
-//                                Toast.makeText(ct, message, Toast.LENGTH_SHORT).show();
-//                            } catch (JSONException e) {
-//                                e.printStackTrace();
-//                            }
-//                            handler.post(new Runnable() {
-//                                @Override
-//                                public void run() {
-//                                    if (callback != null) {
-//                                        callback.onFailure(arg0.toString());
-//                                    }
-//                                }
-//                            });
-//                        }
-//
-//                        @Override
-//                        public void onSuccess(JSONObject arg0) {
-//                            try {
-//                                totalHappyCount = arg0.getJSONObject("meta").getInt("total");
-//
-//                                final List<Happy> happys = new ArrayList<Happy>();
-//                                JSONArray happyArray = arg0.getJSONObject("response").getJSONArray("posts");
-//                                for (int i = 0; i < happyArray.length(); i++) {
-//                                    JSONObject happyJson = happyArray.getJSONObject(i);
-//                                    Happy happy = new Happy();
-//                                    happy.parseJSON(happyJson,
-//                                            UserManager.getInstance(ct).getCurrentUser().userId);
-//                                    happy.update();
-//                                    happys.add(happy);
-//
-//                                    if (happyJson.has("like")) {
-//                                        happy.deleteAllLikes(UserManager.getInstance(ct).getCurrentUser().userId);
-//                                        JSONObject likeJson = happyJson.getJSONObject("like");
-//                                        Like like = new Like();
-//                                        like.happy = happy.getFromTable(UserManager.getInstance(ct)
-//                                                .getCurrentUser().userId);
-//                                        like.parseJSON(likeJson, UserManager.getInstance(ct).getCurrentUser()
-//                                                .getFromTable(), UserManager.getInstance(ct).getCurrentUser().userId);
-//                                        boolean updated = like.update();
-//                                        DBug.e("like.update", updated + "?");
-//                                    }
-//                                }
-//
-//                                handler.post(new Runnable() {
-//                                    @Override
-//                                    public void run() {
-//                                        if (callback != null) {
-//                                            callback.onFinish(happys);
-//                                        }
-//                                    }
-//                                });
-//
-//                            } catch (final JSONException e) {
-//                                e.printStackTrace();
-//                                handler.post(new Runnable() {
-//                                    @Override
-//                                    public void run() {
-//                                        if (callback != null) {
-//                                            callback.onFailure(e.getMessage());
-//                                        }
-//                                    }
-//                                });
-//                            }
-//                        }
-//                    });
-//                } catch (final ArrownockException e) {
-//                    e.printStackTrace();
-//                    handler.post(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            if (callback != null) {
-//                                callback.onFailure(e.getMessage());
-//                            }
-//                        }
-//                    });
-//                }
-//            }
-//        }).start();
-    }
-
 
     public interface FetchHappysCallback {
         public void onFailure(String errorMsg);
 
-        public void onFinish(List<Happy> data);
+        public void onFinish(List<Happy> happyList);
+    }
+
+    public interface FetchHappyCallback {
+        public void onFailure(String errorMsg);
+
+        public void onFinish(Happy happy);
     }
 }

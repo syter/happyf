@@ -3,7 +3,6 @@ package com.sky.happyf.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -14,25 +13,16 @@ import android.widget.Toast;
 import com.sky.happyf.Model.Address;
 import com.sky.happyf.Model.Cart;
 import com.sky.happyf.R;
-import com.sky.happyf.adapter.CartListAdapter;
 import com.sky.happyf.adapter.OrderCartListAdapter;
 import com.sky.happyf.manager.CartManager;
 import com.sky.happyf.manager.FinishActivityManager;
 import com.sky.happyf.manager.OrderManager;
-import com.sky.happyf.message.MessageEvent;
 import com.sky.happyf.util.Constants;
-import com.sky.happyf.view.MyListView;
 import com.sky.happyf.view.PayDialog;
 import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.util.List;
 import java.util.Map;
-
-import io.github.mayubao.pay_library.AliPayReq2;
-import io.github.mayubao.pay_library.PayAPI;
-import io.github.mayubao.pay_library.WechatPayReq;
 
 public class ConfirmOrderActivity extends BaseActivity {
     private CommonTitleBar titleBar;

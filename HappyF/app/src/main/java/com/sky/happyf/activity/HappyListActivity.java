@@ -73,25 +73,25 @@ public class HappyListActivity extends BaseActivity {
 
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
-                happyManager.init(selectIndex, new HappyManager.FetchHappysCallback() {
-                    @Override
-                    public void onFailure(String errorMsg) {
-                        ptrLayout.refreshComplete();
-                    }
-
-                    @Override
-                    public void onFinish(List<Happy> data) {
-                        ptrLayout.refreshComplete();
-
-                        adapter.applyData(data);
-                        adapter.notifyDataSetChanged();
-                        ptrLayout.refreshComplete();
-
-                        if (!ptrLayout.isLoadMoreEnable()) {
-                            ptrLayout.setLoadMoreEnable(true);
-                        }
-                    }
-                });
+//                happyManager.init(selectIndex, new HappyManager.FetchHappysCallback() {
+//                    @Override
+//                    public void onFailure(String errorMsg) {
+//                        ptrLayout.refreshComplete();
+//                    }
+//
+//                    @Override
+//                    public void onFinish(List<Happy> data) {
+//                        ptrLayout.refreshComplete();
+//
+//                        adapter.applyData(data);
+//                        adapter.notifyDataSetChanged();
+//                        ptrLayout.refreshComplete();
+//
+//                        if (!ptrLayout.isLoadMoreEnable()) {
+//                            ptrLayout.setLoadMoreEnable(true);
+//                        }
+//                    }
+//                });
             }
         });
 
@@ -100,25 +100,25 @@ public class HappyListActivity extends BaseActivity {
 
             @Override
             public void loadMore() {
-                happyManager.loadMore(selectIndex, new HappyManager.FetchHappysCallback() {
-                    @Override
-                    public void onFailure(String errorMsg) {
-                        ptrLayout.refreshComplete();
-                    }
-
-                    @Override
-                    public void onFinish(List<Happy> data) {
-                        ptrLayout.loadMoreComplete(true);
-
-                        adapter.applyData(data);
-                        adapter.notifyDataSetChanged();
-                        ptrLayout.refreshComplete();
-
-                        if (data.isEmpty()) {
-                            ptrLayout.setLoadMoreEnable(false);
-                        }
-                    }
-                });
+//                happyManager.loadMore(selectIndex, new HappyManager.FetchHappysCallback() {
+//                    @Override
+//                    public void onFailure(String errorMsg) {
+//                        ptrLayout.refreshComplete();
+//                    }
+//
+//                    @Override
+//                    public void onFinish(List<Happy> data) {
+//                        ptrLayout.loadMoreComplete(true);
+//
+//                        adapter.applyData(data);
+//                        adapter.notifyDataSetChanged();
+//                        ptrLayout.refreshComplete();
+//
+//                        if (data.isEmpty()) {
+//                            ptrLayout.setLoadMoreEnable(false);
+//                        }
+//                    }
+//                });
             }
         });
 

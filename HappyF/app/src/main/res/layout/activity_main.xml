@@ -1,32 +1,162 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/main_bg"
     android:clipToPadding="true"
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/vp_horizontal_ntb"
+    <FrameLayout
+        android:id="@+id/fragment_content"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_height="match_parent"
+        android:layout_above="@+id/ll_bottom"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"></FrameLayout>
 
-    <devlight.io.library.ntb.NavigationTabBar
-        android:id="@+id/ntb_horizontal"
+
+    <LinearLayout
+        android:id="@+id/ll_bottom"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        app:ntb_badge_gravity="top"
-        app:ntb_badge_position="right"
-        app:ntb_badged="true"
-        app:ntb_scaled="true"
-        app:ntb_tinted="true"
-        app:ntb_title_mode="all"
-        app:ntb_titled="true"
-        app:ntb_swiped="true"/>
+        android:layout_height="80dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:weightSum="5">
 
-</LinearLayout>
+        <LinearLayout
+            android:id="@+id/ll_shop"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/logo" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="商城" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_happy"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/logo" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="出海" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_main"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/logo" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="首页" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_article"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/logo" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="热点" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_mine"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/logo" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="我的" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <!--<android.support.v4.view.ViewPager-->
+    <!--android:id="@+id/vp_horizontal_ntb"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="0dp"-->
+    <!--android:layout_weight="1"/>-->
+
+    <!--<devlight.io.library.ntb.NavigationTabBar-->
+    <!--android:id="@+id/ntb_horizontal"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="60dp"-->
+    <!--app:ntb_badge_gravity="top"-->
+    <!--app:ntb_badge_position="right"-->
+    <!--app:ntb_badged="true"-->
+    <!--app:ntb_scaled="true"-->
+    <!--app:ntb_tinted="true"-->
+    <!--app:ntb_title_mode="all"-->
+    <!--app:ntb_titled="true"-->
+    <!--app:ntb_swiped="true"/>-->
+
+</RelativeLayout>

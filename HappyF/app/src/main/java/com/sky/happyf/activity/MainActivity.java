@@ -1,50 +1,44 @@
 package com.sky.happyf.activity;
 
-import android.graphics.Color;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.sky.happyf.R;
-import com.sky.happyf.mainHelper.ArticleHelper;
-import com.sky.happyf.mainHelper.HappyHelper;
-import com.sky.happyf.mainHelper.MainHelper;
-import com.sky.happyf.mainHelper.MineHelper;
-import com.sky.happyf.mainHelper.ShopHelper;
-import com.sky.happyf.manager.UserManager;
+import com.sky.happyf.fragment.ArticleFragment;
+import com.sky.happyf.fragment.HappyFragment;
+import com.sky.happyf.fragment.MainFragment;
+import com.sky.happyf.fragment.MineFragment;
+import com.sky.happyf.fragment.ShopFragment;
 import com.sky.happyf.message.MessageEvent;
 import com.sky.happyf.util.Constants;
 import com.wuhenzhizao.titlebar.statusbar.StatusBarUtils;
-import com.yanzhenjie.nohttp.NoHttp;
-import com.yanzhenjie.nohttp.RequestMethod;
-import com.yanzhenjie.nohttp.rest.Response;
-import com.yanzhenjie.nohttp.rest.StringRequest;
-import com.yanzhenjie.nohttp.rest.SyncRequestExecutor;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import devlight.io.library.ntb.NavigationTabBar;
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
+    private LinearLayout llShop, llHappy, llMain, llArticle, llMine;
 
-    private NavigationTabBar navigationTabBar;
-    private ViewPager viewPager;
-    private List<View> viewList;
-    private ShopHelper shopHelper;
-    private HappyHelper happyHelper;
-    private MainHelper mainHelper;
-    private ArticleHelper articleHelper;
-    private MineHelper mineHelper;
+    public static final int PAGE_SHOP = 0;
+    public static final int PAGE_HAPPY = 1;
+    public static final int PAGE_MAIN = 2;
+    public static final int PAGE_ARTICLE = 3;
+    public static final int PAGE_MINE = 4;
+
+    private HashMap<Integer, Fragment> fragments = new HashMap<>();
+    private int fragmentContentId = R.id.fragment_content;
+    private int currentTab;
+
+//    private SlidingMenu slidingMenu;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,140 +54,116 @@ public class MainActivity extends AppCompatActivity {
 
         initView();
 
+        initListener();
+
         initData();
     }
 
     private void initView() {
-        navigationTabBar = (NavigationTabBar) findViewById(R.id.ntb_horizontal);
-        viewPager = (ViewPager) findViewById(R.id.vp_horizontal_ntb);
+        llShop = findViewById(R.id.ll_shop);
+        llHappy = findViewById(R.id.ll_happy);
+        llMain = findViewById(R.id.ll_main);
+        llArticle = findViewById(R.id.ll_article);
+        llMine = findViewById(R.id.ll_mine);
 
-        viewList = new ArrayList<View>();
-        View shopView = LayoutInflater.from(
-                getBaseContext()).inflate(R.layout.item_shop, null, false);
-        View happyView = LayoutInflater.from(
-                getBaseContext()).inflate(R.layout.item_happy, null, false);
-        View mainView = LayoutInflater.from(
-                getBaseContext()).inflate(R.layout.item_main, null, false);
-        View articleView = LayoutInflater.from(
-                getBaseContext()).inflate(R.layout.item_article, null, false);
-        View mineView = LayoutInflater.from(
-                getBaseContext()).inflate(R.layout.item_mine, null, false);
+        fragments.put(PAGE_SHOP, new ShopFragment());
+        fragments.put(PAGE_HAPPY, new HappyFragment());
+        fragments.put(PAGE_MAIN, new MainFragment());
+        fragments.put(PAGE_ARTICLE, new ArticleFragment());
+        fragments.put(PAGE_MINE, new MineFragment());
 
-        viewList.add(shopView);
-        viewList.add(happyView);
-        viewList.add(mainView);
-        viewList.add(articleView);
-        viewList.add(mineView);
-
-        shopHelper = new ShopHelper(MainActivity.this, shopView);
-        shopHelper.init();
-        happyHelper = new HappyHelper(MainActivity.this, happyView);
-        happyHelper.init();
-        mainHelper = new MainHelper(MainActivity.this, mainView);
-        mainHelper.init();
-        articleHelper = new ArticleHelper(MainActivity.this, articleView);
-        articleHelper.init();
-        mineHelper = new MineHelper(MainActivity.this, mineView);
-        mineHelper.init();
-
+        // 设置默认的Fragment
+        defaultFragment();
     }
 
-
-    @Override
-    protected void onResume() {
-        super.onResume();
+    private void defaultFragment() {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.add(fragmentContentId, fragments.get(PAGE_MAIN));
+        currentTab = PAGE_MAIN;
+        ft.commit();
     }
+
+    private void initListener() {
+        llShop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changeTab(PAGE_SHOP);
+            }
+        });
+        llHappy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changeTab(PAGE_HAPPY);
+            }
+        });
+        llMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changeTab(PAGE_MAIN);
+            }
+        });
+        llArticle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changeTab(PAGE_ARTICLE);
+            }
+        });
+        llMine.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changeTab(PAGE_MINE);
+            }
+        });
+    }
+
+    /**
+     * 点击切换下部按钮
+     *
+     * @param page
+     */
+    private void changeTab(int page) {
+        //默认的currentTab == 当前的页码，不做任何处理
+        if (currentTab == page) {
+            return;
+        }
+
+        //获取fragment的页码
+        Fragment fragment = fragments.get(page);
+        //fragment事务
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        //如果该Fragment对象被添加到了它的Activity中，那么它返回true，否则返回false。
+        //当前activity中添加的不是这个fragment
+        if (!fragment.isAdded()) {
+            //所以将他加进去
+            ft.add(fragmentContentId, fragment);
+        }
+        //隐藏当前currentTab的
+        ft.hide(fragments.get(currentTab));
+        //显示现在page的
+        ft.show(fragments.get(page));
+        //设置当前currentTab底部的状态
+//        SelectColor(currentTab);
+        //当前显示的赋值给currentTab
+        currentTab = page;
+        //设置当前currentTab底部的状态
+//        SelectColor(currentTab);
+        //activity被销毁？  ！否
+        if (!this.isFinishing()) {
+            //允许状态丢失
+            ft.commitAllowingStateLoss();
+        }
+    }
+
 
     private void initData() {
-        viewPager.setAdapter(new PagerAdapter() {
-            @Override
-            public int getCount() {
-                return 5;
-            }
 
-            @Override
-            public boolean isViewFromObject(final View view, final Object object) {
-                return view.equals(object);
-            }
-
-            @Override
-            public void destroyItem(final View container, final int position, final Object object) {
-                ((ViewPager) container).removeView((View) object);
-            }
-
-            @Override
-            public Object instantiateItem(final ViewGroup container, final int position) {
-                View view = viewList.get(position);
-                container.addView(view);
-                return view;
-            }
-        });
-
-        ArrayList<NavigationTabBar.Model> models = new ArrayList<>();
-        models.add(
-                new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_first),
-                        getColor(R.color.mediumslateblue)
-                ).title(getResources().getString(R.string.main_first))
-//                        .badgeTitle("NTB")
-                        .build()
-        );
-        models.add(
-                new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_second),
-                        getColor(R.color.mediumslateblue)
-                ).title(getResources().getString(R.string.main_second))
-                        .build()
-        );
-        models.add(
-                new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_third),
-                        getColor(R.color.mediumslateblue)
-                ).title(getResources().getString(R.string.main_third))
-                        .build()
-        );
-        models.add(
-                new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_fourth),
-                        getColor(R.color.mediumslateblue)
-                ).title(getResources().getString(R.string.main_forth))
-                        .build()
-        );
-        models.add(
-                new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_fifth),
-                        getColor(R.color.mediumslateblue)
-                ).title(getResources().getString(R.string.main_fifth))
-                        .build()
-        );
-
-        navigationTabBar.setIsBadged(false);
-        navigationTabBar.setModels(models);
-        navigationTabBar.setInactiveColor(Color.WHITE);
-        navigationTabBar.setActiveColor(getColor(R.color.skyblue));
-        navigationTabBar.setBgColor(getColor(R.color.deepskyblue));
-        navigationTabBar.setViewPager(viewPager, 2);
-        navigationTabBar.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(final int position, final float positionOffset, final int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(final int position) {
-                navigationTabBar.getModels().get(position).hideBadge();
-            }
-
-            @Override
-            public void onPageScrollStateChanged(final int state) {
-
-            }
-        });
     }
+
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
@@ -202,9 +172,9 @@ public class MainActivity extends AppCompatActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent messageEvent) {
         if (Constants.EVENT_MESSAGE_EDIT_USER.equals(messageEvent.getMessage())) {
-            mineHelper.initData();
+            ((MineFragment) fragments.get(PAGE_MINE)).initData();
         } else {
-            shopHelper.initCart();
+            ((ShopFragment) fragments.get(PAGE_SHOP)).initCart();
         }
     }
 }

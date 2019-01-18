@@ -14,6 +14,7 @@ android {
         applicationId "com.sky.happyf"
         minSdkVersion 23
         targetSdkVersion 26
+        buildToolsVersion "28.0.3"
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -33,7 +34,9 @@ android {
         }
     }
     sourceSets {
-        main.jniLibs.srcDirs = ['libs']
+        main {
+            jniLibs.srcDir 'libs'
+        }
     }
 }
 
@@ -46,6 +49,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.squareup.okhttp3:okhttp:3.12.0'
     testImplementation 'junit:junit:4.12'
+
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     compile 'com.tencent.bugly:crashreport:latest.release'
@@ -65,8 +69,11 @@ dependencies {
     compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
     compile 'com.contrarywind:Android-PickerView:4.1.7'
     compile 'io.github.mayubao:pay_library:1.0.1'
+    compile "com.github.mancj:SlideUp-Android:2.2.8"
+    compile 'com.github.hackware1993:MagicIndicator:1.5.0'
     implementation 'com.yanzhenjie.nohttp:nohttp:1.1.11'
     implementation 'com.yanzhenjie.nohttp:okhttp:1.1.11'
+    implementation files('libs/BaiduLBS_Android.jar')
     androidTestCompile('com.android.support:support-annotations:27.1.0') {
         force = true
     }

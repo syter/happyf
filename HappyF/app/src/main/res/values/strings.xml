@@ -112,6 +112,7 @@
     <string name="happylist_state_1">已评价</string>
     <string name="happylist_state_2">未评价</string>
 
+
     <!-- 经验值 -->
     <string name="exp_title">经验值</string>
 
@@ -232,4 +233,6 @@
 
     <!-- 预约出海 -->
     <string name="happy_title">预约出海</string>
+    <string name="happy_into">点击进入</string>
+    <string name="happy_money">意向金￥</string>
 </resources>

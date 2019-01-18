@@ -56,7 +56,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="20dp"
-            android:text="@string/pay_ali" />
+            android:text="@string/pay_ali"
+            android:textColor="@color/gray_text_2"
+            android:textSize="14sp" />
 
     </LinearLayout>
 
@@ -87,7 +89,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="20dp"
-            android:text="@string/pay_wechat" />
+            android:text="@string/pay_wechat"
+            android:textColor="@color/gray_text_2"
+            android:textSize="14sp" />
 
     </LinearLayout>
 

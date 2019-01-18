@@ -84,11 +84,11 @@ public class HappyListAdapter extends BaseAdapter {
         }
 
         public void setData(final Happy happy) {
-            tvAddress.setText(happy.address);
-            tvFish.setText(happy.fish);
-            tvState.setText(happy.state + "");
-            tvCount.setText(happy.count + "人");
-            tvDate.setText(happy.date);
+//            tvAddress.setText(happy.address);
+//            tvFish.setText(happy.fish);
+//            tvState.setText(happy.state + "");
+//            tvCount.setText(happy.count + "人");
+//            tvDate.setText(happy.date);
         }
     }
 }

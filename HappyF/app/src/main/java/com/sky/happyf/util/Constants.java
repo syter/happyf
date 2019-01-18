@@ -43,6 +43,12 @@ public class Constants {
     public static final String PATH_GET_ORDER_LIST = "/Api/Shop/orderList";
     public static final String PATH_RECEIVE_GOODS = "/Api/Shop/receiveGoods";
     public static final String PATH_GET_CONTACT_INFO = "/Api/Index/getCustomerServer";
+    public static final String PATH_GET_MAP_INFO = "/Api/Sea/getAreaList";
+    public static final String PATH_GET_HAPPY_INFO = "/Api/Sea/getAreaInfo";
+
+
+
+
 
 
     public static final String SERVICE_TYPE_ONE = "1"; //

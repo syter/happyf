@@ -125,7 +125,7 @@
                         android:textSize="12sp" />
 
                     <TextView
-                        android:id="@+id/tv_service"
+                        android:id="@+id/tv_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -198,7 +198,7 @@
             android:textSize="14sp" />
 
         <Button
-            android:id="@+id/btn_buy"
+            android:id="@+id/btn_wanna"
             android:layout_width="wrap_content"
             android:layout_height="36dp"
             android:layout_alignParentRight="true"
@@ -237,7 +237,7 @@
                 android:layout_height="130dp">
 
                 <ImageView
-                    android:id="@+id/iv_goods_cover"
+                    android:id="@+id/iv_happy_cover"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_marginLeft="20dp"
@@ -252,7 +252,7 @@
                     android:layout_alignParentBottom="true"
                     android:layout_marginLeft="13dp"
                     android:layout_marginBottom="10dp"
-                    android:layout_toRightOf="@+id/iv_goods_cover"
+                    android:layout_toRightOf="@+id/iv_happy_cover"
                     android:text="@string/sd_no_select"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
