@@ -232,7 +232,7 @@
                     android:layout_width="10dp"
                     android:layout_height="10dp"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/logo" />
+                    android:src="@drawable/shell" />
 
                 <TextView
                     android:id="@+id/tv_shell_price"
@@ -355,7 +355,7 @@
                         android:layout_height="10dp"
                         android:layout_marginTop="5dp"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/logo" />
+                        android:src="@drawable/shell" />
 
                     <TextView
                         android:id="@+id/tv_goods_shell_price"

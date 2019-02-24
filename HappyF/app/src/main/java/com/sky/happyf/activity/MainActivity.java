@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.sky.happyf.R;
 import com.sky.happyf.fragment.ArticleFragment;
@@ -26,6 +28,8 @@ import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
     private LinearLayout llShop, llHappy, llMain, llArticle, llMine;
+    private ImageView ivShopBar, ivHappyBar, ivMainBar, ivArticleBar, ivMineBar;
+    private TextView tvShopBar, tvHappyBar, tvMainBar, tvArticleBar, tvMineBar;
 
     public static final int PAGE_SHOP = 0;
     public static final int PAGE_HAPPY = 1;
@@ -65,6 +69,18 @@ public class MainActivity extends AppCompatActivity {
         llMain = findViewById(R.id.ll_main);
         llArticle = findViewById(R.id.ll_article);
         llMine = findViewById(R.id.ll_mine);
+
+        ivShopBar = findViewById(R.id.iv_shop_bar);
+        ivHappyBar = findViewById(R.id.iv_happy_bar);
+        ivMainBar = findViewById(R.id.iv_main_bar);
+        ivArticleBar = findViewById(R.id.iv_article_bar);
+        ivMineBar = findViewById(R.id.iv_mine_bar);
+
+        tvShopBar = findViewById(R.id.tv_shop_bar);
+        tvHappyBar = findViewById(R.id.tv_happy_bar);
+        tvMainBar = findViewById(R.id.tv_main_bar);
+        tvArticleBar = findViewById(R.id.tv_article_bar);
+        tvMineBar = findViewById(R.id.tv_mine_bar);
 
         fragments.put(PAGE_SHOP, new ShopFragment());
         fragments.put(PAGE_HAPPY, new HappyFragment());
@@ -127,6 +143,23 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
+        if (currentTab == 0) {
+            ivShopBar.setImageDrawable(getDrawable(R.drawable.shop_default));
+            tvShopBar.setTextColor(getColor(R.color.gray_text_2));
+        } else if (currentTab == 1) {
+            ivHappyBar.setImageDrawable(getDrawable(R.drawable.happy_default));
+            tvHappyBar.setTextColor(getColor(R.color.gray_text_2));
+        } else if (currentTab == 2) {
+            ivMainBar.setImageDrawable(getDrawable(R.drawable.main_default));
+            tvMainBar.setTextColor(getColor(R.color.gray_text_2));
+        } else if (currentTab == 3) {
+            ivArticleBar.setImageDrawable(getDrawable(R.drawable.article_default));
+            tvArticleBar.setTextColor(getColor(R.color.gray_text_2));
+        } else if (currentTab == 4) {
+            ivMineBar.setImageDrawable(getDrawable(R.drawable.mine_default));
+            tvMineBar.setTextColor(getColor(R.color.gray_text_2));
+        }
+
         //获取fragment的页码
         Fragment fragment = fragments.get(page);
         //fragment事务
@@ -151,6 +184,24 @@ public class MainActivity extends AppCompatActivity {
         if (!this.isFinishing()) {
             //允许状态丢失
             ft.commitAllowingStateLoss();
+        }
+
+
+        if (page == 0) {
+            ivShopBar.setImageDrawable(getDrawable(R.drawable.shop_active));
+            tvShopBar.setTextColor(getColor(R.color.main_color_blue));
+        } else if (currentTab == 1) {
+            ivHappyBar.setImageDrawable(getDrawable(R.drawable.happy_active));
+            tvHappyBar.setTextColor(getColor(R.color.main_color_blue));
+        } else if (currentTab == 2) {
+            ivMainBar.setImageDrawable(getDrawable(R.drawable.main_active));
+            tvMainBar.setTextColor(getColor(R.color.main_color_blue));
+        } else if (currentTab == 3) {
+            ivArticleBar.setImageDrawable(getDrawable(R.drawable.article_active));
+            tvArticleBar.setTextColor(getColor(R.color.main_color_blue));
+        } else if (currentTab == 4) {
+            ivMineBar.setImageDrawable(getDrawable(R.drawable.mine_active));
+            tvMineBar.setTextColor(getColor(R.color.main_color_blue));
         }
     }
 

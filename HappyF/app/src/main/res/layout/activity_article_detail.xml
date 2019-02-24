@@ -17,8 +17,8 @@
         titlebar:leftDrawablePadding="0dp"
         titlebar:leftText="@string/back"
         titlebar:leftType="textView"
-        titlebar:statusBarColor="@color/white"
-        titlebar:statusBarMode="dark" />
+        titlebar:statusBarColor="@color/skyblue"
+        titlebar:statusBarMode="light" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -74,6 +74,7 @@
                     android:id="@+id/ll_content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
                     android:orientation="vertical">
 
                     <TextView

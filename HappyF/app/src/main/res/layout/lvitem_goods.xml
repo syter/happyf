@@ -87,7 +87,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="2dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/logo" />
+                android:src="@drawable/shell" />
 
             <TextView
                 android:id="@+id/tv_shell_price"

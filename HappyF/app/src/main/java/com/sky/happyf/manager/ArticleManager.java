@@ -3,12 +3,23 @@ package com.sky.happyf.manager;
 import android.content.Context;
 import android.os.Handler;
 
+import com.sky.happyf.Model.Address;
 import com.sky.happyf.Model.Article;
+import com.sky.happyf.Model.Goods;
+import com.sky.happyf.R;
 import com.sky.happyf.util.Constants;
+import com.sky.happyf.util.NetUtils;
+import com.sky.happyf.util.SpfHelper;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Observable;
+import java.util.TreeMap;
 
 public class ArticleManager extends Observable {
     private ArrayList<Article> articleList = new ArrayList<Article>();
@@ -17,6 +28,7 @@ public class ArticleManager extends Observable {
     private final static int POST_LIMIT = 20;
     private int page = 0;
     private int totalArticleCount = 0;
+    private int articlesPage = 1;
 
     public ArticleManager(Context ct) {
         this.ct = ct;
@@ -28,207 +40,311 @@ public class ArticleManager extends Observable {
         return ArticleList;
     }
 
-    public void getArticleList(final int type, final FetchArticleCallback callback) {
-        page = 0;
-        articleList = new ArrayList<Article>();
+    public void getArticleList(final String type, final FetchArticleCallback callback) {
+        articlesPage = 1;
         if (Constants.IS_DEBUG) {
-            getLocalArticles(type, callback);
+            getLocalArticleList(type, callback);
             return;
         }
-        fetchRemoteArticles(type, ++page, new FetchArticleCallback() {
+        Map<String, String> params = new TreeMap<String, String>();
+        params.put("cate_id", type);
+        params.put("limit", "10");
+        params.put("page", "1");
+
+
+        NetUtils.get(ct, params, Constants.PATH_GET_ARTICLE, new NetUtils.NetCallback() {
             @Override
-            public void onFailure(String errorMsg) {
-                if (callback != null) {
-                    callback.onFailure(errorMsg);
-                }
+            public void onFailure(final String errorMsg) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (callback != null) {
+                            callback.onFailure(errorMsg);
+                        }
+                    }
+                });
             }
 
             @Override
-            public void onFinish(List<Article> data) {
-                articleList.addAll(data);
-                if (callback != null) {
-                    callback.onFinish(data);
+            public void onFinish(JSONObject data) {
+                try {
+                    final List<Article> articleList = new ArrayList<>();
+
+                    JSONArray listArray = data.getJSONArray("list");
+                    for (int i = 0; i < listArray.length(); i++) {
+                        JSONObject obj = listArray.getJSONObject(i);
+                        Article article = new Article();
+                        article.id = obj.optString("id");
+                        article.categoryId = obj.optString("cate_id");
+                        article.title = obj.optString("title");
+                        article.cover = obj.optString("cover");
+                        article.desc = obj.optString("deacript");
+                        String isTopStr = obj.optString("isTOP", "N");
+                        if ("N".equals(isTopStr)) {
+                            article.isTop = false;
+                        } else {
+                            article.isTop = true;
+                        }
+                        article.readCount = Integer.parseInt(obj.optString("hit", "0"));
+                        article.date = obj.optString("createtime");
+                        articleList.add(article);
+                    }
+
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (callback != null) {
+                                callback.onFinish(articleList);
+                            }
+                        }
+                    });
+                } catch (Exception e) {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (callback != null) {
+                                callback.onFailure(ct.getResources().getString(R.string.common_error));
+                            }
+                        }
+                    });
                 }
             }
         });
     }
 
-    public void loadMore(final int type, final FetchArticleCallback callback) {
+    private void getLocalArticleList(final String type, final FetchArticleCallback callback) {
+        if (callback != null) {
+            callback.onFinish(new ArrayList<Article>());
+        }
+    }
+
+    public void loadMore(final String type, final FetchArticleCallback callback) {
+        articlesPage++;
         if (Constants.IS_DEBUG) {
-            loadMoreLocalArticles(type, callback, ++page);
+            loadMoreLocalArticles(type, callback);
             return;
         }
-        fetchRemoteArticles(type, ++page, new FetchArticleCallback() {
+        Map<String, String> params = new TreeMap<String, String>();
+        params.put("limit", "10");
+        params.put("page", articlesPage + "");
+        params.put("type", type);
+        NetUtils.get(ct, params, Constants.PATH_GET_SHOP_GOODS, new NetUtils.NetCallback() {
             @Override
-            public void onFailure(String errorMsg) {
-                page--;
-                if (callback != null) {
-                    callback.onFailure(errorMsg);
-                }
+            public void onFailure(final String errorMsg) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (callback != null) {
+                            callback.onFailure(errorMsg);
+                        }
+                    }
+                });
             }
 
             @Override
-            public void onFinish(List<Article> data) {
-                articleList.addAll(data);
-                if (callback != null) {
-                    callback.onFinish(articleList);
+            public void onFinish(JSONObject data) {
+                try {
+                    final List<Article> articleList = new ArrayList<>();
+
+                    JSONArray listArray = data.getJSONArray("list");
+                    for (int i = 0; i < listArray.length(); i++) {
+                        JSONObject obj = listArray.getJSONObject(i);
+                        Article article = new Article();
+                        article.id = obj.optString("id");
+                        article.categoryId = obj.optString("cate_id");
+                        article.title = obj.optString("title");
+                        article.cover = obj.optString("cover");
+                        article.desc = obj.optString("deacript");
+                        String isTopStr = obj.optString("isTOP", "N");
+                        if ("N".equals(isTopStr)) {
+                            article.isTop = false;
+                        } else {
+                            article.isTop = true;
+                        }
+                        article.readCount = Integer.parseInt(obj.optString("hit", "0"));
+                        article.date = obj.optString("createtime");
+                        articleList.add(article);
+                    }
+
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (callback != null) {
+                                callback.onFinish(articleList);
+                            }
+                        }
+                    });
+                } catch (Exception e) {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (callback != null) {
+                                callback.onFailure(ct.getResources().getString(R.string.common_error));
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    private void loadMoreLocalArticles(final String type, final FetchArticleCallback callback) {
+        if (callback != null) {
+            callback.onFinish(new ArrayList<Article>());
+        }
+    }
+
+
+    public void getCategory(final FetchCategoryCallback callback) {
+        if (Constants.IS_DEBUG) {
+            getLocalCategory(callback);
+            return;
+        }
+        Map<String, String> params = new TreeMap<String, String>();
+
+        NetUtils.get(ct, params, Constants.PATH_GET_CATEGORY, new NetUtils.NetCallback() {
+            @Override
+            public void onFailure(final String errorMsg) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (callback != null) {
+                            callback.onFailure(errorMsg);
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onFinish(JSONObject data) {
+                try {
+                    final List<String> idList = new ArrayList<>();
+
+                    JSONArray listArray = data.getJSONArray("list");
+                    for (int i = 0; i < listArray.length(); i++) {
+                        JSONObject obj = listArray.getJSONObject(i);
+                        idList.add(obj.optString("id"));
+                    }
+
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (callback != null) {
+                                callback.onFinish(idList);
+                            }
+                        }
+                    });
+                } catch (Exception e) {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (callback != null) {
+                                callback.onFailure(ct.getResources().getString(R.string.common_error));
+                            }
+                        }
+                    });
                 }
             }
         });
     }
 
 
-    private void getLocalArticles(final int type, final FetchArticleCallback callback) {
-        new Thread(new Runnable() {
+    private void getLocalCategory(final FetchCategoryCallback callback) {
+        if (callback != null) {
+            callback.onFinish(new ArrayList<String>());
+        }
+    }
+
+
+    public void getArticleDetail(final String id, final FetchArticleCallback callback) {
+        if (Constants.IS_DEBUG) {
+            getLocalArticleDetail(id, callback);
+            return;
+        }
+        Map<String, String> params = new TreeMap<String, String>();
+        params.put("info_id", id);
+
+        NetUtils.get(ct, params, Constants.PATH_GET_ARTICLE_DETAIL, new NetUtils.NetCallback() {
             @Override
-            public void run() {
-                for (int i = 0; i < 17; i++) {
-                    Article o = new Article();
-                    o.id = i + "article";
-                    o.covers = "xxx";
-                    o.title = "title";
-                    o.type = 1;
-                    o.desc = "desc";
-                    o.content = "商品详情 无啦啦啦啦啦了";
-                    o.read_count = 56;
-                    o.date = "2019-10-10";
-                    articleList.add(o);
+            public void onFailure(final String errorMsg) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (callback != null) {
+                            callback.onFailure(errorMsg);
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onFinish(JSONObject data) {
+                try {
+                    final List<Article> articleList = new ArrayList<>();
+
+                    Article article = new Article();
+                    article.id = data.optString("id");
+                    article.categoryId = data.optString("cate_id");
+                    article.title = data.optString("title");
+                    article.cover = data.optString("cover");
+                    article.desc = data.optString("deacript");
+                    String isTopStr = data.optString("isTOP", "N");
+                    if ("N".equals(isTopStr)) {
+                        article.isTop = false;
+                    } else {
+                        article.isTop = true;
+                    }
+                    article.readCount = Integer.parseInt(data.optString("hit", "0"));
+                    article.date = data.optString("createtime");
+                    article.contentUrl = data.optString("content_urlpath");
+
+                    List<String> contentList = new ArrayList<>();
+                    String content = data.optString("content");
+                    String[] contents = content.split(Constants.CONTENT_SPLIT);
+                    for (int i = 0; i < contents.length; i++) {
+                        String str = contents[i];
+                        contentList.add(str);
+//                        if (str.indexOf(Constants.CONTENT_TEXT) != -1) {
+//                            contentList.add(str.replaceAll(Constants.CONTENT_TEXT, ""));
+//                        } else if (str.indexOf(Constants.CONTENT_IMAGE) != -1) {
+//                            str = str.replaceAll(Constants.CONTENT_IMAGE, "");
+//                            str = contentUrlpath + str;
+//                            contentList.add(str);
+//                        } else if (str.indexOf(Constants.CONTENT_VIDEO) != -1) {
+//                            str = str.replaceAll(Constants.CONTENT_VIDEO, "");
+//                            str = contentUrlpath + str;
+//                            contentList.add(str);
+//                        }
+                    }
+                    article.contents = contentList;
+                    articleList.add(article);
+
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (callback != null) {
+                                callback.onFinish(articleList);
+                            }
+                        }
+                    });
+                } catch (Exception e) {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (callback != null) {
+                                callback.onFailure(ct.getResources().getString(R.string.common_error));
+                            }
+                        }
+                    });
                 }
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (callback != null) {
-                            callback.onFinish(articleList);
-                        }
-                    }
-                }, 1500);
             }
-        }).start();
+        });
     }
 
-    private void loadMoreLocalArticles(final int type, final FetchArticleCallback callback, final int page) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Article o = new Article();
-                o.id = page + "article";
-                o.covers = "xxx";
-                o.title = "title";
-                o.type = 1;
-                o.desc = "desc";
-                o.content = "商品详情 无啦啦啦啦啦了";
-                o.read_count = 56;
-                o.date = "2019-10-10";
-                articleList.add(o);
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (callback != null) {
-                            callback.onFinish(articleList);
-                        }
-                    }
-                }, 1000);
-            }
-        }).start();
-    }
-
-    private void fetchRemoteArticles(final int type, final int page, final FetchArticleCallback callback) {
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                Map<String, Object> params = new HashMap<String, Object>();
-//                params.put("page", page);
-//                params.put("limit", POST_LIMIT);
-//                params.put("sort", "-created_at");
-//                params.put("type", Constant.BULLETIN_TYPE);
-//                Map<String, String> customFields = new HashMap<String, String>();
-//                customFields.put("type", "1");
-//                params.put("custom_fields", customFields);
-//                params.put("like_user_id", UserManager.getInstance(ct).getCurrentUser().userId);
-//
-//                try {
-//                    anSocial.sendRequest("posts/query.json", AnSocialMethod.GET, params, new IAnSocialCallback() {
-//                        @Override
-//                        public void onFailure(final JSONObject arg0) {
-//                            try {
-//                                String message = arg0.getJSONObject("meta").getString("message");
-//                                Toast.makeText(ct, message, Toast.LENGTH_SHORT).show();
-//                            } catch (JSONException e) {
-//                                e.printStackTrace();
-//                            }
-//                            handler.post(new Runnable() {
-//                                @Override
-//                                public void run() {
-//                                    if (callback != null) {
-//                                        callback.onFailure(arg0.toString());
-//                                    }
-//                                }
-//                            });
-//                        }
-//
-//                        @Override
-//                        public void onSuccess(JSONObject arg0) {
-//                            try {
-//                                totalArticleCount = arg0.getJSONObject("meta").getInt("total");
-//
-//                                final List<Article> articles = new ArrayList<Article>();
-//                                JSONArray articleArray = arg0.getJSONObject("response").getJSONArray("posts");
-//                                for (int i = 0; i < articleArray.length(); i++) {
-//                                    JSONObject articleJson = articleArray.getJSONObject(i);
-//                                    Article article = new Article();
-//                                    article.parseJSON(articleJson,
-//                                            UserManager.getInstance(ct).getCurrentUser().userId);
-//                                    article.update();
-//                                    articles.add(article);
-//
-//                                    if (articleJson.has("like")) {
-//                                        article.deleteAllLikes(UserManager.getInstance(ct).getCurrentUser().userId);
-//                                        JSONObject likeJson = articleJson.getJSONObject("like");
-//                                        Like like = new Like();
-//                                        like.article = article.getFromTable(UserManager.getInstance(ct)
-//                                                .getCurrentUser().userId);
-//                                        like.parseJSON(likeJson, UserManager.getInstance(ct).getCurrentUser()
-//                                                .getFromTable(), UserManager.getInstance(ct).getCurrentUser().userId);
-//                                        boolean updated = like.update();
-//                                        DBug.e("like.update", updated + "?");
-//                                    }
-//                                }
-//
-//                                handler.post(new Runnable() {
-//                                    @Override
-//                                    public void run() {
-//                                        if (callback != null) {
-//                                            callback.onFinish(articles);
-//                                        }
-//                                    }
-//                                });
-//
-//                            } catch (final JSONException e) {
-//                                e.printStackTrace();
-//                                handler.post(new Runnable() {
-//                                    @Override
-//                                    public void run() {
-//                                        if (callback != null) {
-//                                            callback.onFailure(e.getMessage());
-//                                        }
-//                                    }
-//                                });
-//                            }
-//                        }
-//                    });
-//                } catch (final ArrownockException e) {
-//                    e.printStackTrace();
-//                    handler.post(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            if (callback != null) {
-//                                callback.onFailure(e.getMessage());
-//                            }
-//                        }
-//                    });
-//                }
-//            }
-//        }).start();
+    private void getLocalArticleDetail(final String id, final FetchArticleCallback callback) {
+        if (callback != null) {
+            callback.onFinish(new ArrayList<Article>());
+        }
     }
 
 
@@ -237,4 +353,12 @@ public class ArticleManager extends Observable {
 
         public void onFinish(List<Article> data);
     }
+
+    public interface FetchCategoryCallback {
+        public void onFailure(String errorMsg);
+
+        public void onFinish(List<String> data);
+    }
+
+
 }

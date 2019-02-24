@@ -9,11 +9,14 @@ public class Article implements Serializable {
     public String covers;
     public String title;
     public String desc;
-    public String content;
+    public List<String> contents;
     public String date;
     public String authorName;
-    public int read_count;
+    public boolean isTop;
+    public int readCount;
     public int type;
+    public String categoryId;
+    public String contentUrl;
 
     public Article() {
     }

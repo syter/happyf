@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.chanven.lib.cptr.PtrClassicFrameLayout;
 import com.chanven.lib.cptr.PtrDefaultHandler;
@@ -54,6 +55,7 @@ public class ArticleFragment extends Fragment {
     private PtrClassicFrameLayout ptrLayout1, ptrLayout2;
     private ListView lvArticle1, lvArticle2;
     private ArticleListAdapter adapter1, adapter2;
+    private String classId, infoId;
 
 //        lvArticle.setAdapter(adapter);
 
@@ -145,20 +147,19 @@ public class ArticleFragment extends Fragment {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
                 ptrLayout1.refreshComplete();
-                articleManager.getArticleList(selectIndex, new ArticleManager.FetchArticleCallback() {
+                articleManager.getArticleList(classId, new ArticleManager.FetchArticleCallback() {
                     @Override
                     public void onFailure(String errorMsg) {
+                        Toast.makeText(getActivity(), errorMsg, Toast.LENGTH_LONG).show();
                         ptrLayout1.refreshComplete();
                     }
 
                     @Override
                     public void onFinish(List<Article> data) {
                         ptrLayout1.refreshComplete();
-
                         adapter1.applyData(data);
-                        ptrLayout1.refreshComplete();
 
-                        if (!ptrLayout1.isLoadMoreEnable()) {
+                        if (data.size() == 10) {
                             ptrLayout1.setLoadMoreEnable(true);
                         }
                     }
@@ -171,9 +172,10 @@ public class ArticleFragment extends Fragment {
 
             @Override
             public void loadMore() {
-                articleManager.loadMore(selectIndex, new ArticleManager.FetchArticleCallback() {
+                articleManager.loadMore(classId, new ArticleManager.FetchArticleCallback() {
                     @Override
                     public void onFailure(String errorMsg) {
+                        Toast.makeText(getActivity(), errorMsg, Toast.LENGTH_LONG).show();
                         ptrLayout1.refreshComplete();
                     }
 
@@ -181,8 +183,7 @@ public class ArticleFragment extends Fragment {
                     public void onFinish(List<Article> data) {
                         ptrLayout1.loadMoreComplete(true);
 
-                        adapter1.applyData(data);
-                        ptrLayout1.refreshComplete();
+                        adapter1.addData(data);
 
                         if (data.isEmpty()) {
                             ptrLayout1.setLoadMoreEnable(false);
@@ -205,25 +206,23 @@ public class ArticleFragment extends Fragment {
         });
 
 
-
         ptrLayout2.setPtrHandler(new PtrDefaultHandler() {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
                 ptrLayout2.refreshComplete();
-                articleManager.getArticleList(selectIndex, new ArticleManager.FetchArticleCallback() {
+                articleManager.getArticleList(infoId, new ArticleManager.FetchArticleCallback() {
                     @Override
                     public void onFailure(String errorMsg) {
+                        Toast.makeText(getActivity(), errorMsg, Toast.LENGTH_LONG).show();
                         ptrLayout2.refreshComplete();
                     }
 
                     @Override
                     public void onFinish(List<Article> data) {
                         ptrLayout2.refreshComplete();
-
                         adapter2.applyData(data);
-                        ptrLayout2.refreshComplete();
 
-                        if (!ptrLayout2.isLoadMoreEnable()) {
+                        if (data.size() == 10) {
                             ptrLayout2.setLoadMoreEnable(true);
                         }
                     }
@@ -236,18 +235,17 @@ public class ArticleFragment extends Fragment {
 
             @Override
             public void loadMore() {
-                articleManager.loadMore(selectIndex, new ArticleManager.FetchArticleCallback() {
+                articleManager.loadMore(infoId, new ArticleManager.FetchArticleCallback() {
                     @Override
                     public void onFailure(String errorMsg) {
+                        Toast.makeText(getActivity(), errorMsg, Toast.LENGTH_LONG).show();
                         ptrLayout2.refreshComplete();
                     }
 
                     @Override
                     public void onFinish(List<Article> data) {
                         ptrLayout2.loadMoreComplete(true);
-
-                        adapter2.applyData(data);
-                        ptrLayout2.refreshComplete();
+                        adapter2.addData(data);
 
                         if (data.isEmpty()) {
                             ptrLayout2.setLoadMoreEnable(false);
@@ -273,7 +271,29 @@ public class ArticleFragment extends Fragment {
     private void initData() {
         articleManager = new ArticleManager(getActivity());
 
-        initArticleData();
+        initCategory();
+    }
+
+    private void initCategory() {
+        if (Utils.isEmptyString(classId)) {
+            articleManager.getCategory(new ArticleManager.FetchCategoryCallback() {
+                @Override
+                public void onFailure(String errorMsg) {
+                    Toast.makeText(getActivity(), errorMsg, Toast.LENGTH_LONG).show();
+                }
+
+                @Override
+                public void onFinish(List<String> data) {
+                    if (data.size() >= 2) {
+                        classId = data.get(0);
+                        infoId = data.get(1);
+                        initArticleData();
+                    } else {
+                        Toast.makeText(getActivity(), getResources().getString(R.string.common_error), Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+        }
     }
 
 
