@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -18,8 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
-import com.bigkoo.pickerview.configure.PickerOptions;
-import com.bigkoo.pickerview.listener.OnTimeSelectChangeListener;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.bumptech.glide.Glide;
@@ -28,8 +25,6 @@ import com.sky.happyf.Model.Happy;
 import com.sky.happyf.Model.SelectType;
 import com.sky.happyf.R;
 import com.sky.happyf.manager.HappyManager;
-import com.sky.happyf.manager.OrderManager;
-import com.sky.happyf.util.Constants;
 import com.sky.happyf.util.GlideImageLoader;
 import com.sky.happyf.util.Utils;
 import com.sky.happyf.view.AutoNextLineLinearlayout;
@@ -38,13 +33,11 @@ import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 import com.youth.banner.Banner;
 import com.youth.banner.listener.OnBannerListener;
 
-import java.text.SimpleDateFormat;
-
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 public class WannaHappyActivity extends BaseActivity {
     private CommonTitleBar titleBar;
