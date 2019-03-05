@@ -45,6 +45,9 @@ public class Constants {
     public static final String PATH_GET_CONTACT_INFO = "/Api/Index/getCustomerServer";
     public static final String PATH_GET_MAP_INFO = "/Api/Sea/getAreaList";
     public static final String PATH_GET_HAPPY_INFO = "/Api/Sea/getAreaInfo";
+    public static final String PATH_GET_CATEGORY = "/Api/Info/getInfoCates";
+    public static final String PATH_GET_ARTICLE = "/Api/Info/getInfoList";
+    public static final String PATH_GET_ARTICLE_DETAIL = "/Api/Info/getInfo";
 
 
 
@@ -70,4 +73,8 @@ public class Constants {
     public static final String ORDER_STATUS_YITUIHUO = "6";
     public static final String ORDER_STATUS_YIQUXIAO = "7";
 
+    public static final String CONTENT_SPLIT = "(!#$%)";
+    public static final String CONTENT_TEXT = "$*@*$";
+    public static final String CONTENT_IMAGE = "*@$@*";
+    public static final String CONTENT_VIDEO = "@$*$@";
 }

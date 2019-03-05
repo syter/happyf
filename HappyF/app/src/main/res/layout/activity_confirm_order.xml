@@ -273,7 +273,7 @@
                 <ImageView
                     android:layout_width="10dp"
                     android:layout_height="10dp"
-                    android:src="@drawable/logo" />
+                    android:src="@drawable/shell" />
 
                 <TextView
                     android:id="@+id/tv_shell_price"

@@ -37,9 +37,9 @@ public class ArticleListAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    public void updateItem(int index, Article article) {
-        articleList.remove(index);
-        articleList.add(index, article);
+    public void addData(List<Article> articles) {
+        articleList.addAll(articles);
+
         notifyDataSetChanged();
     }
 
@@ -91,7 +91,7 @@ public class ArticleListAdapter extends BaseAdapter {
             tvtitle2.setText(article.desc);
             tvAuthorName.setText(article.authorName);
             tvDate.setText(article.date);
-            tvReadCount.setText(article.read_count + ct.getResources().getString(R.string.article_read_count));
+            tvReadCount.setText(article.readCount + ct.getResources().getString(R.string.article_read_count));
 
 
         }
