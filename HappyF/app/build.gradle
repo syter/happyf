@@ -4,8 +4,8 @@ android {
     signingConfigs {
         config {
             keyAlias 'key0'
-//            storeFile file('D:/work/happyf/HappyF/signKey.jks')
-            storeFile file('E:/happyf/documents/东海渔趣/安卓签名/signKey.jks')
+            storeFile file('D:/work/happyf/HappyF/signKey.jks')
+//            storeFile file('E:/happyf/documents/东海渔趣/安卓签名/signKey.jks')
             storePassword 'wukan82925'
             keyPassword 'wukan82925'
         }
@@ -72,6 +72,7 @@ dependencies {
     compile 'io.github.mayubao:pay_library:1.0.1'
     compile "com.github.mancj:SlideUp-Android:2.2.8"
     compile 'com.github.hackware1993:MagicIndicator:1.5.0'
+    compile 'com.pixplicity.multiviewpager:library:1.0'
     implementation 'com.yanzhenjie.nohttp:nohttp:1.1.11'
     implementation 'com.yanzhenjie.nohttp:okhttp:1.1.11'
     implementation files('libs/BaiduLBS_Android.jar')

@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:titlebar="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.sky.happyf.activity.ClubActivity">
 
     <com.wuhenzhizao.titlebar.widget.CommonTitleBar
         android:id="@+id/titlebar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        titlebar:centerText="@string/vip_title"
+        titlebar:centerText="@string/club_title"
         titlebar:centerType="textView"
         titlebar:leftDrawable="@drawable/comm_titlebar_back_normal"
         titlebar:leftDrawablePadding="0dp"
@@ -19,153 +20,182 @@
         titlebar:statusBarColor="@color/white"
         titlebar:statusBarMode="dark" />
 
-    <TextView
-        android:id="@+id/tv_desc1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/titlebar"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="20dp"
-        android:text="vip权限" />
-
-    <TextView
-        android:id="@+id/tv_desc2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_desc1"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="20dp"
-        android:text="vip权限说明，BGAProgressBar-Android 带百分比数字的水平、圆形进度条 \n1. 类似 iOS 带弹簧效果的左右滑动控件，可作为 AbsListView 和 RecyclerView 的 item
-谷爹的 support 包 \n2. BGABaseAdapter-Android 在 AdapterView 和 RecyclerView 中通用的 Adapter 和 ViewHolder。RecyclerView 支持 DataBinding 、多种 Item 类型、添加 Header 和 Footer。RecyclerView 竖直方向通用分割线 BGADivider，吸顶分类 \n3. BGAProgressBar-Android 带百分比数字的水平、圆形进度条 \n4. 代码是最好的老师，更多详细用法请查看" />
-
     <RelativeLayout
-        android:id="@+id/rl_middle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_desc2"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginRight="20dp">
+        android:id="@+id/rl_name"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_below="@id/titlebar"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/input_boder">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="贝壳抵用（余额：xxx）" />
-
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true" />
+        <EditText
+            android:id="@+id/et_name"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:background="@null"
+            android:hint="@string/club_name_hint"
+            android:lines="1"
+            android:maxLines="1"
+            android:paddingLeft="13dp"
+            android:textColor="@color/gray_text_2"
+            android:textColorHint="@color/gray_text_1"
+            android:textCursorDrawable="@drawable/edittext_cursor"
+            android:textSize="14sp" />
 
     </RelativeLayout>
 
-    <LinearLayout
-        android:id="@+id/ll_bottom"
+    <RelativeLayout
+        android:id="@+id/rl_phone"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_below="@+id/rl_middle"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginRight="20dp"
-        android:background="@drawable/border_style"
-        android:orientation="horizontal"
-        android:weightSum="3">
+        android:layout_height="44dp"
+        android:layout_below="@id/titlebar"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/input_boder">
 
-        <LinearLayout
+        <EditText
+            android:id="@+id/et_phone"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:background="@null"
+            android:hint="@string/club_phone_hint"
+            android:lines="1"
+            android:maxLines="1"
+            android:paddingLeft="13dp"
+            android:textColor="@color/gray_text_2"
+            android:textColorHint="@color/gray_text_1"
+            android:textCursorDrawable="@drawable/edittext_cursor"
+            android:textSize="14sp" />
 
-            android:id="@+id/ll_one"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:background="@color/skyblue"
-            android:gravity="center"
-            android:orientation="vertical">
+    </RelativeLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="一个月" />
+    <RelativeLayout
+        android:id="@+id/rl_id"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_below="@id/titlebar"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/input_boder">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="￥300" />
+        <EditText
+            android:id="@+id/et_id"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:background="@null"
+            android:hint="@string/club_id_hint"
+            android:lines="1"
+            android:maxLines="1"
+            android:paddingLeft="13dp"
+            android:textColor="@color/gray_text_2"
+            android:textColorHint="@color/gray_text_1"
+            android:textCursorDrawable="@drawable/edittext_cursor"
+            android:textSize="14sp" />
 
-        </LinearLayout>
+    </RelativeLayout>
 
-        <LinearLayout
-            android:layout_width="0.1dp"
-            android:layout_height="match_parent"
-            android:background="@color/darkgray"></LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_two"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:background="@color/white"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="三个月" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="￥800" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0.1dp"
-            android:layout_height="match_parent"
-            android:background="@color/darkgray"></LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_three"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:background="@color/white"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="十二个月" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="￥1500" />
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/btn_bevip"
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ll_bottom"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-        android:text="成为会员" />
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/club_address" />
 
-</RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/rl_address"
+        android:layout_width="match_parent"
+        android:layout_height="105dp"
+        android:layout_below="@id/titlebar"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/input_boder">
+
+
+        <ImageView
+            android:id="@+id/iv_address"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/address" />
+
+        <RelativeLayout
+            android:id="@+id/rl_hasaddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@+id/iv_right"
+            android:layout_toRightOf="@id/iv_address"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tv_address_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_address_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_address_name"
+                android:layout_marginTop="5dp"
+                android:maxLines="2"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+            <TextView
+
+                android:id="@+id/tv_address_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_marginTop="16dp"
+                android:layout_toRightOf="@+id/tv_address_name"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_address_empty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@+id/iv_right"
+            android:layout_toRightOf="@+id/iv_address"
+            android:text="@string/club_address_txt" />
+
+        <ImageView
+            android:id="@+id/iv_right"
+            android:layout_width="8dp"
+            android:layout_height="16dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="12dp"
+            android:src="@drawable/right" />
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btn_submit"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginLeft="18dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginRight="18dp"
+        android:background="@drawable/button_style_2"
+        android:text="@string/club_submit"
+        android:textColor="@color/white" />
+
+</LinearLayout>

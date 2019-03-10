@@ -48,6 +48,7 @@ public class Constants {
     public static final String PATH_GET_CATEGORY = "/Api/Info/getInfoCates";
     public static final String PATH_GET_ARTICLE = "/Api/Info/getInfoList";
     public static final String PATH_GET_ARTICLE_DETAIL = "/Api/Info/getInfo";
+    public static final String PATH_GET_RANKS = "/Api/Info/getInfo";
 
 
 

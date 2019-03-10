@@ -103,8 +103,19 @@
     <string name="order_contact_phone">客服电话</string>
     <string name="order_contact_weixin">客服微信</string>
 
-    <!-- vip -->
-    <string name="vip_title">VIP</string>
+    <!-- club -->
+    <string name="club_title">俱乐部</string>
+    <string name="club_name_hint">姓名</string>
+    <string name="club_phone_hint">电话</string>
+    <string name="club_id_hint">身份证号</string>
+    <string name="club_address">入会装备收货地址</string>
+    <string name="club_address_txt">您还未添加收货地址去添加</string>
+    <string name="club_submit">提交并付款</string>
+    <string name="club_name_empty">请输入姓名</string>
+    <string name="club_phone_empty">请输入电话</string>
+    <string name="club_id_empty">请输入身份证号</string>
+    <string name="club_address_empty">请选择一个地址</string>
+
 
     <!-- 出海记录 -->
     <string name="happylist_title">出海记录</string>
