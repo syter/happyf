@@ -30,7 +30,7 @@ public class RankListActivity extends BaseActivity {
     private MultiViewPager mvpImage;
     private TextView tvFishDestiny, tvDate;
     private TopFishPagerAdapter topAdapter;
-    private ArrayList<Rank> ranks;
+    private ArrayList<Rank> ranks = new ArrayList<>();
     private RankManager rankManager;
     private LinearLayout llRank;
 
@@ -61,6 +61,9 @@ public class RankListActivity extends BaseActivity {
         topAdapter = new TopFishPagerAdapter(mvpImage, getSupportFragmentManager(), new TopFishEventListener() {
             @Override
             public void onTopFishChanged(int position) {
+                if (ranks.isEmpty()) {
+                    return;
+                }
                 Rank rank = ranks.get(position);
                 tvFishDestiny.setText(rank.fishName);
                 tvDate.setText(rank.date);
@@ -137,8 +140,9 @@ public class RankListActivity extends BaseActivity {
                             dip2px(RankListActivity.this, 60), ViewGroup.LayoutParams.MATCH_PARENT);
                     LinearLayout llRight = new LinearLayout(RankListActivity.this);
                     llRightParams.leftMargin = Utils.dip2px(RankListActivity.this, 10);
+                    llRightParams.rightMargin = Utils.dip2px(RankListActivity.this, 10);
                     llRightParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-                    llRight.setLayoutParams(tvPhoneParams);
+                    llRight.setLayoutParams(llRightParams);
                     llRight.setGravity(Gravity.RIGHT | Gravity.CENTER_VERTICAL);
                     llRight.setOrientation(LinearLayout.VERTICAL);
                     rlRank.addView(llRight);
@@ -162,7 +166,7 @@ public class RankListActivity extends BaseActivity {
 
             }
         });
-//        topAdapter.setFishs(fishs);
+        topAdapter.setFishs(ranks);
         mvpImage.setAdapter(topAdapter);
         mvpImage.addOnPageChangeListener(topAdapter);
         topAdapter.onPageSelected(0);
