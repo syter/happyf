@@ -37,6 +37,7 @@
                     android:layout_marginBottom="35dp">
 
                     <TextView
+                        android:id="@+id/tv_high_wave"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="涨潮：14：20 潮高1.6米"
@@ -44,6 +45,7 @@
                         android:textSize="14sp" />
 
                     <TextView
+                        android:id="@+id/tv_low_wave"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
@@ -63,8 +65,13 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="180dp"
-                    android:background="@color/blue">
+                    android:alpha="0.3"
+                    android:background="@color/black">
 
+                    <com.sky.happyf.view.HorizontalListView
+                        android:id="@+id/horizontal_lv_weather"
+                        android:layout_width="match_parent"
+                        android:layout_height="180dp"></com.sky.happyf.view.HorizontalListView>
                 </RelativeLayout>
             </LinearLayout>
         </RelativeLayout>
@@ -167,6 +174,7 @@
                 android:visibility="gone">
 
                 <ImageView
+                    android:id="@+id/iv_weather"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:src="@drawable/weather_cloud" />
@@ -197,6 +205,7 @@
                 android:orientation="vertical">
 
                 <LinearLayout
+                    android:id="@+id/ll_fit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -227,7 +236,7 @@
 
 
                 <TextView
-                    android:id="@+id/tv_top_fish"
+                    android:id="@+id/tv_fit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
