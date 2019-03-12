@@ -73,6 +73,7 @@ dependencies {
     compile "com.github.mancj:SlideUp-Android:2.2.8"
     compile 'com.github.hackware1993:MagicIndicator:1.5.0'
     compile 'com.pixplicity.multiviewpager:library:1.0'
+    compile 'com.github.PhilJay:MPAndroidChart:v3.0.0'
     implementation 'com.yanzhenjie.nohttp:nohttp:1.1.11'
     implementation 'com.yanzhenjie.nohttp:okhttp:1.1.11'
     implementation files('libs/BaiduLBS_Android.jar')

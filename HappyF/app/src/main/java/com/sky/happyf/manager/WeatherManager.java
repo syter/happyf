@@ -3,6 +3,7 @@ package com.sky.happyf.manager;
 import android.content.Context;
 import android.os.Handler;
 
+import com.sky.happyf.Model.Club;
 import com.sky.happyf.Model.Weather;
 import com.sky.happyf.R;
 import com.sky.happyf.util.Constants;
@@ -25,9 +26,61 @@ public class WeatherManager extends Observable {
         handler = new Handler();
     }
 
-    public void getWeathers(final WeatherManager.FetchWeathersCallback callback) {
+    public void getClubs(final WeatherManager.FetchClubsCallback callback) {
         if (Constants.IS_DEBUG) {
-            getLocalWeathers(callback);
+            getLocalClubs(callback);
+            return;
+        }
+        Map<String, String> params = new TreeMap<String, String>();
+//        params.put("type", "login");
+        NetUtils.post(ct, params, Constants.PATH_GET_CLUBS, new NetUtils.NetCallback() {
+            @Override
+            public void onFailure(final String errorMsg) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (callback != null) {
+                            callback.onFailure(errorMsg);
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onFinish(JSONObject data) {
+                try {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (callback != null) {
+                                callback.onFinish(new ArrayList<Club>());
+                            }
+                        }
+                    });
+                } catch (Exception e) {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (callback != null) {
+                                callback.onFailure(ct.getResources().getString(R.string.common_error));
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    public void getLocalClubs(final WeatherManager.FetchClubsCallback callback) {
+        if (callback != null) {
+            callback.onFinish(new ArrayList<Club>());
+        }
+    }
+
+
+    public void getWeathers(final Club club, final WeatherManager.FetchWeathersCallback callback) {
+        if (Constants.IS_DEBUG) {
+            getLocalWeathers(club, callback);
             return;
         }
         Map<String, String> params = new TreeMap<String, String>();
@@ -70,7 +123,7 @@ public class WeatherManager extends Observable {
         });
     }
 
-    public void getLocalWeathers(final WeatherManager.FetchWeathersCallback callback) {
+    public void getLocalWeathers(final Club club, final WeatherManager.FetchWeathersCallback callback) {
         if (callback != null) {
             callback.onFinish(new ArrayList<Weather>());
         }
@@ -82,4 +135,12 @@ public class WeatherManager extends Observable {
 
         public void onFinish(List<Weather> data);
     }
+
+    public interface FetchClubsCallback {
+        public void onFailure(String errorMsg);
+
+        public void onFinish(List<Club> data);
+    }
+
+
 }

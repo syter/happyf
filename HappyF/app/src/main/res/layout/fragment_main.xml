@@ -5,6 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <com.contrarywind.view.WheelView
+        android:id="@+id/clubs_selector"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+
+
+
 
     <ScrollView
         android:id="@+id/sv_bg"
@@ -34,7 +43,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:layout_marginBottom="35dp">
+                    android:layout_marginBottom="5dp">
 
                     <TextView
                         android:id="@+id/tv_high_wave"
@@ -58,14 +67,22 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
-                    android:layout_marginBottom="20dp">
+                    android:layout_marginBottom="50dp">
 
+                    <com.github.mikephil.charting.charts.LineChart
+                        android:id="@+id/lc_wave"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@color/white"
+                        android:alpha="0.6" />
                 </RelativeLayout>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="180dp"
-                    android:alpha="0.3"
+                    android:alpha="0.6"
                     android:background="@color/black">
 
                     <com.sky.happyf.view.HorizontalListView
@@ -256,6 +273,8 @@
 
         </LinearLayout>
     </LinearLayout>
+
+
 
 
 </RelativeLayout>

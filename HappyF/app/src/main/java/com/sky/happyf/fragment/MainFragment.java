@@ -1,5 +1,6 @@
 package com.sky.happyf.fragment;
 
+import android.graphics.DashPathEffect;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,7 +16,21 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bigkoo.pickerview.adapter.ArrayWheelAdapter;
 import com.bumptech.glide.Glide;
+import com.contrarywind.listener.OnItemSelectedListener;
+import com.contrarywind.view.WheelView;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.sky.happyf.Model.Club;
 import com.sky.happyf.Model.Weather;
 import com.sky.happyf.R;
 import com.sky.happyf.adapter.MainWeatherAdapter;
@@ -39,6 +54,10 @@ public class MainFragment extends Fragment {
     private HorizontalListView horizontalLvWeather;
     private MainWeatherAdapter mainWeatherAdapter;
     private WeatherManager weatherManager;
+    private WheelView clubsSelector;
+    private Club currentClub;
+    private LineChart lcWave;
+    private LineDataSet set1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -54,6 +73,8 @@ public class MainFragment extends Fragment {
     }
 
     private void initView() {
+        lcWave = view.findViewById(R.id.lc_wave);
+        clubsSelector = view.findViewById(R.id.clubs_selector);
         ivWeather = view.findViewById(R.id.iv_weather);
         tvHighWave = view.findViewById(R.id.tv_high_wave);
         tvLowWave = view.findViewById(R.id.tv_low_wave);
@@ -62,7 +83,7 @@ public class MainFragment extends Fragment {
         tvDesc1 = view.findViewById(R.id.tv_desc_1);
         tvTemp2 = view.findViewById(R.id.tv_temp_2);
         tvDesc2 = view.findViewById(R.id.tv_desc_2);
-        tvFit = view.findViewById(R.id.tv_top_fish);
+        tvFit = view.findViewById(R.id.tv_fit);
         tvTopWind = view.findViewById(R.id.tv_top_wind);
         llTopLeft1 = view.findViewById(R.id.ll_top_left_1);
         llTopLeft2 = view.findViewById(R.id.ll_top_left_2);
@@ -97,11 +118,179 @@ public class MainFragment extends Fragment {
         params3.width = halfScreenWidth;
         llTopRight.setLayoutParams(params3);
 
+        clubsSelector.setCyclic(false);
+
+
+        //设置手势滑动事件
+//        lcWave.setOnChartGestureListener(this);
+        //设置数值选择监听
+//        lcWave.setOnChartValueSelectedListener(this);
+        //后台绘制
+        lcWave.setDrawGridBackground(false);
+        //设置描述文本
+        lcWave.getDescription().setEnabled(false);
+        //设置支持触控手势
+        lcWave.setTouchEnabled(true);
+        //设置缩放
+        lcWave.setDragEnabled(true);
+        //设置推动
+        lcWave.setScaleEnabled(true);
+        //如果禁用,扩展可以在x轴和y轴分别完成
+        lcWave.setPinchZoom(true);
+
+        lcWave.setNoDataText("暂无数据");
+
+
+        XAxis xAxis = lcWave.getXAxis();
+        xAxis.enableGridDashedLine(10f, 10f, 0f);
+        //设置x轴的最大值
+//        xAxis.setAxisMaximum(100f);
+        //设置x轴的最小值
+        xAxis.setAxisMinimum(0f);
+        //设置x轴的显示位置
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        //设置X轴值为字符串
+        xAxis.setValueFormatter(new IAxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                String hour = String.valueOf((int) value);
+                if (hour.length() == 1) {
+                    return "0" + hour + ":00";
+                } else {
+                    return hour + ":00";
+                }
+            }
+
+            @Override
+            public int getDecimalDigits() {
+                return 0;
+            }
+        });
+
+        YAxis leftAxis = lcWave.getAxisLeft();
+        //重置所有限制线,以避免重叠线
+        leftAxis.removeAllLimitLines();
+        //y轴最大
+//        leftAxis.setAxisMaximum(200f);
+        //y轴最小
+        leftAxis.setAxisMinimum(0f);
+        leftAxis.enableGridDashedLine(10f, 10f, 0f);
+        leftAxis.setDrawZeroLine(false);
+
+        // 限制数据(而不是背后的线条勾勒出了上面)
+        leftAxis.setDrawLimitLinesBehindData(true);
+        leftAxis.setValueFormatter(new IAxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                String wave = String.valueOf((int) value);
+                return wave + "米";
+            }
+
+            @Override
+            public int getDecimalDigits() {
+                return 0;
+            }
+        });
+
+        //默认动画
+        lcWave.animateX(500);
+        //刷新
+        //mChart.invalidate();
+
+        // 得到这个文字
+        Legend l = lcWave.getLegend();
+
+        // 修改文字 ...
+        l.setForm(Legend.LegendForm.LINE);
+        l.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
+
+        lcWave.getAxisRight().setEnabled(false);
+    }
+
+    //传递数据集
+    private void setLineChartData(ArrayList<Entry> values) {
+        if (lcWave.getData() != null && lcWave.getData().getDataSetCount() > 0) {
+            set1 = (LineDataSet) lcWave.getData().getDataSetByIndex(0);
+            set1.setValues(values);
+            lcWave.getData().notifyDataChanged();
+            lcWave.notifyDataSetChanged();
+        } else {
+            // 创建一个数据集,并给它一个类型
+            set1 = new LineDataSet(values, "每小时潮浪高度");
+
+            // 在这里设置线
+//            set1.enableDashedLine(10f, 5f, 0f);
+//            set1.enableDashedHighlightLine(10f, 5f, 0f);
+            set1.setColor(getActivity().getColor(R.color.line_chart));
+            set1.setCircleColor(getActivity().getColor(R.color.line_chart));
+            set1.setLineWidth(2f);
+            set1.setCircleRadius(3f);
+            set1.setDrawCircleHole(false);
+            set1.setValueTextSize(9f);
+            set1.setDrawFilled(true);
+            set1.setFormLineWidth(1f);
+            set1.setFormLineDashEffect(new DashPathEffect(new float[]{10f, 5f}, 0f));
+            set1.setFormSize(15.f);
+
+            // 不填充
+            set1.setDrawFilled(false);
+            set1.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+
+            lcWave.setAutoScaleMinMaxEnabled(!lcWave.isAutoScaleMinMaxEnabled());
+//            if (Utils.getSDKInt() >= 18) {
+//                // 填充背景只支持18以上
+//                //Drawable drawable = ContextCompat.getDrawable(this, R.mipmap.ic_launcher);
+//                //set1.setFillDrawable(drawable);
+//                set1.setFillColor(Color.YELLOW);
+//            } else {
+//                set1.setFillColor(Color.TRANSPARENT);
+//            }
+            ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
+            //添加数据集
+            dataSets.add(set1);
+
+            //创建一个数据集的数据对象
+            LineData data = new LineData(dataSets);
+
+            //谁知数据
+            lcWave.setData(data);
+        }
     }
 
     private void initData() {
         weatherManager = new WeatherManager(getActivity());
-        weatherManager.getWeathers(new WeatherManager.FetchWeathersCallback() {
+
+        weatherManager.getClubs(new WeatherManager.FetchClubsCallback() {
+            @Override
+            public void onFailure(String errorMsg) {
+                Toast.makeText(getActivity(), errorMsg, Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onFinish(final List<Club> data) {
+                final List<String> items = new ArrayList<>();
+                currentClub = data.get(0);
+                for (Club club : data) {
+                    items.add(club.name);
+                }
+
+                clubsSelector.setAdapter(new ArrayWheelAdapter(items));
+                clubsSelector.setOnItemSelectedListener(new OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(int index) {
+                        currentClub = data.get(index);
+//                        Toast.makeText(MainActivity.this, "" + mOptionsItems.get(index), Toast.LENGTH_SHORT).show();
+                        initWeather();
+                    }
+                });
+
+                initWeather();
+            }
+        });
+    }
+
+    private void initWeather() {
+        weatherManager.getWeathers(currentClub, new WeatherManager.FetchWeathersCallback() {
             @Override
             public void onFailure(String errorMsg) {
                 Toast.makeText(getActivity(), errorMsg, Toast.LENGTH_LONG).show();
@@ -138,6 +327,19 @@ public class MainFragment extends Fragment {
                     }
                 }
                 mainWeatherAdapter.applyData(futureWeatherList);
+
+                // 初始化中间表格数据
+                ArrayList<Entry> values = new ArrayList<Entry>();
+                values.add(new Entry(0, 16));
+                values.add(new Entry(1, 5));
+                values.add(new Entry(2, 6));
+                values.add(new Entry(3, 12));
+                values.add(new Entry(4, 3));
+                values.add(new Entry(5, 1));
+                values.add(new Entry(6, 11));
+                values.add(new Entry(7, 3));
+                //设置数据
+                setLineChartData(values);
             }
         });
     }

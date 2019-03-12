@@ -7,7 +7,7 @@ public class Constants {
     public static final boolean IS_DEBUG = false;
     public static final String EXP_URL = "http://www.ruiqisky.com";
     public static final String BUGLY_APPKEY = "3bf0ab6970";
-    public static final String HOST = "dev.ruiqisky.com/shop";
+    public static final String HOST = "shop.dbx-game.com";
     //  public static final String HOST = "192.168.0.151/shop";
     public static final boolean IS_HTTP = true;
 
@@ -49,6 +49,7 @@ public class Constants {
     public static final String PATH_GET_ARTICLE = "/Api/Info/getInfoList";
     public static final String PATH_GET_ARTICLE_DETAIL = "/Api/Info/getInfo";
     public static final String PATH_GET_RANKS = "/Api/Info/getInfo";
+    public static final String PATH_GET_CLUBS = "/Api/Info/getInfo";
 
 
 

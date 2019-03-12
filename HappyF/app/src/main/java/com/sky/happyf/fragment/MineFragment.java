@@ -192,15 +192,28 @@ public class MineFragment extends Fragment {
     }
 
     public void initData() {
-        User user = SpfHelper.getInstance(getActivity()).getMyUserInfo();
-        tvName.setText(user.name);
-        tvExp.setText(user.exp + "/" + user.maxExp);
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) llCurrentExp.getLayoutParams();
-        BigDecimal currentExp = new BigDecimal(user.exp);
-        BigDecimal exp = new BigDecimal(user.maxExp);
-        BigDecimal widthBD = currentExp.divide(exp).setScale(2, BigDecimal.ROUND_HALF_UP);
-        int width = Utils.dip2px(getActivity(), 200) * widthBD.intValue();
-        params.width = width;
-        llCurrentExp.setLayoutParams(params);
+        if (SpfHelper.getInstance(getActivity()).hasSignIn()) {
+            User user = SpfHelper.getInstance(getActivity()).getMyUserInfo();
+            tvName.setText(user.name);
+            tvExp.setText(user.exp + "/" + user.maxExp);
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) llCurrentExp.getLayoutParams();
+            BigDecimal currentExp = new BigDecimal(user.exp);
+            BigDecimal exp = new BigDecimal(user.maxExp);
+            BigDecimal widthBD = currentExp.divide(exp).setScale(2, BigDecimal.ROUND_HALF_UP);
+            int width = Utils.dip2px(getActivity(), 200) * widthBD.intValue();
+            params.width = width;
+            llCurrentExp.setLayoutParams(params);
+
+        } else {
+            tvName.setText("未登录");
+            tvExp.setText(0 + "/" + 100);
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) llCurrentExp.getLayoutParams();
+            BigDecimal currentExp = new BigDecimal(0);
+            BigDecimal exp = new BigDecimal(100);
+            BigDecimal widthBD = currentExp.divide(exp).setScale(2, BigDecimal.ROUND_HALF_UP);
+            int width = Utils.dip2px(getActivity(), 200) * widthBD.intValue();
+            params.width = width;
+            llCurrentExp.setLayoutParams(params);
+        }
     }
 }
