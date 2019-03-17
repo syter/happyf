@@ -4,20 +4,14 @@ import android.content.Context;
 import android.os.Handler;
 
 import com.sky.happyf.Model.CartPrice;
-import com.sky.happyf.Model.QuickwayType;
-import com.sky.happyf.Model.ShopBanner;
 import com.sky.happyf.Model.User;
 import com.sky.happyf.R;
 import com.sky.happyf.util.Constants;
 import com.sky.happyf.util.NetUtils;
 import com.sky.happyf.util.SpfHelper;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.TreeMap;
@@ -117,11 +111,12 @@ public class UserManager extends Observable {
             @Override
             public void onFinish(JSONObject data) {
                 try {
+                    final String code = data.optString("code");
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
                             if (callback != null) {
-                                callback.onFinish("");
+                                callback.onFinish(code);
                             }
                         }
                     });
@@ -357,6 +352,59 @@ public class UserManager extends Observable {
     }
 
     public void editUserInfoLocal(final String name, final FetchCommonCallback callback) {
+        if (callback != null) {
+            callback.onFinish("");
+        }
+    }
+
+    public void updatePwd(final String code, final String password, final FetchCommonCallback callback) {
+        if (Constants.IS_DEBUG) {
+            updateLocalPwd(code, password, callback);
+            return;
+        }
+        Map<String, String> params = new TreeMap<String, String>();
+        params.put("user_id", SpfHelper.getInstance(ct).getMyUserInfo().id);
+        params.put("password", password);
+        params.put("valid_code", code);
+        NetUtils.post(ct, params, Constants.PATH_UPDATE_PWD, new NetUtils.NetCallback() {
+            @Override
+            public void onFailure(final String errorMsg) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (callback != null) {
+                            callback.onFailure(errorMsg);
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onFinish(final JSONObject data) {
+                try {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (callback != null) {
+                                callback.onFinish("");
+                            }
+                        }
+                    });
+                } catch (Exception e) {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (callback != null) {
+                                callback.onFailure(ct.getResources().getString(R.string.common_error));
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    public void updateLocalPwd(final String code, final String password, final FetchCommonCallback callback) {
         if (callback != null) {
             callback.onFinish("");
         }

@@ -6,9 +6,12 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
+import com.sky.happyf.R;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -208,5 +211,63 @@ public class Utils {
         return null;
     }
 
+    public static void setWeatherImage(Context ct, String weatherType, ImageView ivWeather) {
+        // https://www.seniverse.com/doc#code
+        switch (weatherType) {
+            case "0":
+            case "1":
+            case "2":
+            case "3":
+            case "38":
+                Glide.with(ct).load(R.drawable.weather_sunny).into(ivWeather);
+                break;
+            case "4":
+            case "9":
+                Glide.with(ct).load(R.drawable.weather_cloudy).into(ivWeather);
+                break;
+            case "5":
+            case "6":
+            case "7":
+            case "8":
+                Glide.with(ct).load(R.drawable.weather_cloud).into(ivWeather);
+                break;
+            case "10":
+            case "11":
+            case "12":
+            case "15":
+            case "19":
+            case "20":
+                Glide.with(ct).load(R.drawable.weather_rain).into(ivWeather);
+                break;
+            case "16":
+            case "17":
+            case "18":
+                Glide.with(ct).load(R.drawable.weather_thunder).into(ivWeather);
+                break;
+            case "13":
+                Glide.with(ct).load(R.drawable.weather_lrain).into(ivWeather);
+                break;
+            case "14":
+                Glide.with(ct).load(R.drawable.weather_lrain).into(ivWeather);
+                break;
+            case "21":
+            case "22":
+            case "23":
+            case "24":
+            case "25":
+                Glide.with(ct).load(R.drawable.weather_snow).into(ivWeather);
+                break;
+            default:
+                Glide.with(ct).load(R.drawable.weather_sunny).into(ivWeather);
+                break;
+        }
+    }
 
+    public static String getTimeByIndex(String timeIndex) {
+        if (timeIndex.length() == 1) {
+            return "0" + timeIndex + ":00";
+        } else {
+            return timeIndex + ":00";
+        }
+    }
 }

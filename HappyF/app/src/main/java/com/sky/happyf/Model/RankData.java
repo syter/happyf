@@ -9,6 +9,7 @@ public class RankData implements Serializable {
     public String phone;
     public String weight;
     public String length;
+    public String userLevel;
 
 
     public RankData() {

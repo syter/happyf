@@ -10,6 +10,7 @@ public class Constants {
     public static final String HOST = "shop.dbx-game.com";
     //  public static final String HOST = "192.168.0.151/shop";
     public static final boolean IS_HTTP = true;
+    public static final String WEATHER_APIKEY = "y6n2gh1kfmmmuomb";
 
 
     public static final String HTTP = "http://";
@@ -21,6 +22,7 @@ public class Constants {
     public static final String PATH_GET_LOGIN_CODE = "/Api/User/sendMsg";
     public static final String PATH_LOGIN = "/Api/User/register";
     public static final String PATH_LOGIN_BY_PWD = "/Api/User/login";
+    public static final String PATH_UPDATE_PWD = "/Api/User/setPsd";
     public static final String PATH_SEARCH_GOODS = "/Api/Shop/searchList";
     public static final String PATH_GET_SHOP_BANNER = "/Api/Shop/getBanners";
     public static final String PATH_GET_SHOP_TYPES = "/Api/Shop/getShopCates";
@@ -48,10 +50,16 @@ public class Constants {
     public static final String PATH_GET_CATEGORY = "/Api/Info/getInfoCates";
     public static final String PATH_GET_ARTICLE = "/Api/Info/getInfoList";
     public static final String PATH_GET_ARTICLE_DETAIL = "/Api/Info/getInfo";
-    public static final String PATH_GET_RANKS = "/Api/Info/getInfo";
-    public static final String PATH_GET_CLUBS = "/Api/Info/getInfo";
+    public static final String PATH_GET_RANKS = "/Api/User/getRankList";
+    public static final String PATH_GET_CLUBS = "/Api/Sea/getFishBaseList";
 
 
+
+
+    public static final String WEATHER_URL = "https://api.seniverse.com/v3/";
+    public static final String WEATHER_PATH_WEATHER_NOW = WEATHER_URL + "weather/now.json";
+    public static final String WEATHER_PATH_WEATHER = WEATHER_URL + "weather/daily.json";
+    public static final String WEATHER_PATH_TIDE = WEATHER_URL + "tide/daily.json";
 
 
 

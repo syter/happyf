@@ -163,6 +163,56 @@ public class NetUtils {
         }).start();
     }
 
+    public static void pureGet(final Context ct, final Map<String, String> params, final String apiUrl, final NetCallback callback) {
+        if (!Utils.isNetworkConnected(ct)) {
+            if (callback != null) {
+                callback.onFailure(ct.getString(R.string.net_error));
+                return;
+            }
+        }
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    // 排序参数，然后获得加密后的sign，用来做验证
+                    Map<String, String> resultMap = Utils.sortMapByKey(params);
+                    StringBuilder sb = new StringBuilder();
+                    for (Map.Entry<String, String> entry : resultMap.entrySet()) {
+                        sb.append(entry.getKey() + "=" + entry.getValue() + "&");
+                    }
+                    String source = "";
+                    if (sb.length() > 0) {
+                        source = sb.substring(0, sb.length() - 1);
+                    }
+
+                    String url = apiUrl + "?" + source;
+                    Logger.d("NetUtils pureGet --- current url = " + url);
+
+                    OkHttpClient client = new OkHttpClient();
+                    Request request = new Request.Builder()
+                            .url(url)
+                            .build();
+
+                    Response response = client.newCall(request).execute();
+                    String bodyStr = response.body().string();
+                    Logger.d("NetUtils pureGet --- current response = " + bodyStr);
+
+                    JSONObject responseObject = new JSONObject(bodyStr);
+                    if (callback != null) {
+                        callback.onFinish(responseObject);
+                    }
+
+                } catch (Exception e) {
+                    Logger.e("NetUtils pureGet --- e = " + e.toString());
+                    if (callback != null) {
+                        callback.onFailure(ct.getResources().getString(R.string.common_error));
+                    }
+                }
+            }
+        }).start();
+    }
+
     public interface NetCallback {
         public void onFailure(String errorMsg);
 

@@ -5,13 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.contrarywind.view.WheelView
-        android:id="@+id/clubs_selector"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-
-
 
 
 
@@ -49,7 +42,6 @@
                         android:id="@+id/tv_high_wave"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="涨潮：14：20 潮高1.6米"
                         android:textColor="@color/white"
                         android:textSize="14sp" />
 
@@ -58,7 +50,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:text="落潮：18：00 潮高4.3米"
                         android:textColor="@color/white"
                         android:textSize="14sp" />
 
@@ -115,6 +106,7 @@
                 android:textSize="18sp" />
 
             <LinearLayout
+                android:id="@+id/ll_club"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -128,10 +120,10 @@
                     android:src="@drawable/location" />
 
                 <TextView
+                    android:id="@+id/tv_club_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
-                    android:text="俱乐部基地"
                     android:textColor="@color/white"
                     android:textSize="12sp" />
 
@@ -160,7 +152,6 @@
                         android:id="@+id/tv_temp_1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="-24"
                         android:textColor="@color/white"
                         android:textSize="85sp" />
 
@@ -177,7 +168,6 @@
                     android:id="@+id/tv_desc_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="17℃/11℃ 多云"
                     android:textColor="@color/white"
                     android:textSize="18sp" />
             </LinearLayout>
@@ -208,7 +198,6 @@
                     android:id="@+id/tv_desc_2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="多云"
                     android:textColor="@color/white"
                     android:textSize="17sp" />
             </LinearLayout>
@@ -228,26 +217,6 @@
                     android:layout_marginTop="10dp"
                     android:orientation="horizontal">
 
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="12dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:src="@drawable/main_fish" />
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="12dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:src="@drawable/main_fish" />
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="12dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:src="@drawable/main_fish" />
 
                 </LinearLayout>
 
@@ -257,7 +226,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:text="非常适合钓鱼"
                     android:textColor="@color/white"
                     android:textSize="15sp" />
 
@@ -266,7 +234,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="西北风1-3级"
                     android:textColor="@color/white"
                     android:textSize="24sp" />
             </LinearLayout>

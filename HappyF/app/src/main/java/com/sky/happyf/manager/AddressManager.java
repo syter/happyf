@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Handler;
 
 import com.sky.happyf.Model.Address;
-import com.sky.happyf.Model.Cart;
 import com.sky.happyf.R;
 import com.sky.happyf.util.Constants;
 import com.sky.happyf.util.NetUtils;
@@ -15,7 +14,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
@@ -38,7 +36,7 @@ public class AddressManager extends Observable {
         }
         Map<String, String> params = new TreeMap<String, String>();
         params.put("user_id", SpfHelper.getInstance(ct).getMyUserInfo().id);
-        NetUtils.get(ct, params, Constants.PATH_GET_DEFAULT_ADDRESS, new NetUtils.NetCallback() {
+        NetUtils.post(ct, params, Constants.PATH_GET_DEFAULT_ADDRESS, new NetUtils.NetCallback() {
             @Override
             public void onFailure(final String errorMsg) {
                 handler.post(new Runnable() {
@@ -102,7 +100,7 @@ public class AddressManager extends Observable {
         }
         Map<String, String> params = new TreeMap<String, String>();
         params.put("user_id", SpfHelper.getInstance(ct).getMyUserInfo().id);
-        NetUtils.get(ct, params, Constants.PATH_GET_ADDRESS_LIST, new NetUtils.NetCallback() {
+        NetUtils.post(ct, params, Constants.PATH_GET_ADDRESS_LIST, new NetUtils.NetCallback() {
             @Override
             public void onFailure(final String errorMsg) {
                 handler.post(new Runnable() {

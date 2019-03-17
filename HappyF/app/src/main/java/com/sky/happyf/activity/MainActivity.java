@@ -1,8 +1,7 @@
 package com.sky.happyf.activity;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -222,7 +221,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent messageEvent) {
-        if (Constants.EVENT_MESSAGE_EDIT_USER.equals(messageEvent.getMessage())) {
+        if (Constants.EVENT_MESSAGE_EDIT_USER.equals(messageEvent.getMessage()) ||
+                Constants.EVENT_MESSAGE_LOGIN.equals(messageEvent.getMessage())) {
             ((MineFragment) fragments.get(PAGE_MINE)).initData();
         } else {
             ((ShopFragment) fragments.get(PAGE_SHOP)).initCart();

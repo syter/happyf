@@ -36,7 +36,7 @@ public class MineFragment extends Fragment {
     private LinearLayout llShell, llClub, llOrder, llCart, llHappy, llRank, llSet, llCurrentExp;
     private ImageView ivLv;
     private RelativeLayout rlExp;
-    private TextView tvName, tvExp;
+    private TextView tvName, tvExp, tvUserLevel, tvMineShell;
     private CircleImageView ivImage;
 
     @Override
@@ -59,7 +59,9 @@ public class MineFragment extends Fragment {
     }
 
     private void initView() {
+        tvUserLevel = view.findViewById(R.id.tv_user_level);
         tvName = view.findViewById(R.id.tv_name);
+        tvMineShell = view.findViewById(R.id.tv_mine_shell);
         ivImage = view.findViewById(R.id.iv_image);
         llShell = view.findViewById(R.id.ll_shell);
         llClub = view.findViewById(R.id.ll_club);
@@ -195,18 +197,17 @@ public class MineFragment extends Fragment {
         if (SpfHelper.getInstance(getActivity()).hasSignIn()) {
             User user = SpfHelper.getInstance(getActivity()).getMyUserInfo();
             tvName.setText(user.name);
-            tvExp.setText(user.exp + "/" + user.maxExp);
-            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) llCurrentExp.getLayoutParams();
-            BigDecimal currentExp = new BigDecimal(user.exp);
-            BigDecimal exp = new BigDecimal(user.maxExp);
-            BigDecimal widthBD = currentExp.divide(exp).setScale(2, BigDecimal.ROUND_HALF_UP);
-            int width = Utils.dip2px(getActivity(), 200) * widthBD.intValue();
-            params.width = width;
-            llCurrentExp.setLayoutParams(params);
-
+            setLevel(user.exp);
+            int shell = Integer.parseInt(user.shellCount);
+            if (shell > 100000) {
+                tvMineShell.setText("余额：10万+");
+            } else {
+                tvMineShell.setText("余额：" + user.shellCount);
+            }
         } else {
             tvName.setText("未登录");
             tvExp.setText(0 + "/" + 100);
+            tvUserLevel.setText("无级别");
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) llCurrentExp.getLayoutParams();
             BigDecimal currentExp = new BigDecimal(0);
             BigDecimal exp = new BigDecimal(100);
@@ -215,5 +216,53 @@ public class MineFragment extends Fragment {
             params.width = width;
             llCurrentExp.setLayoutParams(params);
         }
+    }
+
+    private void setLevel(String exp) {
+        int currentExp = Integer.parseInt(exp);
+        String maxExp = "100";
+        String level = "";
+        if (currentExp >= 0 && currentExp < 100) {
+            maxExp = "100";
+            level = getResources().getString(R.string.mine_level_1);
+        } else if (currentExp >= 100 && currentExp < 1000) {
+            maxExp = "1000";
+            level = getResources().getString(R.string.mine_level_2);
+        } else if (currentExp >= 1000 && currentExp < 5000) {
+            maxExp = "5000";
+            level = getResources().getString(R.string.mine_level_3);
+        } else if (currentExp >= 5000 && currentExp < 10000) {
+            maxExp = "10000";
+            level = getResources().getString(R.string.mine_level_4);
+        } else if (currentExp >= 10000 && currentExp < 50000) {
+            maxExp = "50000";
+            level = getResources().getString(R.string.mine_level_5);
+        } else if (currentExp >= 50000 && currentExp < 100000) {
+            maxExp = "100000";
+            level = getResources().getString(R.string.mine_level_6);
+        } else if (currentExp >= 100000 && currentExp < 500000) {
+            maxExp = "500000";
+            level = getResources().getString(R.string.mine_level_7);
+        } else if (currentExp >= 500000 && currentExp < 1000000) {
+            maxExp = "1000000";
+            level = getResources().getString(R.string.mine_level_8);
+        } else if (currentExp >= 1000000 && currentExp < 5000000) {
+            maxExp = "5000000";
+            level = getResources().getString(R.string.mine_level_9);
+        } else if (currentExp >= 5000000 && currentExp < 10000000) {
+            maxExp = "10000000";
+            level = getResources().getString(R.string.mine_level_10);
+        }
+        BigDecimal currentExpBD = new BigDecimal(exp);
+
+        tvExp.setText(exp + "/" + maxExp);
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) llCurrentExp.getLayoutParams();
+
+        BigDecimal expBD = new BigDecimal(maxExp);
+        BigDecimal widthBD = currentExpBD.divide(expBD).setScale(2, BigDecimal.ROUND_HALF_UP);
+        int width = Utils.dip2px(getActivity(), 200) * widthBD.intValue();
+        params.width = width;
+        llCurrentExp.setLayoutParams(params);
+        tvUserLevel.setText(level);
     }
 }

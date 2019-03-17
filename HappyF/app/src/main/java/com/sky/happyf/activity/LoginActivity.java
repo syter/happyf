@@ -18,12 +18,10 @@ import com.sky.happyf.R;
 import com.sky.happyf.manager.UserManager;
 import com.sky.happyf.message.MessageEvent;
 import com.sky.happyf.util.Constants;
-import com.sky.happyf.util.NetUtils;
 import com.sky.happyf.util.Utils;
 import com.wuhenzhizao.titlebar.statusbar.StatusBarUtils;
 
 import org.greenrobot.eventbus.EventBus;
-import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText etPhone, etCode;
@@ -101,6 +99,8 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onFinish(String text) {
                         Toast.makeText(getApplicationContext(), getResources().getString(R.string.login_getcode_succ), Toast.LENGTH_LONG).show();
+
+                        Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
                     }
                 });
             }

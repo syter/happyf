@@ -2,15 +2,18 @@ package com.sky.happyf.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.orhanobut.logger.Logger;
 import com.sky.happyf.R;
+import com.sky.happyf.message.MessageEvent;
+import com.sky.happyf.util.Constants;
+import com.sky.happyf.util.SpfHelper;
 import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
+
+import org.greenrobot.eventbus.EventBus;
 
 public class SetActivity extends BaseActivity {
     private CommonTitleBar titleBar;
@@ -60,6 +63,7 @@ public class SetActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 Logger.d("remove cache!");
+                Toast.makeText(getApplicationContext(), "清除缓存成功", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -74,6 +78,9 @@ public class SetActivity extends BaseActivity {
         rlQuit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                SpfHelper.getInstance(SetActivity.this).clearUserInfo();
+                Toast.makeText(getApplicationContext(), "已退出登录", Toast.LENGTH_LONG).show();
+                EventBus.getDefault().post(new MessageEvent(Constants.EVENT_MESSAGE_LOGIN));
                 finish();
             }
         });

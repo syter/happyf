@@ -34,6 +34,7 @@
     <string name="login_getcode">获取验证码</string>
     <string name="login_codehint">请输入验证码</string>
     <string name="login_pwdhint">请输入密码</string>
+    <string name="login_pwdnewhint">请输入新密码</string>
     <string name="login_change_type">账号密码登录</string>
     <string name="login_change_type_2">手机号快速登录</string>
     <string name="login_phone_error">电话号码长度不对</string>
@@ -75,6 +76,16 @@
     <string name="mine_shell">我的贝壳币</string>
     <string name="mine_shell_count">余额：</string>
     <string name="mine_club">俱乐部</string>
+    <string name="mine_level_1">浅滩抛手</string>
+    <string name="mine_level_2">筏排小将</string>
+    <string name="mine_level_3">攀礁能手</string>
+    <string name="mine_level_4">船钓高手</string>
+    <string name="mine_level_5">浅海船长</string>
+    <string name="mine_level_6">渔中精灵</string>
+    <string name="mine_level_7">浅海杆王</string>
+    <string name="mine_level_8">深海先锋</string>
+    <string name="mine_level_9">海中悍将</string>
+    <string name="mine_level_10">护海神祗</string>
 
     <!-- 修改用户资料 -->
     <string name="edit_title">编辑资料</string>

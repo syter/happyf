@@ -45,15 +45,15 @@
                     android:layout_marginTop="10dp">
 
 
-                    <ImageView
-                        android:id="@+id/iv_lv"
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginBottom="5dp"
-                        android:layout_toLeftOf="@+id/rl_exp"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/logo" />
+                    <!--<ImageView-->
+                        <!--android:id="@+id/iv_lv"-->
+                        <!--android:layout_width="16dp"-->
+                        <!--android:layout_height="16dp"-->
+                        <!--android:layout_marginRight="10dp"-->
+                        <!--android:layout_marginBottom="5dp"-->
+                        <!--android:layout_toLeftOf="@+id/rl_exp"-->
+                        <!--android:scaleType="centerCrop"-->
+                        <!--android:src="@drawable/logo" />-->
 
                     <RelativeLayout
                         android:id="@+id/rl_exp"
@@ -90,6 +90,15 @@
                         android:textSize="9sp" />
                 </RelativeLayout>
 
+                <TextView
+                    android:id="@+id/tv_user_level"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="浅滩抛手"
+                    android:textColor="@color/gray_text_2"
+                    android:textSize="14sp" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -108,7 +117,7 @@
                     android:layout_height="20dp"
                     android:layout_marginLeft="10dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/logo" />
+                    android:src="@drawable/shell" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -119,6 +128,7 @@
                     android:textSize="14sp" />
 
                 <TextView
+                    android:id="@+id/tv_mine_shell"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -283,9 +293,9 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="15dp"
+                android:layout_marginBottom="15dp"
                 android:background="@drawable/input_boder_3"
                 android:gravity="center_vertical"
-                android:layout_marginBottom="15dp"
                 android:orientation="horizontal">
 
                 <ImageView

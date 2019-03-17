@@ -16,10 +16,10 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bigkoo.pickerview.adapter.ArrayWheelAdapter;
+import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
+import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
+import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.bumptech.glide.Glide;
-import com.contrarywind.listener.OnItemSelectedListener;
-import com.contrarywind.view.WheelView;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
@@ -38,26 +38,29 @@ import com.sky.happyf.manager.WeatherManager;
 import com.sky.happyf.util.Utils;
 import com.sky.happyf.view.HorizontalListView;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class MainFragment extends Fragment {
     View view;
 
-    private TextView tvTemp1, tvDesc1, tvTemp2, tvDesc2, tvFit, tvTopWind, tvHighWave, tvLowWave;
+    private TextView tvTemp1, tvDesc1, tvTemp2, tvDesc2, tvFit, tvTopWind, tvHighWave, tvLowWave,
+            tvClubName;
     private ImageView ivWeather;
     private RelativeLayout rlBg;
-    private LinearLayout llTopLeft1, llTopLeft2, llTopRight, llFit;
+    private LinearLayout llTopLeft1, llTopLeft2, llTopRight, llFit, llClub;
     private ScrollView scrollView;
     private boolean isGone = true;
     private boolean isDown = false;
     private HorizontalListView horizontalLvWeather;
     private MainWeatherAdapter mainWeatherAdapter;
     private WeatherManager weatherManager;
-    private WheelView clubsSelector;
     private Club currentClub;
     private LineChart lcWave;
     private LineDataSet set1;
+    private OptionsPickerView clubsSelector;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -73,8 +76,9 @@ public class MainFragment extends Fragment {
     }
 
     private void initView() {
+        llClub = view.findViewById(R.id.ll_club);
         lcWave = view.findViewById(R.id.lc_wave);
-        clubsSelector = view.findViewById(R.id.clubs_selector);
+        tvClubName = view.findViewById(R.id.tv_club_name);
         ivWeather = view.findViewById(R.id.iv_weather);
         tvHighWave = view.findViewById(R.id.tv_high_wave);
         tvLowWave = view.findViewById(R.id.tv_low_wave);
@@ -118,8 +122,6 @@ public class MainFragment extends Fragment {
         params3.width = halfScreenWidth;
         llTopRight.setLayoutParams(params3);
 
-        clubsSelector.setCyclic(false);
-
 
         //设置手势滑动事件
 //        lcWave.setOnChartGestureListener(this);
@@ -146,7 +148,7 @@ public class MainFragment extends Fragment {
         //设置x轴的最大值
 //        xAxis.setAxisMaximum(100f);
         //设置x轴的最小值
-        xAxis.setAxisMinimum(0f);
+//        xAxis.setAxisMinimum(0f);
         //设置x轴的显示位置
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         //设置X轴值为字符串
@@ -173,7 +175,7 @@ public class MainFragment extends Fragment {
         //y轴最大
 //        leftAxis.setAxisMaximum(200f);
         //y轴最小
-        leftAxis.setAxisMinimum(0f);
+//        leftAxis.setAxisMinimum(0f);
         leftAxis.enableGridDashedLine(10f, 10f, 0f);
         leftAxis.setDrawZeroLine(false);
 
@@ -270,19 +272,32 @@ public class MainFragment extends Fragment {
             public void onFinish(final List<Club> data) {
                 final List<String> items = new ArrayList<>();
                 currentClub = data.get(0);
+
+                tvClubName.setText(currentClub.name);
+
                 for (Club club : data) {
                     items.add(club.name);
                 }
 
-                clubsSelector.setAdapter(new ArrayWheelAdapter(items));
-                clubsSelector.setOnItemSelectedListener(new OnItemSelectedListener() {
+                clubsSelector = new OptionsPickerBuilder(getActivity(), new OnOptionsSelectListener() {
                     @Override
-                    public void onItemSelected(int index) {
-                        currentClub = data.get(index);
-//                        Toast.makeText(MainActivity.this, "" + mOptionsItems.get(index), Toast.LENGTH_SHORT).show();
+                    public void onOptionsSelect(int options1, int option2, int options3, View v) {
+                        //返回的分别是三个级别的选中位置
+                        String tx = items.get(options1);
+                        tvClubName.setText(tx);
+                        for (int i = 0; i < data.size(); i++) {
+                            Club c = data.get(i);
+                            if (tx.equals(c.name)) {
+                                currentClub = c;
+                                break;
+                            }
+                        }
                         initWeather();
                     }
-                });
+                })
+                        .build();
+
+                clubsSelector.setPicker(items);//添加数据
 
                 initWeather();
             }
@@ -302,10 +317,12 @@ public class MainFragment extends Fragment {
                 Weather currentWeather = data.get(0);
                 tvTemp1.setText(currentWeather.currentTemp);
                 tvDesc1.setText(currentWeather.highTemp + "℃/" + currentWeather.lowTemp + "℃ " + currentWeather.desc);
-                Glide.with(getActivity()).load(R.drawable.weather_cloud).into(ivWeather);
+                Utils.setWeatherImage(getActivity(), currentWeather.weatherType, ivWeather);
                 tvTemp2.setText(currentWeather.lowTemp + "℃—" + currentWeather.highTemp + "℃");
                 tvDesc2.setText(currentWeather.desc);
 
+                // TODO
+                llFit.removeAllViews();
                 for (int i = 0; i < 3; i++) {
                     LinearLayout.LayoutParams ivFishParams = new LinearLayout.LayoutParams(Utils.dip2px(getActivity(),
                             20), Utils.dip2px(getActivity(), 12));
@@ -317,27 +334,37 @@ public class MainFragment extends Fragment {
                     llFit.addView(ivFish);
                 }
                 tvFit.setText("非常适合钓鱼");
-                tvTopWind.setText(currentWeather.windDirection + currentWeather.wind + "级");
-                tvHighWave.setText("涨潮：" + currentWeather.highWaveTime + " 潮高" + currentWeather.highWave + "米");
-                tvLowWave.setText("落潮：" + currentWeather.lowWaveTime + " 潮高" + currentWeather.highWave + "米");
 
+                tvTopWind.setText(currentWeather.windDirection + "风 " + currentWeather.wind + "级");
+                tvHighWave.setText("干潮：" + Utils.getTimeByIndex(currentWeather.highWaveTime) + " 潮高" +
+                        new BigDecimal(currentWeather.highWave).divide(new BigDecimal("100")).setScale(1, BigDecimal.ROUND_HALF_UP) + "米");
+                tvLowWave.setText("满潮：" + Utils.getTimeByIndex(currentWeather.lowWaveTime) + " 潮高" +
+                        new BigDecimal(currentWeather.lowWave).divide(new BigDecimal("100")).setScale(1, BigDecimal.ROUND_HALF_UP) + "米");
                 for (Weather weather : data) {
-                    if (!"0".equals(weather.id)) {
-                        futureWeatherList.add(weather);
-                    }
+                    futureWeatherList.add(weather);
                 }
                 mainWeatherAdapter.applyData(futureWeatherList);
 
                 // 初始化中间表格数据
                 ArrayList<Entry> values = new ArrayList<Entry>();
-                values.add(new Entry(0, 16));
-                values.add(new Entry(1, 5));
-                values.add(new Entry(2, 6));
-                values.add(new Entry(3, 12));
-                values.add(new Entry(4, 3));
-                values.add(new Entry(5, 1));
-                values.add(new Entry(6, 11));
-                values.add(new Entry(7, 3));
+                int currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+                if (currentHour >= 16) {
+                    currentHour = 16;
+                }
+                for (int i = currentHour; i < currentHour + 8; i++) {
+                    BigDecimal wave = new BigDecimal(currentWeather.waveList.get(i));
+                    wave = wave.divide(new BigDecimal("100"));
+                    wave = wave.setScale(1, BigDecimal.ROUND_HALF_UP);
+                    Entry entry = new Entry(i, wave.floatValue());
+                    values.add(entry);
+                }
+//                for (int i = 0; i < 24; i++) {
+//                    BigDecimal wave = new BigDecimal(currentWeather.waveList.get(i));
+//                    wave = wave.divide(new BigDecimal("100"));
+//                    wave = wave.setScale(2, BigDecimal.ROUND_HALF_UP);
+//                    Entry entry = new Entry(i, wave.floatValue());
+//                    values.add(entry);
+//                }
                 //设置数据
                 setLineChartData(values);
             }
@@ -345,6 +372,13 @@ public class MainFragment extends Fragment {
     }
 
     private void initListener() {
+        llClub.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clubsSelector.show();
+            }
+        });
+
         scrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
             @Override
             public void onScrollChange(View view, int x, int y, int oldx, int oldy) {
@@ -377,4 +411,6 @@ public class MainFragment extends Fragment {
             }
         });
     }
+
+
 }

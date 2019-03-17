@@ -35,6 +35,12 @@ public class SpfHelper {
     public void clearUserInfo() {
         editor.putString(KEY_USER_USERID, "").commit();
         editor.putString(KEY_USER_PHONE, "").commit();
+        editor.putString(KEY_USER_NAME, "").commit();
+        editor.putString(KEY_USER_COVER, "").commit();
+        editor.putString(KEY_USER_SHELLCOUNT, "").commit();
+        editor.putString(KEY_USER_EXP, "").commit();
+        editor.putString(KEY_USER_MAXEXP, "").commit();
+        editor.putString(KEY_USER_LEVEL, "").commit();
     }
 
     public void saveMyUserInfo(String id, String phone, String name, String cover, String shellCount, String exp, String maxExp, String level) {
