@@ -6,8 +6,6 @@
     android:layout_height="match_parent">
 
 
-
-
     <ScrollView
         android:id="@+id/sv_bg"
         android:layout_width="match_parent"
@@ -66,8 +64,8 @@
                         android:layout_height="200dp"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
-                        android:background="@color/white"
-                        android:alpha="0.6" />
+                        android:alpha="0.6"
+                        android:background="@color/white" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -183,8 +181,7 @@
                 <ImageView
                     android:id="@+id/iv_weather"
                     android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/weather_cloud" />
+                    android:layout_height="50dp" />
 
                 <TextView
                     android:id="@+id/tv_temp_2"
@@ -240,8 +237,6 @@
 
         </LinearLayout>
     </LinearLayout>
-
-
 
 
 </RelativeLayout>

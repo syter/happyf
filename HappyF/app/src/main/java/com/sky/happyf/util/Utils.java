@@ -219,46 +219,94 @@ public class Utils {
             case "2":
             case "3":
             case "38":
-                Glide.with(ct).load(R.drawable.weather_sunny).into(ivWeather);
+                Glide.with(ct).load(R.drawable.weather_1).into(ivWeather);
                 break;
             case "4":
-            case "9":
-                Glide.with(ct).load(R.drawable.weather_cloudy).into(ivWeather);
-                break;
             case "5":
             case "6":
             case "7":
             case "8":
-                Glide.with(ct).load(R.drawable.weather_cloud).into(ivWeather);
+                Glide.with(ct).load(R.drawable.weather_4).into(ivWeather);
+                break;
+            case "9":
+                Glide.with(ct).load(R.drawable.weather_9).into(ivWeather);
                 break;
             case "10":
+                Glide.with(ct).load(R.drawable.weather_10).into(ivWeather);
+                break;
             case "11":
+                Glide.with(ct).load(R.drawable.weather_11).into(ivWeather);
+                break;
             case "12":
+                Glide.with(ct).load(R.drawable.weather_12).into(ivWeather);
+                break;
+            case "13":
+                Glide.with(ct).load(R.drawable.weather_13).into(ivWeather);
+                break;
+            case "14":
+                Glide.with(ct).load(R.drawable.weather_14).into(ivWeather);
+                break;
             case "15":
-            case "19":
-            case "20":
-                Glide.with(ct).load(R.drawable.weather_rain).into(ivWeather);
+                Glide.with(ct).load(R.drawable.weather_15).into(ivWeather);
                 break;
             case "16":
             case "17":
             case "18":
-                Glide.with(ct).load(R.drawable.weather_thunder).into(ivWeather);
+                Glide.with(ct).load(R.drawable.weather_16).into(ivWeather);
                 break;
-            case "13":
-                Glide.with(ct).load(R.drawable.weather_lrain).into(ivWeather);
+            case "19":
+                Glide.with(ct).load(R.drawable.weather_19).into(ivWeather);
                 break;
-            case "14":
-                Glide.with(ct).load(R.drawable.weather_lrain).into(ivWeather);
+            case "20":
+                Glide.with(ct).load(R.drawable.weather_20).into(ivWeather);
                 break;
             case "21":
+                Glide.with(ct).load(R.drawable.weather_21).into(ivWeather);
+                break;
             case "22":
+                Glide.with(ct).load(R.drawable.weather_22).into(ivWeather);
+                break;
             case "23":
+                Glide.with(ct).load(R.drawable.weather_23).into(ivWeather);
+                break;
             case "24":
+                Glide.with(ct).load(R.drawable.weather_24).into(ivWeather);
+                break;
             case "25":
-                Glide.with(ct).load(R.drawable.weather_snow).into(ivWeather);
+                Glide.with(ct).load(R.drawable.weather_25).into(ivWeather);
+                break;
+            case "26":
+                Glide.with(ct).load(R.drawable.weather_26).into(ivWeather);
+                break;
+            case "27":
+                Glide.with(ct).load(R.drawable.weather_27).into(ivWeather);
+                break;
+            case "28":
+            case "29":
+                Glide.with(ct).load(R.drawable.weather_28).into(ivWeather);
+                break;
+            case "30":
+                Glide.with(ct).load(R.drawable.weather_30).into(ivWeather);
+                break;
+            case "31":
+                Glide.with(ct).load(R.drawable.weather_31).into(ivWeather);
+                break;
+            case "32":
+            case "33":
+                Glide.with(ct).load(R.drawable.weather_32).into(ivWeather);
+                break;
+            case "34":
+            case "35":
+                Glide.with(ct).load(R.drawable.weather_34).into(ivWeather);
+                break;
+            case "36":
+                Glide.with(ct).load(R.drawable.weather_36).into(ivWeather);
+                break;
+            case "37":
+                Glide.with(ct).load(R.drawable.weather_37).into(ivWeather);
                 break;
             default:
-                Glide.with(ct).load(R.drawable.weather_sunny).into(ivWeather);
+                Glide.with(ct).load(R.drawable.weather_99).into(ivWeather);
                 break;
         }
     }
