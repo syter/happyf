@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.sky.happyf.Model.User;
 import com.sky.happyf.R;
 import com.sky.happyf.activity.CartListActivity;
@@ -34,7 +35,7 @@ public class MineFragment extends Fragment {
     private View view;
 
     private LinearLayout llShell, llClub, llOrder, llCart, llHappy, llRank, llSet, llCurrentExp;
-    private ImageView ivLv;
+    private ImageView ivLv, ivShell, ivOrder, ivCart, ivHappy, ivRank, ivSet;
     private RelativeLayout rlExp;
     private TextView tvName, tvExp, tvUserLevel, tvMineShell;
     private CircleImageView ivImage;
@@ -59,6 +60,13 @@ public class MineFragment extends Fragment {
     }
 
     private void initView() {
+        ivShell = view.findViewById(R.id.iv_mine_shell);
+        ivOrder = view.findViewById(R.id.iv_mine_order);
+        ivCart = view.findViewById(R.id.iv_mine_cart);
+        ivHappy = view.findViewById(R.id.iv_mine_happy);
+        ivRank = view.findViewById(R.id.iv_mine_rank);
+        ivSet = view.findViewById(R.id.iv_mine_set);
+
         tvUserLevel = view.findViewById(R.id.tv_user_level);
         tvName = view.findViewById(R.id.tv_name);
         tvMineShell = view.findViewById(R.id.tv_mine_shell);
@@ -203,6 +211,15 @@ public class MineFragment extends Fragment {
                 tvMineShell.setText("余额：10万+");
             } else {
                 tvMineShell.setText("余额：" + user.shellCount);
+            }
+
+            if (user.isVip) {
+                Glide.with(getActivity()).load(R.drawable.mine_shell_vip).into(ivShell);
+                Glide.with(getActivity()).load(R.drawable.mine_order_vip).into(ivOrder);
+                Glide.with(getActivity()).load(R.drawable.mine_cart_vip).into(ivCart);
+                Glide.with(getActivity()).load(R.drawable.mine_happy_vip).into(ivHappy);
+                Glide.with(getActivity()).load(R.drawable.mine_rank_vip).into(ivRank);
+                Glide.with(getActivity()).load(R.drawable.mine_set_vip).into(ivSet);
             }
         } else {
             tvName.setText("未登录");

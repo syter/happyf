@@ -83,8 +83,11 @@ public class Constants {
     public static final String ORDER_STATUS_YITUIHUO = "6";
     public static final String ORDER_STATUS_YIQUXIAO = "7";
 
-    public static final String CONTENT_SPLIT = "(!#$%)";
+    public static final String CONTENT_SPLIT = "\\(!#\\$%\\)";
     public static final String CONTENT_TEXT = "$*@*$";
+    public static final String CONTENT_TEXT_REG = "\\$\\*\\@\\*\\$";
     public static final String CONTENT_IMAGE = "*@$@*";
+    public static final String CONTENT_IMAGE_REG = "\\*\\@\\$\\@\\*";
     public static final String CONTENT_VIDEO = "@$*$@";
+    public static final String CONTENT_VIDEO_REG = "\\@\\$\\*\\$\\@";
 }

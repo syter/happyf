@@ -85,7 +85,7 @@ public class ArticleDetailActivity extends BaseActivity {
                 tvDate.setText(currentArticle.date);
                 for (String content : currentArticle.contents) {
                     if (content.indexOf(Constants.CONTENT_TEXT) != -1) {
-                        content = content.replaceAll(Constants.CONTENT_TEXT, "");
+                        content = content.replaceAll(Constants.CONTENT_TEXT_REG, "");
                         TextView tvContent = new TextView(ArticleDetailActivity.this);
                         tvContent.setText(content);
                         tvContent.setTextColor(getColor(R.color.gray_text_2));
@@ -95,7 +95,7 @@ public class ArticleDetailActivity extends BaseActivity {
                         params.topMargin = Utils.dip2px(ArticleDetailActivity.this, 12);
                         llContent.addView(tvContent, params);
                     } else if (content.indexOf(Constants.CONTENT_IMAGE) != -1) {
-                        content = content.replaceAll(Constants.CONTENT_IMAGE, "");
+                        content = content.replaceAll(Constants.CONTENT_IMAGE_REG, "");
                         content = currentArticle.contentUrl + content;
                         ImageView ivContent = new ImageView(ArticleDetailActivity.this);
                         Glide.with(ArticleDetailActivity.this).load(content).into(ivContent);
@@ -104,7 +104,7 @@ public class ArticleDetailActivity extends BaseActivity {
                         params.topMargin = Utils.dip2px(ArticleDetailActivity.this, 12);
                         llContent.addView(ivContent, params);
                     } else if (content.indexOf(Constants.CONTENT_VIDEO) != -1) {
-                        content = content.replaceAll(Constants.CONTENT_VIDEO, "");
+                        content = content.replaceAll(Constants.CONTENT_VIDEO_REG, "");
                         content = currentArticle.contentUrl + content;
                         VideoView vvContent = new VideoView(ArticleDetailActivity.this);
                         vvContent.setVideoURI(Uri.parse(content));

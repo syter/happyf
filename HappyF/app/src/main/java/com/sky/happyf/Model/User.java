@@ -11,6 +11,7 @@ public class User implements Serializable {
     public String maxExp;
     public String level;
     public String shellCount;
+    public boolean isVip;
 
     public User() {
     }

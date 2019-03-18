@@ -143,6 +143,8 @@ public class MainFragment extends Fragment {
         lcWave.setNoDataText("暂无数据");
 
 
+
+
         XAxis xAxis = lcWave.getXAxis();
         xAxis.enableGridDashedLine(10f, 10f, 0f);
         //设置x轴的最大值
@@ -367,6 +369,9 @@ public class MainFragment extends Fragment {
 //                }
                 //设置数据
                 setLineChartData(values);
+
+                //刷新
+                lcWave.invalidate();
             }
         });
     }
