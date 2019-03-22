@@ -104,18 +104,19 @@ public class MainWeatherAdapter extends BaseAdapter {
             tvLvWaveRange.setText(new BigDecimal(weather.lowWave).divide(new BigDecimal("100")).setScale(1, BigDecimal.ROUND_HALF_UP) +
                     "—" + new BigDecimal(weather.highWave).divide(new BigDecimal("100")).setScale(1, BigDecimal.ROUND_HALF_UP) + "米");
 
-            // TODO
-            tvLvFit.setText("非常适合钓鱼");
-
-
+            int fitType = Utils.getFitType(weather);
+            if (fitType == 3) {
+                tvLvFit.setText("非常适合钓鱼");
+            } else if (fitType == 2) {
+                tvLvFit.setText("适合钓鱼");
+            } else {
+                tvLvFit.setText("不适合钓鱼");
+            }
         }
 
         private String getWeek(int day) {
             String weekDay = "";
             switch (day) {
-                case 0:
-                    weekDay = "周六";
-                    break;
                 case 1:
                     weekDay = "周日";
                     break;
@@ -133,6 +134,9 @@ public class MainWeatherAdapter extends BaseAdapter {
                     break;
                 case 6:
                     weekDay = "周五";
+                    break;
+                case 7:
+                    weekDay = "周六";
                     break;
 
             }

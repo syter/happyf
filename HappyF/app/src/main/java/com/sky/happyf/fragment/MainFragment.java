@@ -323,9 +323,17 @@ public class MainFragment extends Fragment {
                 tvTemp2.setText(currentWeather.lowTemp + "℃—" + currentWeather.highTemp + "℃");
                 tvDesc2.setText(currentWeather.desc);
 
-                // TODO
+
                 llFit.removeAllViews();
-                for (int i = 0; i < 3; i++) {
+                int fitType = Utils.getFitType(currentWeather);
+                if (fitType == 3) {
+                    tvFit.setText("非常适合钓鱼");
+                } else if (fitType == 2) {
+                    tvFit.setText("适合钓鱼");
+                } else {
+                    tvFit.setText("不适合钓鱼");
+                }
+                for (int i = 0; i < fitType; i++) {
                     LinearLayout.LayoutParams ivFishParams = new LinearLayout.LayoutParams(Utils.dip2px(getActivity(),
                             20), Utils.dip2px(getActivity(), 12));
                     ImageView ivFish = new ImageView(getActivity());
@@ -335,7 +343,7 @@ public class MainFragment extends Fragment {
                     Glide.with(getActivity()).load(R.drawable.main_fish).into(ivFish);
                     llFit.addView(ivFish);
                 }
-                tvFit.setText("非常适合钓鱼");
+
 
                 tvTopWind.setText(currentWeather.windDirection + "风 " + currentWeather.wind + "级");
                 tvHighWave.setText("干潮：" + Utils.getTimeByIndex(currentWeather.highWaveTime) + " 潮高" +

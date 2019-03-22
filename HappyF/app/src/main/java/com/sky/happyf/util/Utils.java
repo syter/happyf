@@ -9,12 +9,14 @@ import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.sky.happyf.Model.Weather;
 import com.sky.happyf.R;
 
 import org.json.JSONArray;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.TreeMap;
@@ -316,6 +318,31 @@ public class Utils {
             return "0" + timeIndex + ":00";
         } else {
             return timeIndex + ":00";
+        }
+    }
+
+    public static int getFitType(Weather weather) {
+        int temp = Integer.parseInt(weather.lowTemp);
+        int type = Integer.parseInt(weather.weatherType);
+        if (isEmptyString(weather.wind)) {
+            weather.wind = "0";
+        }
+        int wind = Integer.parseInt(weather.wind);
+        BigDecimal highWave = new BigDecimal(weather.highWave);
+        BigDecimal lowWave = new BigDecimal(weather.lowWave);
+        float wave = highWave.subtract(lowWave).floatValue();
+        if ((temp <= 30 && temp >= 10) &&
+                (type == 0 || type == 1 || type == 2 || type == 3 || type == 4 || type == 5 || type == 6 || type == 7 || type == 8 || type == 9) &&
+                wind < 6 &&
+                wave < 3) {
+            return 3;
+        } else if (((temp <= 40 && temp >= 30) || (temp <= 10 && temp >= 2)) &&
+                (type == 0 || type == 1 || type == 2 || type == 3 || type == 4 || type == 5 || type == 6 || type == 7 || type == 8 || type == 9 || type == 13) &&
+                (wind >= 6 && wind < 8) &&
+                (wave >= 3 && wave < 6)) {
+            return 2;
+        } else {
+            return 1;
         }
     }
 }
