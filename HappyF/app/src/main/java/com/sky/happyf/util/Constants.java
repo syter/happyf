@@ -5,7 +5,7 @@ import okhttp3.MediaType;
 
 public class Constants {
     public static final boolean IS_DEBUG = false;
-    public static final String EXP_URL = "http://www.ruiqisky.com";
+    public static final String EXP_URL = "http://www.baidu.com";
     public static final String BUGLY_APPKEY = "3bf0ab6970";
     public static final String HOST = "shop.dbx-game.com";
     //  public static final String HOST = "192.168.0.151/shop";

@@ -9,6 +9,8 @@
     android:fitsSystemWindows="true"
     tools:context="com.sky.happyf.activity.EditUserActivity">
 
+
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -187,7 +189,7 @@
             </RelativeLayout>
 
             <LinearLayout
-                android:id="@+id/lv_images"
+                android:id="@+id/ll_images"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/rl_detail"
@@ -299,12 +301,17 @@
 
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/rl_dialog_black"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#50000000"
+        android:visibility="gone"></RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/rl_select_dialog"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#50000000"
         android:visibility="gone">
 
         <RelativeLayout
@@ -506,7 +513,6 @@
         android:id="@+id/rl_service_dialog"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#50000000"
         android:visibility="gone">
 
         <RelativeLayout
@@ -606,6 +612,8 @@
         </RelativeLayout>
 
     </RelativeLayout>
+
+
 
 
 </RelativeLayout>

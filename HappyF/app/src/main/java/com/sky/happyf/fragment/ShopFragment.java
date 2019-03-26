@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -152,6 +151,7 @@ public class ShopFragment extends Fragment {
 
         rlBanner = view.findViewById(R.id.rl_banner);
         banner = view.findViewById(R.id.banner);
+        banner.setDelayTime(3000);
         DisplayMetrics dm = getActivity().getResources().getDisplayMetrics();
         int screenWidth = dm.widthPixels;
         int realBannerHeight = 182 * screenWidth / 375;

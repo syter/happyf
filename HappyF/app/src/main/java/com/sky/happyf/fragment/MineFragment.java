@@ -1,9 +1,9 @@
 package com.sky.happyf.fragment;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +18,6 @@ import com.sky.happyf.R;
 import com.sky.happyf.activity.CartListActivity;
 import com.sky.happyf.activity.ClubActivity;
 import com.sky.happyf.activity.EditUserActivity;
-import com.sky.happyf.activity.ExpActivity;
 import com.sky.happyf.activity.HappyListActivity;
 import com.sky.happyf.activity.LoginActivity;
 import com.sky.happyf.activity.OrderListActivity;
@@ -180,8 +179,8 @@ public class MineFragment extends Fragment {
         rlExp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActivity().startActivity(new Intent(getActivity(), ExpActivity.class));
-                getActivity().overridePendingTransition(R.anim.anim_enter, R.anim.bottom_silent);
+//                getActivity().startActivity(new Intent(getActivity(), ExpActivity.class));
+//                getActivity().overridePendingTransition(R.anim.anim_enter, R.anim.bottom_silent);
             }
         });
 

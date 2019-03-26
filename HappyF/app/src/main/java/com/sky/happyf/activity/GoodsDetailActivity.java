@@ -1,6 +1,7 @@
 package com.sky.happyf.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -12,6 +13,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.orhanobut.logger.Logger;
 import com.sky.happyf.Model.CartPrice;
 import com.sky.happyf.Model.Goods;
@@ -40,13 +43,14 @@ public class GoodsDetailActivity extends BaseActivity {
             tvServiceDesc1, tvServiceDesc2, tvServiceDesc3, tvServiceDesc4, tvService;
     private Button btnBuy, btnConfirmSelect, btnConfirmService;
     private Banner banner;
-    private RelativeLayout rlSelect, rlService, rlServiceDialog, rlSelectDialog, rlEmptySelect, rlEmptyService;
-    private LinearLayout llCart, lvImage, llSelectParam;
+    private RelativeLayout rlSelect, rlService, rlServiceDialog, rlSelectDialog, rlEmptySelect, rlEmptyService, rlDialogBlack;
+    private LinearLayout llCart, llImage, llSelectParam;
     private boolean isShowDialog;
     private Goods currentGoods;
     private SelectType currentSelectType;
     private List<Button> allSelectTypeButtons;
     private int currentNumber = 1;
+    private boolean isJoinCartDirectly = false;
 
 
     @Override
@@ -77,6 +81,7 @@ public class GoodsDetailActivity extends BaseActivity {
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) banner.getLayoutParams();
         params.height = realBannerHeight;
         banner.setLayoutParams(params);
+        banner.setDelayTime(3000);
 
         tvService = findViewById(R.id.tv_service);
         tvServiceTitle1 = findViewById(R.id.tv_service_title1);
@@ -95,7 +100,7 @@ public class GoodsDetailActivity extends BaseActivity {
         tvShellPrice = findViewById(R.id.tv_shell_price);
         tvCartPrice = findViewById(R.id.tv_cart_price);
         tvDetail = findViewById(R.id.tv_detail);
-        lvImage = findViewById(R.id.lv_images);
+        llImage = findViewById(R.id.ll_images);
         tvPostageRule = findViewById(R.id.tv_postage_rule);
         tvSelectParam = findViewById(R.id.tv_select_param);
         tvSellCount = findViewById(R.id.tv_sell_count);
@@ -111,6 +116,7 @@ public class GoodsDetailActivity extends BaseActivity {
         llCart = findViewById(R.id.ll_cart);
         rlServiceDialog = findViewById(R.id.rl_service_dialog);
         rlSelectDialog = findViewById(R.id.rl_select_dialog);
+        rlDialogBlack = findViewById(R.id.rl_dialog_black);
         rlEmptySelect = findViewById(R.id.rl_empty_select);
         rlEmptyService = findViewById(R.id.rl_empty_service);
         int screenHeight = dm.heightPixels;
@@ -125,6 +131,8 @@ public class GoodsDetailActivity extends BaseActivity {
         btnBuy = findViewById(R.id.btn_buy);
     }
 
+
+
     private void initListener() {
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,25 +145,12 @@ public class GoodsDetailActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 if (currentSelectType == null) {
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.sd_select_error), Toast.LENGTH_LONG).show();
-                } else {
-                    if (userManager.isUserLogin()) {
-                        goodsManager.joinGoodsToCart(currentGoods.id, currentSelectType.id, currentNumber, new GoodsManager.FetchCommonCallback() {
-                            @Override
-                            public void onFailure(String errorMsg) {
-                                Toast.makeText(GoodsDetailActivity.this, errorMsg, Toast.LENGTH_LONG).show();
-                            }
+                    showSelectDialog();
+                    isJoinCartDirectly = true;
 
-                            @Override
-                            public void onFinish(String text) {
-                                Toast.makeText(getApplicationContext(), getResources().getString(R.string.sd_join_cart_succ), Toast.LENGTH_LONG).show();
-                                initCart();
-                            }
-                        });
-                    } else {
-                        startActivity(new Intent(GoodsDetailActivity.this, LoginActivity.class));
-                        overridePendingTransition(R.anim.bottom_in, R.anim.bottom_silent);
-                    }
+//                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.sd_select_error), Toast.LENGTH_LONG).show();
+                } else {
+                    joinGoodToCart();
                 }
             }
         });
@@ -170,12 +165,14 @@ public class GoodsDetailActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 hideSelectDialog();
+                isJoinCartDirectly = false;
             }
         });
         rlEmptySelect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 hideSelectDialog();
+                isJoinCartDirectly = false;
             }
         });
         rlEmptyService.setOnClickListener(new View.OnClickListener() {
@@ -188,6 +185,7 @@ public class GoodsDetailActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 showSelectDialog();
+                isJoinCartDirectly = false;
             }
         });
         rlService.setOnClickListener(new View.OnClickListener() {
@@ -200,6 +198,10 @@ public class GoodsDetailActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 hideSelectDialog();
+                if (isJoinCartDirectly) {
+                    joinGoodToCart();
+                    isJoinCartDirectly = false;
+                }
             }
         });
         btnConfirmService.setOnClickListener(new View.OnClickListener() {
@@ -259,6 +261,7 @@ public class GoodsDetailActivity extends BaseActivity {
             return;
         }
         isShowDialog = false;
+        rlDialogBlack.setVisibility(View.GONE);
         rlSelectDialog.setVisibility(View.GONE);
         rlSelectDialog.setAnimation(Utils.moveToViewBottom());
     }
@@ -268,6 +271,7 @@ public class GoodsDetailActivity extends BaseActivity {
             return;
         }
         isShowDialog = true;
+        rlDialogBlack.setVisibility(View.VISIBLE);
         rlSelectDialog.setVisibility(View.VISIBLE);
         rlSelectDialog.setAnimation(Utils.moveToViewLocation());
     }
@@ -277,6 +281,7 @@ public class GoodsDetailActivity extends BaseActivity {
             return;
         }
         isShowDialog = false;
+        rlDialogBlack.setVisibility(View.GONE);
         rlServiceDialog.setVisibility(View.GONE);
         rlServiceDialog.setAnimation(Utils.moveToViewBottom());
     }
@@ -286,6 +291,7 @@ public class GoodsDetailActivity extends BaseActivity {
             return;
         }
         isShowDialog = true;
+        rlDialogBlack.setVisibility(View.VISIBLE);
         rlServiceDialog.setVisibility(View.VISIBLE);
         rlServiceDialog.setAnimation(Utils.moveToViewLocation());
     }
@@ -336,10 +342,31 @@ public class GoodsDetailActivity extends BaseActivity {
                     tvServiceDesc4.setText(getResources().getString(R.string.sd_service_base_6));
                 }
                 tvDetail.setText(currentGoods.desc);
-                for (String coverUrl : currentGoods.descCovers) {
-                    ImageView ivDescCover = new ImageView(GoodsDetailActivity.this);
-                    Glide.with(GoodsDetailActivity.this).load(coverUrl).into(ivDescCover);
-                    lvImage.addView(ivDescCover);
+                for (final String coverUrl : currentGoods.descCovers) {
+                    final ImageView ivDescCover = new ImageView(GoodsDetailActivity.this);
+
+                    DisplayMetrics dm = getResources().getDisplayMetrics();
+                    final int screenWidth = dm.widthPixels;
+
+                    llImage.addView(ivDescCover);
+
+
+                    Glide.with(GoodsDetailActivity.this)
+                            .load(coverUrl)
+                            .asBitmap()//强制Glide返回一个Bitmap对象
+                            .into(new SimpleTarget<Bitmap>() {
+                                public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
+                                    int width = bitmap.getWidth();
+                                    int height = bitmap.getHeight();
+                                    int realBannerHeight = LinearLayout.LayoutParams.WRAP_CONTENT;
+                                    if (width > screenWidth) {
+                                        realBannerHeight = height * screenWidth / width;
+                                    }
+                                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, realBannerHeight);
+                                    ivDescCover.setLayoutParams(params);
+                                    Glide.with(GoodsDetailActivity.this).load(coverUrl).into(ivDescCover);
+                                }
+                            });
                 }
 
                 List<SelectType> stList = currentGoods.selectTypes;
@@ -374,6 +401,7 @@ public class GoodsDetailActivity extends BaseActivity {
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                             Utils.dip2px(GoodsDetailActivity.this, 36));
                     params.topMargin = Utils.dip2px(GoodsDetailActivity.this, 12);
+                    btnSelectType.setPadding(10, 0, 10, 0);
                     llSelectParam.addView(btnSelectType, params);
                     btnSelectType.setTag(st.id);
 
@@ -459,6 +487,26 @@ public class GoodsDetailActivity extends BaseActivity {
             });
         } else {
             tvCartPrice.setText(getResources().getString(R.string.rmb) + "0");
+        }
+    }
+
+    private void joinGoodToCart() {
+        if (userManager.isUserLogin()) {
+            goodsManager.joinGoodsToCart(currentGoods.id, currentSelectType.id, currentNumber, new GoodsManager.FetchCommonCallback() {
+                @Override
+                public void onFailure(String errorMsg) {
+                    Toast.makeText(GoodsDetailActivity.this, errorMsg, Toast.LENGTH_LONG).show();
+                }
+
+                @Override
+                public void onFinish(String text) {
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.sd_join_cart_succ), Toast.LENGTH_LONG).show();
+                    initCart();
+                }
+            });
+        } else {
+            startActivity(new Intent(GoodsDetailActivity.this, LoginActivity.class));
+            overridePendingTransition(R.anim.bottom_in, R.anim.bottom_silent);
         }
     }
 
