@@ -2,6 +2,7 @@ package com.sky.happyf.activity;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
@@ -20,6 +21,8 @@ import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.orhanobut.logger.Logger;
 import com.sky.happyf.Model.Happy;
 import com.sky.happyf.Model.SelectType;
@@ -44,7 +47,7 @@ public class WannaHappyActivity extends BaseActivity {
     private Button btnWanna, btnConfirmSelect;
     private Banner banner;
     private HappyManager happyManager;
-    private RelativeLayout rlSelectDialog, rlSelectType, rlSelectDate, rlEmptySelect;
+    private RelativeLayout rlSelectDialog, rlSelectType, rlSelectDate, rlEmptySelect, rlDialogScreen;
     private TextView tvPrice, tvTitle1, tvTitle2, tvDetail, tvSelected, tvSelectParam, tvDate;
     private AutoNextLineLinearlayout llSelectParam;
     private PayDialog payDialog;
@@ -91,6 +94,7 @@ public class WannaHappyActivity extends BaseActivity {
         rlSelectDate = findViewById(R.id.rl_select_date);
         rlSelectType = findViewById(R.id.rl_select_type);
         rlSelectDialog = findViewById(R.id.rl_select_dialog);
+        rlDialogScreen = findViewById(R.id.rl_dialog_screen);
         tvSelected = findViewById(R.id.tv_selectd);
         tvSelectParam = findViewById(R.id.tv_select_param);
         ivHappyCover = findViewById(R.id.iv_happy_cover);
@@ -313,10 +317,32 @@ public class WannaHappyActivity extends BaseActivity {
                 tvTitle2.setText(happy.title2);
                 tvPrice.setText(getResources().getString(R.string.happy_money) + new BigDecimal(happy.price).divide(new BigDecimal("100")).setScale(2).toString());
                 tvDetail.setText(happy.title3);
-                for (String coverUrl : happy.descCovers) {
-                    ImageView ivDescCover = new ImageView(WannaHappyActivity.this);
-                    Glide.with(WannaHappyActivity.this).load(coverUrl).into(ivDescCover);
+                for (final String coverUrl : happy.descCovers) {
+                    final ImageView ivDescCover = new ImageView(WannaHappyActivity.this);
+
+                    DisplayMetrics dm = getResources().getDisplayMetrics();
+                    final int screenWidth = dm.widthPixels;
+
                     lvImages.addView(ivDescCover);
+
+
+                    Glide.with(WannaHappyActivity.this)
+                            .load(coverUrl)
+                            .asBitmap()//强制Glide返回一个Bitmap对象
+                            .into(new SimpleTarget<Bitmap>() {
+                                public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
+                                    int width = bitmap.getWidth();
+                                    int height = bitmap.getHeight();
+                                    int realBannerHeight = LinearLayout.LayoutParams.WRAP_CONTENT;
+                                    if (width > screenWidth) {
+                                        realBannerHeight = height * screenWidth / width;
+                                    }
+                                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, realBannerHeight);
+                                    ivDescCover.setLayoutParams(params);
+                                    Glide.with(WannaHappyActivity.this).load(coverUrl).into(ivDescCover);
+                                }
+                            });
+
                 }
 
                 List<SelectType> stList = happy.selectTypeList;
@@ -331,6 +357,7 @@ public class WannaHappyActivity extends BaseActivity {
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                             Utils.dip2px(WannaHappyActivity.this, 36));
                     params.topMargin = Utils.dip2px(WannaHappyActivity.this, 12);
+                    btnSelectType.setPadding(10, 0, 10, 0);
                     llSelectParam.addView(btnSelectType, params);
                     btnSelectType.setTag(st.id);
 
@@ -377,6 +404,14 @@ public class WannaHappyActivity extends BaseActivity {
         }
         isShowDialog = false;
         rlSelectDialog.setVisibility(View.GONE);
+        rlDialogScreen.setVisibility(View.GONE);
+
+        rlSelectDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pvTime.show(v);
+            }
+        });
         rlSelectDialog.setAnimation(Utils.moveToViewBottom());
     }
 
@@ -386,6 +421,13 @@ public class WannaHappyActivity extends BaseActivity {
         }
         isShowDialog = true;
         rlSelectDialog.setVisibility(View.VISIBLE);
+        rlDialogScreen.setVisibility(View.VISIBLE);
+
+        rlSelectDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            }
+        });
         rlSelectDialog.setAnimation(Utils.moveToViewLocation());
     }
 
