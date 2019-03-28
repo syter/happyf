@@ -3,6 +3,7 @@ package com.sky.happyf.fragment;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.util.DisplayMetrics;
@@ -45,6 +46,7 @@ import com.sky.happyf.view.HorizontalListView;
 import com.sky.happyf.view.MyListView;
 import com.wang.avi.AVLoadingIndicatorView;
 import com.youth.banner.Banner;
+import com.youth.banner.listener.OnBannerListener;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -53,6 +55,9 @@ import java.util.List;
 public class ShopFragment extends Fragment {
     private View view;
 
+    private Handler handler = new Handler();
+
+    private List<View> viewList = new ArrayList<>();
     private PtrClassicFrameLayout ptrLayout;
     private MyListView lvGoods;
     private GoodsListAdapter adapter;
@@ -80,6 +85,8 @@ public class ShopFragment extends Fragment {
     private int showSmallTypeHeight;
     private AVLoadingIndicatorView loadingView;
     private DrawerLayout dlMain;
+
+    private RelativeLayout rlHideKBView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -144,6 +151,8 @@ public class ShopFragment extends Fragment {
         tvQuickway7 = view.findViewById(R.id.tv_quickway7);
         tvQuickway8 = view.findViewById(R.id.tv_quickway8);
 
+        rlHideKBView = view.findViewById(R.id.rl_hideKBView);
+
         lvGoods = view.findViewById(R.id.lv_goods);
         adapter = new GoodsListAdapter(getActivity());
         lvGoods.setAdapter(adapter);
@@ -165,6 +174,39 @@ public class ShopFragment extends Fragment {
         smallTypeListView = view.findViewById(R.id.horizontal_lv);
         shopSmallTypeAdapter = new ShopSmallTypeAdapter(getActivity());
         smallTypeListView.setAdapter(shopSmallTypeAdapter);
+
+        viewList.add(etSearch1);
+        viewList.add(etSearch2);
+
+        rlHideKBView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Utils.hideKeyboard(viewList.get(0));
+            }
+        });
+
+        rlBanner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Utils.hideKeyboard(viewList.get(0));
+            }
+        });
+
+        svMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Utils.hideKeyboard(viewList.get(0));
+            }
+        });
+
+        banner.setOnBannerListener(new OnBannerListener() {
+            @Override
+            public void OnBannerClick(int position) {
+                Utils.hideKeyboard(viewList.get(0));
+            }
+        });
+
+
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -269,6 +311,8 @@ public class ShopFragment extends Fragment {
         lvGoods.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Utils.hideKeyboard(viewList.get(0));
+
                 Intent intent = new Intent(getActivity(), GoodsDetailActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("id", adapter.getList().get(i).id);
@@ -281,6 +325,8 @@ public class ShopFragment extends Fragment {
         smallTypeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Utils.hideKeyboard(viewList.get(0));
+
                 for (SmallType st : currentSmallTypeList) {
                     st.isSelected = false;
                 }
@@ -343,6 +389,7 @@ public class ShopFragment extends Fragment {
     }
 
     private void showMenu() {
+        Utils.hideKeyboard(viewList.get(0));
         dlMain.openDrawer(Gravity.START);
     }
 
@@ -448,7 +495,13 @@ public class ShopFragment extends Fragment {
                 loadingView.setVisibility(View.GONE);
                 goodsList = data;
                 adapter.applyData(goodsList);
-                svMain.smoothScrollTo(0, 0);
+
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        svMain.smoothScrollTo(0, lvGoods.getTop()+10);
+                    }
+                }, 100);
             }
         });
     }
@@ -560,18 +613,47 @@ public class ShopFragment extends Fragment {
     }
 
     private void setQuickwayClickListener(final List<QuickwayType> data, final int index) {
+        Utils.hideKeyboard(viewList.get(0));
         QuickwayType qt = data.get(index);
         if (qt.lv.equals("2")) {
             currentSelectSmallTypeId = qt.id;
+            for (Type type : typeList) {
+                for (SmallType st : type.smallTypeList) {
+                    if (st.id.equals(currentSelectSmallTypeId)) {
+                        currentSmallTypeList = type.smallTypeList;
+                        break;
+                    }
+                }
+            }
+
+            for (SmallType st : currentSmallTypeList) {
+                if (currentSelectSmallTypeId.equals(st.id)) {
+                    st.isSelected = true;
+                } else {
+                    st.isSelected = false;
+                }
+            }
+            shopSmallTypeAdapter.applyData(currentSmallTypeList);
         } else {
             for (Type t : typeList) {
                 String id = t.id;
                 if (id.equals(qt.id)) {
+                    currentSmallTypeList = t.smallTypeList;
                     currentSelectSmallTypeId = t.smallTypeList.get(0).id;
+
+                    for (SmallType st : currentSmallTypeList) {
+                        st.isSelected = false;
+                    }
+                    SmallType st = currentSmallTypeList.get(0);
+                    st.isSelected = true;
+                    shopSmallTypeAdapter.applyData(currentSmallTypeList);
+
                     break;
                 }
             }
         }
+
+
         initGoodsData();
     }
 

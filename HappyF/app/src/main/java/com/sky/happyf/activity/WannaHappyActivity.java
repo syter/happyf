@@ -423,6 +423,13 @@ public class WannaHappyActivity extends BaseActivity {
         rlSelectDialog.setVisibility(View.VISIBLE);
         rlDialogScreen.setVisibility(View.VISIBLE);
 
+//        rlDialogScreen.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Toast.makeText(getApplicationContext(), getResources().getString(R.string.pay_succ), Toast.LENGTH_LONG).show();
+//            }
+//        });
+
         rlSelectDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

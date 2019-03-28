@@ -17,6 +17,7 @@ import com.sky.happyf.fragment.MineFragment;
 import com.sky.happyf.fragment.ShopFragment;
 import com.sky.happyf.message.MessageEvent;
 import com.sky.happyf.util.Constants;
+import com.sky.happyf.util.Utils;
 import com.wuhenzhizao.titlebar.statusbar.StatusBarUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -202,6 +203,8 @@ public class MainActivity extends AppCompatActivity {
             ivMineBar.setImageDrawable(getDrawable(R.drawable.mine_active));
             tvMineBar.setTextColor(getColor(R.color.main_color_blue));
         }
+
+        Utils.hideKeyboard(llShop);
     }
 
 
