@@ -353,6 +353,10 @@ public class ShopFragment extends Fragment {
                         intent.putExtras(bundle);
                         getActivity().startActivity(intent);
                         getActivity().overridePendingTransition(R.anim.anim_enter, R.anim.bottom_silent);
+                        Utils.hideKeyboard(viewList.get(0));
+
+                        etSearch1.setText("");
+                        etSearch2.setText("");
                     }
 
                 }
@@ -660,7 +664,16 @@ public class ShopFragment extends Fragment {
     private void setTypeClickListener(final int index) {
         closeMenu();
         currentSmallTypeList = typeList.get(index).smallTypeList;
-        currentSelectSmallTypeId = currentSmallTypeList.get(index).id;
+        currentSelectSmallTypeId = currentSmallTypeList.get(0).id;
+        for (SmallType st : currentSmallTypeList) {
+            if (currentSelectSmallTypeId.equals(st.id)) {
+                st.isSelected = true;
+            } else {
+                st.isSelected = false;
+            }
+        }
+        shopSmallTypeAdapter.applyData(currentSmallTypeList);
+
         initGoodsData();
     }
 }

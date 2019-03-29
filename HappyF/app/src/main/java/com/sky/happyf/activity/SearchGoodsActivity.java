@@ -42,7 +42,7 @@ public class SearchGoodsActivity extends BaseActivity {
     private ListView lvGoods;
     private GoodsListAdapter adapter;
     private String content;
-    private RelativeLayout rlBack, rlCart;
+    private RelativeLayout rlBack, rlCart, rlMain;
     private TextView tvCartPrice;
 
 
@@ -72,6 +72,10 @@ public class SearchGoodsActivity extends BaseActivity {
         adapter = new GoodsListAdapter(this);
         lvGoods.setAdapter(adapter);
         tvCartPrice = findViewById(R.id.tv_cart_price);
+        rlMain = findViewById(R.id.rl_main);
+
+
+        Utils.hideKeyboard(etSearch);
     }
 
     private void initListener() {
@@ -92,6 +96,7 @@ public class SearchGoodsActivity extends BaseActivity {
                     startActivity(new Intent(SearchGoodsActivity.this, LoginActivity.class));
                     overridePendingTransition(R.anim.bottom_in, R.anim.bottom_silent);
                 }
+                Utils.hideKeyboard(etSearch);
             }
         });
 
@@ -117,6 +122,7 @@ public class SearchGoodsActivity extends BaseActivity {
                         }
                     }
                 });
+                Utils.hideKeyboard(etSearch);
             }
         });
 
@@ -143,6 +149,7 @@ public class SearchGoodsActivity extends BaseActivity {
                         }
                     }
                 });
+                Utils.hideKeyboard(etSearch);
             }
         });
 
@@ -172,6 +179,23 @@ public class SearchGoodsActivity extends BaseActivity {
                 intent.putExtras(bundle);
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_enter, R.anim.bottom_silent);
+                Utils.hideKeyboard(etSearch);
+            }
+        });
+
+        rlMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Utils.hideKeyboard(etSearch);
+            }
+        });
+
+
+
+        ptrLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Utils.hideKeyboard(etSearch);
             }
         });
     }
@@ -231,5 +255,7 @@ public class SearchGoodsActivity extends BaseActivity {
     public void finish() {
         super.finish();
         overridePendingTransition(R.anim.bottom_silent, R.anim.anim_exit);
+
+        Utils.hideKeyboard(etSearch);
     }
 }
