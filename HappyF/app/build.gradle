@@ -4,8 +4,8 @@ android {
     signingConfigs {
         config {
             keyAlias 'key0'
-//            storeFile file('D:/work/happyf/HappyF/signKey.jks')
-            storeFile file('E:/happyf/documents/东海渔趣/安卓签名/signKey.jks')
+            storeFile file('D:/work/happyf/HappyF/signKey.jks')
+//            storeFile file('E:/happyf/documents/东海渔趣/安卓签名/signKey.jks')
             storePassword 'wukan82925'
             keyPassword 'wukan82925'
         }

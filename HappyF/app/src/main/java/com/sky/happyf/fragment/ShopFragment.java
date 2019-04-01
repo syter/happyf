@@ -332,7 +332,10 @@ public class ShopFragment extends Fragment {
                 }
                 SmallType st = currentSmallTypeList.get(i);
                 st.isSelected = true;
+                currentSelectSmallTypeId = st.id;
                 shopSmallTypeAdapter.applyData(currentSmallTypeList);
+
+                initGoodsData();
             }
         });
 
@@ -500,12 +503,14 @@ public class ShopFragment extends Fragment {
                 goodsList = data;
                 adapter.applyData(goodsList);
 
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        svMain.smoothScrollTo(0, lvGoods.getTop()+10);
-                    }
-                }, 100);
+                if (smallTypeListView.getVisibility() == View.GONE) {
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            svMain.smoothScrollTo(0, lvGoods.getTop()+10);
+                        }
+                    }, 100);
+                }
             }
         });
     }
