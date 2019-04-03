@@ -31,6 +31,7 @@ public class LoginActivity extends AppCompatActivity {
     private ImageView ivClose;
     private Handler handler = new Handler();
     private UserManager userManager;
+    private boolean isSendedCode = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +61,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
                 String phone = cs.toString();
-                if (phone.length() == 11) {
+                if (phone.length() == 11 && !isSendedCode) {
                     ableGetCodeButton();
                 } else {
                     disableGetCodeButton();
@@ -98,6 +99,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     @Override
                     public void onFinish(String text) {
+                        isSendedCode = true;
                         Toast.makeText(getApplicationContext(), getResources().getString(R.string.login_getcode_succ), Toast.LENGTH_LONG).show();
 
                         Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
@@ -153,6 +155,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void startCountingThread(final int seconds) {
         if (seconds == 0) {
+            isSendedCode = false;
             if (etPhone.getText().length() == 11) {
                 ableGetCodeButton();
             } else {

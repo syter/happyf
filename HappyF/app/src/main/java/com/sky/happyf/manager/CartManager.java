@@ -36,7 +36,7 @@ public class CartManager extends Observable {
         }
         Map<String, String> params = new TreeMap<String, String>();
         params.put("user_id", SpfHelper.getInstance(ct).getMyUserInfo().id);
-        NetUtils.get(ct, params, Constants.PATH_GET_CART_LIST, new NetUtils.NetCallback() {
+        NetUtils.post(ct, params, Constants.PATH_GET_CART_LIST, new NetUtils.NetCallback() {
             @Override
             public void onFailure(final String errorMsg) {
                 handler.post(new Runnable() {

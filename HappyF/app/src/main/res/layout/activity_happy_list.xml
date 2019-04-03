@@ -16,48 +16,48 @@
         titlebar:leftDrawablePadding="0dp"
         titlebar:leftText="@string/back"
         titlebar:leftType="textView"
-        titlebar:statusBarColor="@color/skyblue"
-        titlebar:statusBarMode="light" />
+        titlebar:statusBarColor="@color/white"
+        titlebar:statusBarMode="dark" />
 
-    <LinearLayout
-        android:id="@+id/ll_top"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_below="@+id/titlebar"
-        android:orientation="horizontal"
-        android:weightSum="3">
+    <!--<LinearLayout-->
+    <!--android:id="@+id/ll_top"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="40dp"-->
+    <!--android:layout_below="@+id/titlebar"-->
+    <!--android:orientation="horizontal"-->
+    <!--android:weightSum="3">-->
 
-        <TextView
-            android:id="@+id/tv_all"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/happylist_state_all" />
+    <!--<TextView-->
+    <!--android:id="@+id/tv_all"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="40dp"-->
+    <!--android:layout_weight="1"-->
+    <!--android:gravity="center"-->
+    <!--android:text="@string/happylist_state_all" />-->
 
-        <TextView
-            android:id="@+id/tv_one"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/happylist_state_1" />
+    <!--<TextView-->
+    <!--android:id="@+id/tv_one"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="40dp"-->
+    <!--android:layout_weight="1"-->
+    <!--android:gravity="center"-->
+    <!--android:text="@string/happylist_state_1" />-->
 
-        <TextView
-            android:id="@+id/tv_two"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/happylist_state_2" />
+    <!--<TextView-->
+    <!--android:id="@+id/tv_two"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="40dp"-->
+    <!--android:layout_weight="1"-->
+    <!--android:gravity="center"-->
+    <!--android:text="@string/happylist_state_2" />-->
 
-    </LinearLayout>
+    <!--</LinearLayout>-->
 
     <com.chanven.lib.cptr.PtrClassicFrameLayout xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
         android:id="@+id/ptr_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/ll_top"
+        android:layout_below="@id/titlebar"
         android:background="@color/h_lightgray"
         cube_ptr:ptr_duration_to_close="200"
         cube_ptr:ptr_duration_to_close_header="700"
@@ -78,5 +78,28 @@
             android:scrollbarStyle="outsideOverlay" />
     </com.chanven.lib.cptr.PtrClassicFrameLayout>
 
+    <LinearLayout
+        android:id="@+id/ll_error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="200dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/iv_error"
+            android:layout_width="150dp"
+            android:layout_height="150dp" />
+
+        <TextView
+            android:id="@+id/tv_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/gray_text_1" />
+
+
+    </LinearLayout>
 
 </RelativeLayout>

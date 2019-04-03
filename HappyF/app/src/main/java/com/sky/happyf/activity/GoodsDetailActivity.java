@@ -23,12 +23,15 @@ import com.sky.happyf.R;
 import com.sky.happyf.manager.FinishActivityManager;
 import com.sky.happyf.manager.GoodsManager;
 import com.sky.happyf.manager.UserManager;
+import com.sky.happyf.message.MessageEvent;
 import com.sky.happyf.util.Constants;
 import com.sky.happyf.util.GlideImageLoader;
 import com.sky.happyf.util.Utils;
 import com.wuhenzhizao.titlebar.statusbar.StatusBarUtils;
 import com.youth.banner.Banner;
 import com.youth.banner.listener.OnBannerListener;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -502,6 +505,7 @@ public class GoodsDetailActivity extends BaseActivity {
                 public void onFinish(String text) {
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.sd_join_cart_succ), Toast.LENGTH_LONG).show();
                     initCart();
+                    EventBus.getDefault().post(new MessageEvent(Constants.EVENT_MESSAGE_CART));
                 }
             });
         } else {

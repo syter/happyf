@@ -53,15 +53,17 @@ public class AddressManager extends Observable {
             public void onFinish(JSONObject data) {
                 try {
                     final List<Address> addressList = new ArrayList<>();
-                    Address address = new Address();
-                    address.id = data.optString("id");
-                    address.name = data.optString("name");
-                    address.province = data.optString("province");
-                    address.city = data.optString("city");
-                    address.district = data.optString("district");
-                    address.address = data.optString("address");
-                    address.phone = data.optString("phone");
-                    addressList.add(address);
+                    if (data != null) {
+                        Address address = new Address();
+                        address.id = data.optString("id");
+                        address.name = data.optString("name");
+                        address.province = data.optString("province");
+                        address.city = data.optString("city");
+                        address.district = data.optString("district");
+                        address.address = data.optString("address");
+                        address.phone = data.optString("phone");
+                        addressList.add(address);
+                    }
 
                     handler.post(new Runnable() {
                         @Override

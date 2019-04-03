@@ -2,22 +2,15 @@ package com.sky.happyf.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.chanven.lib.cptr.PtrClassicFrameLayout;
-import com.chanven.lib.cptr.PtrDefaultHandler;
-import com.chanven.lib.cptr.PtrFrameLayout;
-import com.chanven.lib.cptr.loadmore.OnLoadMoreListener;
+import com.bumptech.glide.Glide;
 import com.sky.happyf.Model.Address;
 import com.sky.happyf.Model.Cart;
 import com.sky.happyf.R;
@@ -29,9 +22,6 @@ import com.sky.happyf.util.Utils;
 import com.sky.happyf.view.SmoothCheckBox;
 import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -46,6 +36,9 @@ public class CartListActivity extends BaseActivity {
     private SmoothCheckBox cbAll;
     public TextView tvPrice, tvShellPrice;
     private boolean isEdit = false;
+    private LinearLayout llError;
+    private ImageView ivError;
+    private TextView tvError;
 
 
     @Override
@@ -66,8 +59,11 @@ public class CartListActivity extends BaseActivity {
 
     private void initView() {
         titleBar = findViewById(R.id.titlebar);
+        llError = findViewById(R.id.ll_error);
+        ivError = findViewById(R.id.iv_error);
+        tvError = findViewById(R.id.tv_error);
         lvCart = findViewById(R.id.lv_cart);
-        cartManager = new CartManager(this);
+
         adapter = new CartListAdapter(this, isEdit, cartManager);
         lvCart.setAdapter(adapter);
         llPay = findViewById(R.id.ll_pay);
@@ -146,6 +142,7 @@ public class CartListActivity extends BaseActivity {
 
     private void initData() {
         userManager = new UserManager(this);
+        cartManager = new CartManager(this);
 
         tvPrice.setText(getResources().getString(R.string.rmb) + "0");
     }
@@ -155,7 +152,14 @@ public class CartListActivity extends BaseActivity {
         cartManager.getCartList(new CartManager.FetchCartsCallback() {
             @Override
             public void onFailure(String errorMsg) {
-                Toast.makeText(CartListActivity.this, errorMsg, Toast.LENGTH_LONG).show();
+                if (getResources().getString(R.string.net_error).equals(errorMsg)) {
+                    llError.setVisibility(View.VISIBLE);
+                    lvCart.setVisibility(View.GONE);
+                    tvError.setText(errorMsg);
+                    Glide.with(getApplicationContext()).load(R.drawable.net_error).into(ivError);
+                } else {
+                    Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
+                }
             }
 
             @Override
@@ -166,7 +170,19 @@ public class CartListActivity extends BaseActivity {
                 }
 
                 List<Cart> cartList = (List<Cart>) data.get("cart");
-                adapter.applyData(cartList);
+
+                if (cartList.isEmpty()) {
+                    llError.setVisibility(View.VISIBLE);
+                    lvCart.setVisibility(View.GONE);
+                    tvError.setText(getResources().getString(R.string.empty_error));
+                    Glide.with(getApplicationContext()).load(R.drawable.empty_content).into(ivError);
+                } else {
+                    llError.setVisibility(View.GONE);
+                    lvCart.setVisibility(View.VISIBLE);
+                    adapter.applyData(cartList);
+                }
+
+
             }
 
         });

@@ -2,25 +2,25 @@ package com.sky.happyf.activity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.chanven.lib.cptr.PtrClassicFrameLayout;
 import com.chanven.lib.cptr.PtrDefaultHandler;
 import com.chanven.lib.cptr.PtrFrameLayout;
 import com.chanven.lib.cptr.loadmore.OnLoadMoreListener;
 import com.sky.happyf.Model.Order;
-import com.sky.happyf.Model.Rank;
 import com.sky.happyf.R;
 import com.sky.happyf.adapter.OrderListAdapter;
 import com.sky.happyf.manager.OrderManager;
-import com.sky.happyf.manager.RankManager;
 import com.sky.happyf.view.ContactDialog;
 import com.sky.happyf.view.PayDialog;
 import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -34,6 +34,9 @@ public class OrderListActivity extends BaseActivity {
     private PayDialog payDialog;
     private ContactDialog contactDialog;
     private String currentOrderId, currentPhone, currentWeixin;
+    private LinearLayout llError;
+    private ImageView ivError;
+    private TextView tvError;
 
 
     @Override
@@ -52,6 +55,10 @@ public class OrderListActivity extends BaseActivity {
 
     private void initView() {
         titleBar = findViewById(R.id.titlebar);
+
+        llError = findViewById(R.id.ll_error);
+        ivError = findViewById(R.id.iv_error);
+        tvError = findViewById(R.id.tv_error);
 
         ptrLayout = findViewById(R.id.ptr_layout);
         lvOrder = findViewById(R.id.lv_order);
@@ -80,16 +87,33 @@ public class OrderListActivity extends BaseActivity {
                 orderManager.getOrderList(new OrderManager.FetchOrdersCallback() {
                     @Override
                     public void onFailure(String errorMsg) {
-                        Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
+                        if (getResources().getString(R.string.net_error).equals(errorMsg)) {
+                            llError.setVisibility(View.VISIBLE);
+                            lvOrder.setVisibility(View.GONE);
+                            tvError.setText(errorMsg);
+                            Glide.with(OrderListActivity.this).load(R.drawable.net_error).into(ivError);
+                        } else {
+                            Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
+                        }
+
                         ptrLayout.refreshComplete();
                     }
 
                     @Override
                     public void onFinish(List<Order> data) {
-                        orderList = data;
-                        ptrLayout.refreshComplete();
+                        if (data.isEmpty()) {
+                            llError.setVisibility(View.VISIBLE);
+                            lvOrder.setVisibility(View.GONE);
+                            tvError.setText(getResources().getString(R.string.empty_error));
+                            Glide.with(OrderListActivity.this).load(R.drawable.empty_content).into(ivError);
+                        } else {
+                            llError.setVisibility(View.GONE);
+                            lvOrder.setVisibility(View.VISIBLE);
+                            orderList = data;
+                            adapter.applyData(data);
+                        }
 
-                        adapter.applyData(data);
+                        ptrLayout.refreshComplete();
 
                         if (data.size() == 10) {
                             ptrLayout.setLoadMoreEnable(true);
@@ -114,7 +138,8 @@ public class OrderListActivity extends BaseActivity {
                     @Override
                     public void onFinish(List<Order> data) {
                         orderList.addAll(data);
-                        adapter.applyData(orderList);
+                        adapter.addData(orderList);
+
                         ptrLayout.loadMoreComplete(true);
 
                         if (data.size() == 10) {

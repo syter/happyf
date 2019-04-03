@@ -17,19 +17,12 @@ import com.chanven.lib.cptr.PtrFrameLayout;
 import com.chanven.lib.cptr.loadmore.OnLoadMoreListener;
 import com.sky.happyf.Model.CartPrice;
 import com.sky.happyf.Model.Goods;
-import com.sky.happyf.Model.Order;
 import com.sky.happyf.R;
 import com.sky.happyf.adapter.GoodsListAdapter;
-import com.sky.happyf.adapter.OrderListAdapter;
 import com.sky.happyf.manager.GoodsManager;
-import com.sky.happyf.manager.OrderManager;
 import com.sky.happyf.manager.UserManager;
-import com.sky.happyf.util.NetUtils;
 import com.sky.happyf.util.Utils;
 import com.wuhenzhizao.titlebar.statusbar.StatusBarUtils;
-import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
-
-import org.json.JSONObject;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -114,7 +107,7 @@ public class SearchGoodsActivity extends BaseActivity {
                     public void onFinish(List<Goods> data) {
                         ptrLayout.refreshComplete();
 
-                        if (data.isEmpty()) {
+                        if (data.size() != 10) {
                             ptrLayout.setLoadMoreEnable(false);
                         } else {
                             adapter.applyData(data);
@@ -141,7 +134,7 @@ public class SearchGoodsActivity extends BaseActivity {
                     public void onFinish(List<Goods> data) {
                         ptrLayout.loadMoreComplete(true);
 
-                        if (data.isEmpty()) {
+                        if (data.size() != 10) {
                             ptrLayout.setLoadMoreEnable(false);
                         } else {
                             adapter.addData(data);

@@ -35,11 +35,6 @@ public class HappyListAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    public void updateItem(int index, Happy happy) {
-        happyList.remove(index);
-        happyList.add(index, happy);
-        notifyDataSetChanged();
-    }
 
     @Override
     public int getCount() {
@@ -75,12 +70,12 @@ public class HappyListAdapter extends BaseAdapter {
         public HappyListItem(Context ct) {
             super(ct);
             inflate(getContext(), R.layout.lvitem_happylist, this);
-            ivCover = (ImageView) findViewById(R.id.iv_cover);
-            tvDate = (TextView) findViewById(R.id.tv_date);
-            tvState = (TextView) findViewById(R.id.tv_state);
-            tvAddress = (TextView) findViewById(R.id.tv_address);
-            tvFish = (TextView) findViewById(R.id.tv_fish);
-            tvCount = (TextView) findViewById(R.id.tv_count);
+            ivCover =  findViewById(R.id.iv_cover);
+            tvDate =  findViewById(R.id.tv_date);
+            tvState = findViewById(R.id.tv_state);
+            tvAddress =  findViewById(R.id.tv_address);
+            tvFish =  findViewById(R.id.tv_fish);
+            tvCount =  findViewById(R.id.tv_count);
         }
 
         public void setData(final Happy happy) {

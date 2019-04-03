@@ -34,15 +34,14 @@ import com.sky.happyf.Model.Type;
 import com.sky.happyf.R;
 import com.sky.happyf.activity.CartListActivity;
 import com.sky.happyf.activity.GoodsDetailActivity;
+import com.sky.happyf.activity.GoodsListActivity;
 import com.sky.happyf.activity.LoginActivity;
 import com.sky.happyf.activity.SearchGoodsActivity;
 import com.sky.happyf.adapter.GoodsListAdapter;
-import com.sky.happyf.adapter.ShopSmallTypeAdapter;
 import com.sky.happyf.manager.GoodsManager;
 import com.sky.happyf.manager.UserManager;
 import com.sky.happyf.util.GlideImageLoader;
 import com.sky.happyf.util.Utils;
-import com.sky.happyf.view.HorizontalListView;
 import com.sky.happyf.view.MyListView;
 import com.wang.avi.AVLoadingIndicatorView;
 import com.youth.banner.Banner;
@@ -76,13 +75,10 @@ public class ShopFragment extends Fragment {
     private ScrollView svMain;
     private boolean isSearchGone = false;
     private boolean isSmallTypeGone = false;
-    private HorizontalListView smallTypeListView;
-    private ShopSmallTypeAdapter shopSmallTypeAdapter;
     private List<Type> typeList = new ArrayList<>();
     private String currentSelectSmallTypeId;
     private List<SmallType> currentSmallTypeList;
     private List<Goods> goodsList;
-    private int showSmallTypeHeight;
     private AVLoadingIndicatorView loadingView;
     private DrawerLayout dlMain;
 
@@ -168,13 +164,6 @@ public class ShopFragment extends Fragment {
         params.height = realBannerHeight;
         rlBanner.setLayoutParams(params);
 
-        LinearLayout.LayoutParams params2 = (LinearLayout.LayoutParams) llQuickway.getLayoutParams();
-        showSmallTypeHeight += realBannerHeight + params2.height - Utils.dip2px(getActivity(), 30);
-
-        smallTypeListView = view.findViewById(R.id.horizontal_lv);
-        shopSmallTypeAdapter = new ShopSmallTypeAdapter(getActivity());
-        smallTypeListView.setAdapter(shopSmallTypeAdapter);
-
         viewList.add(etSearch1);
         viewList.add(etSearch2);
 
@@ -224,6 +213,25 @@ public class ShopFragment extends Fragment {
             }
         });
 
+        lvGoods.setOnLoadMoreListener(new MyListView.OnLoadMoreListener() {
+            @Override
+            public void onloadMore() {
+                goodsManager.loadMoreRecomendList(new GoodsManager.FetchGoodsCallback() {
+                    @Override
+                    public void onFailure(String errorMsg) {
+                        lvGoods.setLoadCompleted();
+                    }
+
+                    @Override
+                    public void onFinish(List<Goods> data) {
+                        lvGoods.setLoadCompleted();
+                        goodsList.addAll(data);
+                        adapter.applyData(goodsList);
+                    }
+                });
+            }
+        });
+
         ivMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -245,24 +253,24 @@ public class ShopFragment extends Fragment {
                     }
                     case MotionEvent.ACTION_UP: {
                         // 滑动到底部，加载更多商品
-                        if (svMain.getChildAt(0).getMeasuredHeight() <= svMain.getScrollY() + svMain.getHeight()) {
-                            llLoadMore.setVisibility(View.VISIBLE);
-                            goodsManager.loadMoreGoods(currentSelectSmallTypeId, new GoodsManager.FetchGoodsCallback() {
-                                @Override
-                                public void onFailure(String errorMsg) {
-                                    llLoadMore.setVisibility(View.GONE);
-                                }
-
-                                @Override
-                                public void onFinish(List<Goods> data) {
-                                    llLoadMore.setVisibility(View.GONE);
-                                    goodsList.addAll(data);
-                                    adapter.applyData(goodsList);
-                                }
-                            });
-                        } else {
-
-                        }
+//                        if (svMain.getChildAt(0).getMeasuredHeight() <= svMain.getScrollY() + svMain.getHeight()) {
+//                            llLoadMore.setVisibility(View.VISIBLE);
+//                            goodsManager.loadMoreRecomendList(new GoodsManager.FetchGoodsCallback() {
+//                                @Override
+//                                public void onFailure(String errorMsg) {
+//                                    llLoadMore.setVisibility(View.GONE);
+//                                }
+//
+//                                @Override
+//                                public void onFinish(List<Goods> data) {
+//                                    llLoadMore.setVisibility(View.GONE);
+//                                    goodsList.addAll(data);
+//                                    adapter.applyData(goodsList);
+//                                }
+//                            });
+//                        } else {
+//
+//                        }
                         break;
                     }
                 }
@@ -294,17 +302,6 @@ public class ShopFragment extends Fragment {
                     }
                 }
 
-                if (isSmallTypeGone) {
-                    if (y > showSmallTypeHeight) {
-                        smallTypeListView.setVisibility(View.VISIBLE);
-                        isSmallTypeGone = false;
-                    }
-                } else {
-                    if (y <= showSmallTypeHeight + Utils.dip2px(getActivity(), 30)) {
-                        smallTypeListView.setVisibility(View.GONE);
-                        isSmallTypeGone = true;
-                    }
-                }
             }
         });
 
@@ -319,23 +316,6 @@ public class ShopFragment extends Fragment {
                 intent.putExtras(bundle);
                 getActivity().startActivity(intent);
                 getActivity().overridePendingTransition(R.anim.anim_enter, R.anim.bottom_silent);
-            }
-        });
-
-        smallTypeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Utils.hideKeyboard(viewList.get(0));
-
-                for (SmallType st : currentSmallTypeList) {
-                    st.isSelected = false;
-                }
-                SmallType st = currentSmallTypeList.get(i);
-                st.isSelected = true;
-                currentSelectSmallTypeId = st.id;
-                shopSmallTypeAdapter.applyData(currentSmallTypeList);
-
-                initGoodsData();
             }
         });
 
@@ -383,6 +363,10 @@ public class ShopFragment extends Fragment {
                         intent.putExtras(bundle);
                         getActivity().startActivity(intent);
                         getActivity().overridePendingTransition(R.anim.anim_enter, R.anim.bottom_silent);
+                        Utils.hideKeyboard(viewList.get(0));
+
+                        etSearch1.setText("");
+                        etSearch2.setText("");
                     }
 
                 }
@@ -407,6 +391,8 @@ public class ShopFragment extends Fragment {
         initBanners();
 
         initTypes();
+
+        initRecomendList();
 
         initQuickways();
 
@@ -450,13 +436,8 @@ public class ShopFragment extends Fragment {
                 tvType3.setText(data.get(2).name);
                 tvType4.setText(data.get(3).name);
 
-
                 currentSmallTypeList = data.get(0).smallTypeList;
                 currentSelectSmallTypeId = currentSmallTypeList.get(0).id;
-
-                shopSmallTypeAdapter.applyData(currentSmallTypeList);
-
-                initGoodsData();
 
                 llType1.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -486,11 +467,11 @@ public class ShopFragment extends Fragment {
         });
     }
 
-    private void initGoodsData() {
+    private void initRecomendList() {
         loadingView.setVisibility(View.VISIBLE);
         goodsList = new ArrayList<>();
         adapter.applyData(goodsList);
-        goodsManager.getGoodsList(currentSelectSmallTypeId, new GoodsManager.FetchGoodsCallback() {
+        goodsManager.getRecomendList(new GoodsManager.FetchGoodsCallback() {
             @Override
             public void onFailure(String errorMsg) {
                 loadingView.setVisibility(View.GONE);
@@ -502,15 +483,6 @@ public class ShopFragment extends Fragment {
                 loadingView.setVisibility(View.GONE);
                 goodsList = data;
                 adapter.applyData(goodsList);
-
-                if (smallTypeListView.getVisibility() == View.GONE) {
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            svMain.smoothScrollTo(0, lvGoods.getTop()+10);
-                        }
-                    }, 100);
-                }
             }
         });
     }
@@ -642,7 +614,7 @@ public class ShopFragment extends Fragment {
                     st.isSelected = false;
                 }
             }
-            shopSmallTypeAdapter.applyData(currentSmallTypeList);
+//            shopSmallTypeAdapter.applyData(currentSmallTypeList);
         } else {
             for (Type t : typeList) {
                 String id = t.id;
@@ -655,7 +627,7 @@ public class ShopFragment extends Fragment {
                     }
                     SmallType st = currentSmallTypeList.get(0);
                     st.isSelected = true;
-                    shopSmallTypeAdapter.applyData(currentSmallTypeList);
+//                    shopSmallTypeAdapter.applyData(currentSmallTypeList);
 
                     break;
                 }
@@ -663,22 +635,24 @@ public class ShopFragment extends Fragment {
         }
 
 
-        initGoodsData();
+        Intent intent = new Intent(getActivity(), GoodsListActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("currentSelectSmallTypeId", currentSelectSmallTypeId);
+        intent.putExtras(bundle);
+        getActivity().startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.anim_enter, R.anim.bottom_silent);
     }
 
     private void setTypeClickListener(final int index) {
         closeMenu();
-        currentSmallTypeList = typeList.get(index).smallTypeList;
-        currentSelectSmallTypeId = currentSmallTypeList.get(0).id;
-        for (SmallType st : currentSmallTypeList) {
-            if (currentSelectSmallTypeId.equals(st.id)) {
-                st.isSelected = true;
-            } else {
-                st.isSelected = false;
-            }
-        }
-        shopSmallTypeAdapter.applyData(currentSmallTypeList);
 
-        initGoodsData();
+        // 点击搜索要做的操作
+        Intent intent = new Intent(getActivity(), GoodsListActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("currentSelectSmallTypeId", currentSelectSmallTypeId);
+        intent.putExtras(bundle);
+        getActivity().startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.anim_enter, R.anim.bottom_silent);
+
     }
 }

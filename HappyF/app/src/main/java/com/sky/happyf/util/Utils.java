@@ -179,6 +179,19 @@ public class Utils {
     }
 
     /**
+     * 从控件所在位置移动到控件的左边
+     *
+     * @return
+     */
+    public static TranslateAnimation moveToViewLeft() {
+        TranslateAnimation mHiddenAction = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f,
+                Animation.RELATIVE_TO_SELF, -1.0f, Animation.RELATIVE_TO_SELF,
+                0.0f, Animation.RELATIVE_TO_SELF, 0.0f);
+        mHiddenAction.setDuration(500);
+        return mHiddenAction;
+    }
+
+    /**
      * 从控件的底部移动到控件所在位置
      *
      * @return
@@ -187,6 +200,19 @@ public class Utils {
         TranslateAnimation mHiddenAction = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f,
                 Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF,
                 1.0f, Animation.RELATIVE_TO_SELF, 0.0f);
+        mHiddenAction.setDuration(500);
+        return mHiddenAction;
+    }
+
+    /**
+     * 从控件的左边移动到控件所在位置
+     *
+     * @return
+     */
+    public static TranslateAnimation moveToViewLocationLeft() {
+        TranslateAnimation mHiddenAction = new TranslateAnimation(Animation.RELATIVE_TO_SELF, -1.0f,
+                Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF,
+                0.0f, Animation.RELATIVE_TO_SELF, 0.0f);
         mHiddenAction.setDuration(500);
         return mHiddenAction;
     }

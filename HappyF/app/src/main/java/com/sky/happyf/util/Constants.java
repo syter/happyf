@@ -52,6 +52,9 @@ public class Constants {
     public static final String PATH_GET_ARTICLE_DETAIL = "/Api/Info/getInfo";
     public static final String PATH_GET_RANKS = "/Api/User/getRankList";
     public static final String PATH_GET_CLUBS = "/Api/Sea/getFishBaseList";
+    public static final String PATH_GET_HAPPY_LIST = "/Api/Sea/getTripList";
+    public static final String PATH_GET_GOODS_RECOMEND_LIST = "/Api/Shop/getRecomList";
+
 
 
 
@@ -73,6 +76,7 @@ public class Constants {
 
     public static final String EVENT_MESSAGE_EDIT_USER = "1";
     public static final String EVENT_MESSAGE_LOGIN = "2";
+    public static final String EVENT_MESSAGE_CART = "3";
 
     public static final String ORDER_STATUS_DAIFUKUAN = "0";
     public static final String ORDER_STATUS_YIFUKUAN = "1";

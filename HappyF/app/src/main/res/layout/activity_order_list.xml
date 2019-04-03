@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:titlebar="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     android:background="@color/main_bg"
-    android:orientation="vertical"
     tools:context="com.sky.happyf.activity.OrderListActivity">
 
     <com.wuhenzhizao.titlebar.widget.CommonTitleBar
@@ -29,7 +27,7 @@
         android:id="@+id/ptr_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/ll_top"
+        android:layout_below="@id/titlebar"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:background="@color/main_bg"
@@ -52,5 +50,29 @@
             android:scrollbars="none" />
     </com.chanven.lib.cptr.PtrClassicFrameLayout>
 
+    <LinearLayout
+        android:id="@+id/ll_error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="200dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:visibility="gone">
 
-</LinearLayout>
+        <ImageView
+            android:id="@+id/iv_error"
+            android:layout_width="150dp"
+            android:layout_height="150dp" />
+
+        <TextView
+            android:id="@+id/tv_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/gray_text_1" />
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

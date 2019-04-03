@@ -21,8 +21,6 @@ import com.sky.happyf.activity.OrderListActivity;
 import com.sky.happyf.util.Constants;
 import com.sky.happyf.util.Utils;
 
-import org.w3c.dom.Text;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +43,11 @@ public class OrderListAdapter extends BaseAdapter {
         orderList.clear();
         orderList.addAll(orders);
 
+        notifyDataSetChanged();
+    }
+
+    public void addData(List<Order> orders) {
+        orderList.addAll(orders);
         notifyDataSetChanged();
     }
 

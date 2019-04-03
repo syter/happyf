@@ -29,6 +29,7 @@ public class GoodsManager extends Observable {
     private Handler handler;
     private Context ct;
     private final static int POST_LIMIT = 20;
+    private int recomendPage = 1;
     private int goodsPage = 1;
     private int searchGoodsPage = 1;
     private int totalGoodsCount = 0;
@@ -322,6 +323,149 @@ public class GoodsManager extends Observable {
     }
 
     private void loadMoreLocalGoodss(final String smallTypeId, final FetchGoodsCallback callback) {
+        if (callback != null) {
+            callback.onFinish(new ArrayList<Goods>());
+        }
+    }
+
+
+
+    public void getRecomendList(final FetchGoodsCallback callback) {
+        recomendPage = 1;
+        if (Constants.IS_DEBUG) {
+            getLocalRecomendList(callback);
+            return;
+        }
+        Map<String, String> params = new TreeMap<String, String>();
+        params.put("limit", "10");
+        params.put("page", "1");
+        NetUtils.get(ct, params, Constants.PATH_GET_GOODS_RECOMEND_LIST, new NetUtils.NetCallback() {
+            @Override
+            public void onFailure(final String errorMsg) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (callback != null) {
+                            callback.onFailure(errorMsg);
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onFinish(JSONObject data) {
+                try {
+                    final List<Goods> goodsList = new ArrayList<>();
+                    JSONArray listArray = data.getJSONArray("list");
+                    for (int i = 0; i < listArray.length(); i++) {
+                        JSONObject obj = listArray.getJSONObject(i);
+                        Goods g = new Goods();
+                        g.id = obj.getString("id");
+                        g.title1 = obj.optString("title1");
+                        g.title2 = obj.optString("title2");
+                        g.title3 = obj.optString("title3");
+                        g.cover = obj.optString("cover");
+                        g.sellCount = obj.optString("sellCount");
+                        g.price = obj.optString("price");
+                        g.shellPrice = obj.optString("shellPrice");
+                        g.hasMorePrice = obj.optBoolean("hasMorePrice");
+
+                        goodsList.add(g);
+                    }
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (callback != null) {
+                                callback.onFinish(goodsList);
+                            }
+                        }
+                    });
+                } catch (JSONException e) {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (callback != null) {
+                                callback.onFailure(ct.getResources().getString(R.string.common_error));
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    public void getLocalRecomendList(final FetchGoodsCallback callback) {
+        if (callback != null) {
+            callback.onFinish(new ArrayList<Goods>());
+        }
+    }
+
+
+    public void loadMoreRecomendList(final FetchGoodsCallback callback) {
+        recomendPage++;
+        if (Constants.IS_DEBUG) {
+            loadMoreLocalRecomendList(callback);
+            return;
+        }
+        Map<String, String> params = new TreeMap<String, String>();
+        params.put("limit", "10");
+        params.put("page", recomendPage + "");
+        NetUtils.get(ct, params, Constants.PATH_GET_GOODS_RECOMEND_LIST, new NetUtils.NetCallback() {
+            @Override
+            public void onFailure(final String errorMsg) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (callback != null) {
+                            callback.onFailure(errorMsg);
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onFinish(JSONObject data) {
+                try {
+                    final List<Goods> goodsList = new ArrayList<>();
+                    JSONArray listArray = data.getJSONArray("list");
+                    for (int i = 0; i < listArray.length(); i++) {
+                        JSONObject obj = listArray.getJSONObject(i);
+                        Goods g = new Goods();
+                        g.id = obj.getString("id");
+                        g.title1 = obj.optString("title1");
+                        g.title2 = obj.optString("title2");
+                        g.title3 = obj.optString("title3");
+                        g.cover = obj.optString("cover");
+                        g.sellCount = obj.optString("sellCount");
+                        g.price = obj.optString("price");
+                        g.shellPrice = obj.optString("shellPrice");
+                        g.hasMorePrice = obj.optBoolean("hasMorePrice");
+
+                        goodsList.add(g);
+                    }
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (callback != null) {
+                                callback.onFinish(goodsList);
+                            }
+                        }
+                    });
+                } catch (JSONException e) {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (callback != null) {
+                                callback.onFailure(ct.getResources().getString(R.string.common_error));
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    private void loadMoreLocalRecomendList(final FetchGoodsCallback callback) {
         if (callback != null) {
             callback.onFinish(new ArrayList<Goods>());
         }

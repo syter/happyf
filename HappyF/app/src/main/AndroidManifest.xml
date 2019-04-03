@@ -109,6 +109,9 @@
             android:name=".activity.SearchGoodsActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".activity.GoodsListActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".activity.ClubActivity"
             android:screenOrientation="portrait" />
         <activity

@@ -2,21 +2,20 @@ package com.sky.happyf.activity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.chanven.lib.cptr.PtrClassicFrameLayout;
 import com.chanven.lib.cptr.PtrDefaultHandler;
 import com.chanven.lib.cptr.PtrFrameLayout;
 import com.chanven.lib.cptr.loadmore.OnLoadMoreListener;
-import com.sky.happyf.Model.Happy;
 import com.sky.happyf.R;
 import com.sky.happyf.adapter.HappyListAdapter;
 import com.sky.happyf.manager.HappyManager;
 import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class HappyListActivity extends BaseActivity {
     private CommonTitleBar titleBar;
@@ -26,7 +25,9 @@ public class HappyListActivity extends BaseActivity {
     private HappyManager happyManager;
     private TextView tvAll, tvOne, tvTwo;
     private int selectIndex = 0;
-
+    private LinearLayout llError;
+    private ImageView ivError;
+    private TextView tvError;
 
 
     @Override
@@ -44,13 +45,16 @@ public class HappyListActivity extends BaseActivity {
     }
 
     private void initView() {
-        titleBar = (CommonTitleBar) findViewById(R.id.titlebar);
-        tvAll = (TextView) findViewById(R.id.tv_all);
-        tvOne = (TextView) findViewById(R.id.tv_one);
-        tvTwo = (TextView) findViewById(R.id.tv_two);
+        titleBar = findViewById(R.id.titlebar);
+//        tvAll = findViewById(R.id.tv_all);
+//        tvOne = findViewById(R.id.tv_one);
+//        tvTwo = findViewById(R.id.tv_two);
+        llError = findViewById(R.id.ll_error);
+        ivError = findViewById(R.id.iv_error);
+        tvError = findViewById(R.id.tv_error);
 
-        ptrLayout = (PtrClassicFrameLayout) this.findViewById(R.id.ptr_layout);
-        lvHappyList = (ListView) findViewById(R.id.lv_happylist);
+        ptrLayout = findViewById(R.id.ptr_layout);
+        lvHappyList = findViewById(R.id.lv_happylist);
         adapter = new HappyListAdapter(this);
         lvHappyList.setAdapter(adapter);
     }
@@ -65,15 +69,12 @@ public class HappyListActivity extends BaseActivity {
             }
         });
 
-        // set auto load more disable,default available
-//        ptrLayout.setAutoLoadMoreEnable(false);
-
 
         ptrLayout.setPtrHandler(new PtrDefaultHandler() {
 
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
-//                happyManager.init(selectIndex, new HappyManager.FetchHappysCallback() {
+//                happyManager.getHappyList(selectIndex, new HappyManager.FetchHappysCallback() {
 //                    @Override
 //                    public void onFailure(String errorMsg) {
 //                        ptrLayout.refreshComplete();
@@ -122,44 +123,44 @@ public class HappyListActivity extends BaseActivity {
             }
         });
 
-        tvAll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                selectIndex = 0;
-                adapter.applyData(new ArrayList<Happy>());
-                adapter.notifyDataSetChanged();
-                ptrLayout.setLoadMoreEnable(false);
-                processSelectIndexView();
-                initHappyData();
-            }
-        });
-        tvOne.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                selectIndex = 1;
-                adapter.applyData(new ArrayList<Happy>());
-                adapter.notifyDataSetChanged();
-                ptrLayout.setLoadMoreEnable(false);
-                processSelectIndexView();
-                initHappyData();
-            }
-        });
-        tvTwo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                selectIndex = 2;
-                adapter.applyData(new ArrayList<Happy>());
-                adapter.notifyDataSetChanged();
-                ptrLayout.setLoadMoreEnable(false);
-                processSelectIndexView();
-                initHappyData();
-            }
-        });
+//        tvAll.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                selectIndex = 0;
+//                adapter.applyData(new ArrayList<Happy>());
+//                adapter.notifyDataSetChanged();
+//                ptrLayout.setLoadMoreEnable(false);
+//                processSelectIndexView();
+//                initHappyData();
+//            }
+//        });
+//        tvOne.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                selectIndex = 1;
+//                adapter.applyData(new ArrayList<Happy>());
+//                adapter.notifyDataSetChanged();
+//                ptrLayout.setLoadMoreEnable(false);
+//                processSelectIndexView();
+//                initHappyData();
+//            }
+//        });
+//        tvTwo.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                selectIndex = 2;
+//                adapter.applyData(new ArrayList<Happy>());
+//                adapter.notifyDataSetChanged();
+//                ptrLayout.setLoadMoreEnable(false);
+//                processSelectIndexView();
+//                initHappyData();
+//            }
+//        });
     }
 
     private void initData() {
         happyManager = new HappyManager(this);
-        processSelectIndexView();
+//        processSelectIndexView();
 
         initHappyData();
     }
@@ -181,19 +182,19 @@ public class HappyListActivity extends BaseActivity {
     }
 
     private void initHappyData() {
-        ptrLayout.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                ptrLayout.autoRefresh(true);
-            }
-        }, 150);
+//        ptrLayout.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                ptrLayout.autoRefresh(true);
+//            }
+//        }, 150);
+
+        llError.setVisibility(View.VISIBLE);
+        lvHappyList.setVisibility(View.GONE);
+        tvError.setText(getResources().getString(R.string.empty_error));
+        Glide.with(getApplicationContext()).load(R.drawable.empty_content).into(ivError);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-    }
 
     @Override
     public void finish() {

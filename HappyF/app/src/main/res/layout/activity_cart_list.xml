@@ -87,7 +87,7 @@
                 <ImageView
                     android:layout_width="10dp"
                     android:layout_height="10dp"
-                    android:src="@drawable/logo" />
+                    android:src="@drawable/shell" />
 
                 <TextView
                     android:id="@+id/tv_shell_price"
@@ -151,5 +151,28 @@
         </LinearLayout>
     </RelativeLayout>
 
+    <LinearLayout
+        android:id="@+id/ll_error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="200dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/iv_error"
+            android:layout_width="150dp"
+            android:layout_height="150dp" />
+
+        <TextView
+            android:id="@+id/tv_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/gray_text_1" />
+
+
+    </LinearLayout>
 
 </RelativeLayout>
