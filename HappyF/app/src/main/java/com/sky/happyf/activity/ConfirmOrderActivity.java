@@ -2,9 +2,12 @@ package com.sky.happyf.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -185,6 +188,13 @@ public class ConfirmOrderActivity extends BaseActivity {
 //                });
             }
         });
+
+        payDialog.setCloseOnclickListener(new PayDialog.onCloseOnclickListener() {
+            @Override
+            public void onCloseOnclick() {
+                finish();
+            }
+        });
     }
 
     private void initData() {
@@ -219,6 +229,9 @@ public class ConfirmOrderActivity extends BaseActivity {
                 List<Cart> cartList = (List<Cart>) data.get("cart");
                 adapter.applyData(cartList);
 
+                setListViewHeight(lvCart);
+                adapter.notifyDataSetChanged();
+
                 tvPostage.setText((String) data.get("postagePrice") + "：" + getResources().getString(R.string.rmb) + data.get("postPrice"));
                 tvPrice.setText((String) data.get("totalPrice"));
                 tvShellPrice.setText((String) data.get("totalShellPrice"));
@@ -246,27 +259,28 @@ public class ConfirmOrderActivity extends BaseActivity {
                             });
                         }
                     });
-                    llPricePay.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            String remark = etRemark.getText().toString();
-                            orderManager.createOrder(cartIds, Constants.ORDER_PAY_TYPE_PRICE, remark, new OrderManager.CreateOrderCallback() {
-                                @Override
-                                public void onFailure(String errorMsg) {
-                                    Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
-                                }
 
-                                @Override
-                                public void onFinish(Map<String, String> data) {
-                                    payDialog.show();
-                                }
-                            });
-                        }
-                    });
                 } else {
                     llShellPay.setBackground(getDrawable(R.drawable.pay_button_shell_not_enough));
                     tvShellPay.setText(getResources().getString(R.string.confirm_pay_shell_not_enough));
                 }
+                llPricePay.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String remark = etRemark.getText().toString();
+                        orderManager.createOrder(cartIds, Constants.ORDER_PAY_TYPE_PRICE, remark, new OrderManager.CreateOrderCallback() {
+                            @Override
+                            public void onFailure(String errorMsg) {
+                                Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
+                            }
+
+                            @Override
+                            public void onFinish(Map<String, String> data) {
+                                payDialog.show();
+                            }
+                        });
+                    }
+                });
             }
         });
     }
@@ -289,5 +303,23 @@ public class ConfirmOrderActivity extends BaseActivity {
         overridePendingTransition(R.anim.bottom_silent, R.anim.anim_exit);
     }
 
-
+    public void setListViewHeight(ListView listView) {
+        //获取listView的adapter
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null) {
+            return;
+        }
+        int totalHeight = 0;
+        //listAdapter.getCount()返回数据项的数目
+        for (int i = 0,len = listAdapter.getCount(); i < len; i++) {
+            View listItem = listAdapter.getView(i, null, listView);
+            listItem.measure(0, 0);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+        // listView.getDividerHeight()获取子项间分隔符占用的高度
+        // params.height最后得到整个ListView完整显示需要的高度
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() *  (listAdapter .getCount() - 1));
+        listView.setLayoutParams(params);
+    }
 }

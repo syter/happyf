@@ -11,6 +11,7 @@ import com.sky.happyf.R;
 import com.sky.happyf.util.Constants;
 import com.sky.happyf.util.NetUtils;
 import com.sky.happyf.util.SpfHelper;
+import com.sky.happyf.util.Utils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -222,7 +223,10 @@ public class OrderManager extends Observable {
         params.put("user_id", SpfHelper.getInstance(ct).getMyUserInfo().id);
         params.put("cart_ids", cartIds);
         params.put("pay_type", payType);
-        params.put("remark", remark);
+        if (!Utils.isEmptyString(remark)) {
+            params.put("remark", remark);
+        }
+
         NetUtils.post(ct, params, Constants.PATH_CREATE_ORDER, new NetUtils.NetCallback() {
             @Override
             public void onFailure(final String errorMsg) {

@@ -173,7 +173,7 @@ public class AddressManager extends Observable {
         Map<String, String> params = new TreeMap<String, String>();
         params.put("user_id", SpfHelper.getInstance(ct).getMyUserInfo().id);
         params.put("address_id", addressId);
-        NetUtils.get(ct, params, Constants.PATH_SET_DEFAULT_ADDRESS, new NetUtils.NetCallback() {
+        NetUtils.post(ct, params, Constants.PATH_SET_DEFAULT_ADDRESS, new NetUtils.NetCallback() {
             @Override
             public void onFailure(final String errorMsg) {
                 handler.post(new Runnable() {
@@ -223,7 +223,7 @@ public class AddressManager extends Observable {
         params.put("district", address.district);
         params.put("address", address.address);
 
-        NetUtils.get(ct, params, Constants.PATH_CREATE_ADDRESS, new NetUtils.NetCallback() {
+        NetUtils.post(ct, params, Constants.PATH_CREATE_ADDRESS, new NetUtils.NetCallback() {
             @Override
             public void onFailure(final String errorMsg) {
                 handler.post(new Runnable() {
@@ -272,7 +272,7 @@ public class AddressManager extends Observable {
         params.put("city", address.city);
         params.put("district", address.district);
         params.put("address", address.address);
-        NetUtils.get(ct, params, Constants.PATH_UPDATE_ADDRESS, new NetUtils.NetCallback() {
+        NetUtils.post(ct, params, Constants.PATH_UPDATE_ADDRESS, new NetUtils.NetCallback() {
             @Override
             public void onFailure(final String errorMsg) {
                 handler.post(new Runnable() {

@@ -503,7 +503,12 @@ public class GoodsDetailActivity extends BaseActivity {
 
                 @Override
                 public void onFinish(String text) {
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.sd_join_cart_succ), Toast.LENGTH_LONG).show();
+                    if (text.equals("1")) {
+                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.sd_join_cart_succ_2), Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.sd_join_cart_succ), Toast.LENGTH_LONG).show();
+                    }
+
                     initCart();
                     EventBus.getDefault().post(new MessageEvent(Constants.EVENT_MESSAGE_CART));
                 }

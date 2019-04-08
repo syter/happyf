@@ -72,7 +72,7 @@ public class CartManager extends Observable {
                         JSONObject obj = listArray.optJSONObject(i);
                         Cart c = new Cart();
                         c.id = obj.optString("id");
-                        c.goodsId = obj.optString("goods_id");
+                        c.goodsId = obj.optString("product_id");
                         c.cover = obj.optString("cover");
                         c.title = obj.optString("title");
                         c.selectedType = obj.optString("selectedType");
@@ -130,7 +130,7 @@ public class CartManager extends Observable {
         Map<String, String> params = new TreeMap<String, String>();
         params.put("user_id", SpfHelper.getInstance(ct).getMyUserInfo().id);
         params.put("cart_ids", cartIds);
-        NetUtils.get(ct, params, Constants.PATH_GET_ORDER_CART_LIST, new NetUtils.NetCallback() {
+        NetUtils.post(ct, params, Constants.PATH_GET_ORDER_CART_LIST, new NetUtils.NetCallback() {
             @Override
             public void onFailure(final String errorMsg) {
                 handler.post(new Runnable() {

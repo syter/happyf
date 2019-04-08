@@ -30,7 +30,7 @@ public class EditAddressActivity extends BaseActivity {
     private ArrayList<ArrayList<String>> citys = new ArrayList<>();
     private ArrayList<ArrayList<ArrayList<String>>> districts = new ArrayList<>();
     private OptionsPickerView pvOptions;
-    private LinearLayout llPcd;
+    private LinearLayout llPcd, llMain;
     private TextView tvProvince, tvCity, tvDistrict;
     private AddressManager addressManager;
     private String isNew;
@@ -60,6 +60,7 @@ public class EditAddressActivity extends BaseActivity {
         tvProvince = findViewById(R.id.tv_province);
         tvCity = findViewById(R.id.tv_city);
         tvDistrict = findViewById(R.id.tv_district);
+        llMain = findViewById(R.id.ll_main);
 
         pvOptions = new OptionsPickerBuilder(EditAddressActivity.this, new OnOptionsSelectListener() {
             @Override
@@ -81,6 +82,7 @@ public class EditAddressActivity extends BaseActivity {
         llPcd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Utils.hideKeyboard(view);
                 pvOptions.show();
             }
         });
@@ -153,6 +155,13 @@ public class EditAddressActivity extends BaseActivity {
                         });
                     }
                 }
+            }
+        });
+
+        llMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Utils.hideKeyboard(v);
             }
         });
     }

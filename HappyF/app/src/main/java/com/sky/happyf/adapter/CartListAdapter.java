@@ -28,6 +28,7 @@ import com.sky.happyf.view.SmoothCheckBox;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -273,18 +274,27 @@ public class CartListAdapter extends BaseAdapter {
 
     public void removeCartGoods() {
         String cartIds = "";
-        for (Cart c : cartList) {
-            if (c.removeSelected) {
-                cartIds = cartIds + c.id + ",";
-                cartList.remove(c);
+
+        Iterator<Cart> iterator = cartList.iterator();
+        while (iterator.hasNext()) {
+            Cart cart = iterator.next();
+            if (cart.removeSelected) {
+                cartIds = cartIds + cart.id + ",";
+                iterator.remove();
             }
         }
+
         if (Utils.isEmptyString(cartIds)) {
             return;
         }
         cartIds = cartIds.substring(0, cartIds.length() - 1);
 
-        applyData(cartList);
+        cartMap.clear();
+        for (Cart cart : cartList) {
+            cartMap.put(cart.id, cart);
+        }
+        notifyDataSetChanged();
+
         processPriceAndShellPrice();
         cartManager.removeCarts(cartIds, new CartManager.FetchCommonCallback() {
             @Override

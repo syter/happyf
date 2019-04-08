@@ -329,7 +329,6 @@ public class GoodsManager extends Observable {
     }
 
 
-
     public void getRecomendList(final FetchGoodsCallback callback) {
         recomendPage = 1;
         if (Constants.IS_DEBUG) {
@@ -649,11 +648,18 @@ public class GoodsManager extends Observable {
 
             @Override
             public void onFinish(JSONObject data) {
+                final boolean isFull = data.optBoolean("is_full");
+
+
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
                         if (callback != null) {
-                            callback.onFinish("");
+                            if (isFull) {
+                                callback.onFinish("1");
+                            } else {
+                                callback.onFinish("");
+                            }
                         }
                     }
                 });

@@ -19,6 +19,7 @@ public class PayDialog extends Dialog {
 
     private onAliOnclickListener aliOnclickListener;//取消按钮被点击了的监听器
     private onWechatOnclickListener wechatOnclickListener;//确定按钮被点击了的监听器
+    private onCloseOnclickListener closeOnclickListener;//确定按钮被点击了的监听器
 
     public PayDialog(@NonNull Context context, @StyleRes int themeResId) {
         super(context, themeResId);
@@ -32,6 +33,10 @@ public class PayDialog extends Dialog {
 
     public void setWechatOnclickListener(onWechatOnclickListener wechatOnclickListener) {
         this.wechatOnclickListener = wechatOnclickListener;
+    }
+
+    public void setCloseOnclickListener(onCloseOnclickListener closeOnclickListener) {
+        this.closeOnclickListener = closeOnclickListener;
     }
 
 
@@ -81,6 +86,9 @@ public class PayDialog extends Dialog {
             @Override
             public void onClick(View v) {
                 dismiss();
+                if (closeOnclickListener != null) {
+                    closeOnclickListener.onCloseOnclick();
+                }
             }
         });
     }
@@ -91,5 +99,9 @@ public class PayDialog extends Dialog {
 
     public interface onWechatOnclickListener {
         public void onWechatOnclick();
+    }
+
+    public interface onCloseOnclickListener {
+        public void onCloseOnclick();
     }
 }

@@ -34,6 +34,7 @@ public class SelectAddressActivity extends BaseActivity {
     private Address currentAddress;
     private TextView tvAddressName, tvAddressPhone, tvAddressDetail, tvEmptyAddress;
     private RelativeLayout rlHasaddress;
+    private List<Address> currentAddressList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +82,7 @@ public class SelectAddressActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
 
-                addressManager.setDefaultAddress(currentAddress.id, new AddressManager.FetchCommonCallback() {
+                addressManager.setDefaultAddress(currentAddressList.get(i).id, new AddressManager.FetchCommonCallback() {
                     @Override
                     public void onFailure(String errorMsg) {
                         Toast.makeText(SelectAddressActivity.this, errorMsg, Toast.LENGTH_LONG).show();
@@ -118,6 +119,7 @@ public class SelectAddressActivity extends BaseActivity {
 
             @Override
             public void onFinish(List<Address> addressList) {
+                currentAddressList = addressList;
                 for (Address address : addressList) {
                     if (address.isUsed) {
                         currentAddress = address;

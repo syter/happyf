@@ -24,7 +24,9 @@
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="野生大黄花闺女"
+            android:layout_marginRight="10dp"
+            android:ellipsize="end"
+            android:maxLines="2"
             android:textColor="@color/black"
             android:textSize="16sp" />
 
@@ -35,6 +37,7 @@
             android:layout_below="@+id/tv_title"
             android:layout_marginTop="5dp"
             android:layout_marginRight="10dp"
+            android:maxLines="1"
             android:text="选定参数"
             android:textColor="@color/gray_text_2"
             android:textSize="12sp" />

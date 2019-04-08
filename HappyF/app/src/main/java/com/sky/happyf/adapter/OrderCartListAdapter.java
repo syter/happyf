@@ -77,12 +77,12 @@ public class OrderCartListAdapter extends BaseAdapter {
         public CartListItem(Context ct) {
             super(ct);
             inflate(getContext(), R.layout.lvitem_ordercart, this);
-            ivCover = (ImageView) findViewById(R.id.iv_cover);
-            tvTitle = (TextView) findViewById(R.id.tv_title);
-            tvParam = (TextView) findViewById(R.id.tv_param);
-            tvPrice = (TextView) findViewById(R.id.tv_price);
-            tvShell = (TextView) findViewById(R.id.tv_shell);
-            tvCount = (TextView) findViewById(R.id.tv_count);
+            ivCover = findViewById(R.id.iv_cover);
+            tvTitle = findViewById(R.id.tv_title);
+            tvParam = findViewById(R.id.tv_param);
+            tvPrice = findViewById(R.id.tv_price);
+            tvShell = findViewById(R.id.tv_shell);
+            tvCount = findViewById(R.id.tv_count);
 
         }
 

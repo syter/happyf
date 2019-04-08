@@ -64,6 +64,7 @@ public class CartListActivity extends BaseActivity {
         tvError = findViewById(R.id.tv_error);
         lvCart = findViewById(R.id.lv_cart);
 
+        cartManager = new CartManager(this);
         adapter = new CartListAdapter(this, isEdit, cartManager);
         lvCart.setAdapter(adapter);
         llPay = findViewById(R.id.ll_pay);
@@ -142,7 +143,7 @@ public class CartListActivity extends BaseActivity {
 
     private void initData() {
         userManager = new UserManager(this);
-        cartManager = new CartManager(this);
+
 
         tvPrice.setText(getResources().getString(R.string.rmb) + "0");
     }

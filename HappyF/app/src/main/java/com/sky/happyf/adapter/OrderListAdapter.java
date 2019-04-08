@@ -2,6 +2,7 @@ package com.sky.happyf.adapter;
 
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -208,22 +209,26 @@ public class OrderListAdapter extends BaseAdapter {
 
                 RelativeLayout.LayoutParams ivCoverParam = new RelativeLayout.LayoutParams(Utils.dip2px(ct, 100), Utils.dip2px(ct, 100));
                 ImageView ivCover = new ImageView(ct);
+                ivCover.setId(View.generateViewId());
                 Glide.with(ct).load(cart.cover).into(ivCover);
                 ivCoverParam.leftMargin = Utils.dip2px(ct, 6);
                 ivCoverParam.topMargin = Utils.dip2px(ct, 6);
                 ivCover.setLayoutParams(ivCoverParam);
                 rlItem.addView(ivCover);
 
-                RelativeLayout.LayoutParams tvTitle1Param = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                TextView tvTitle1 = new TextView(ct);
-                tvTitle1.setText(cart.title);
-                tvTitle1.setTextColor(ct.getColor(R.color.black));
-                tvTitle1.setTextSize(16);
-                tvTitle1Param.leftMargin = Utils.dip2px(ct, 20);
-                tvTitle1Param.topMargin = Utils.dip2px(ct, 8);
-                tvTitle1Param.addRule(RelativeLayout.ALIGN_RIGHT, ivCover.getId());
-                tvTitle1.setLayoutParams(tvTitle1Param);
-                rlItem.addView(tvTitle1);
+                RelativeLayout.LayoutParams tvTitleParam = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                TextView tvTitle = new TextView(ct);
+                tvTitle.setId(View.generateViewId());
+                tvTitle.setText(cart.title);
+                tvTitle.setTextColor(ct.getColor(R.color.black));
+                tvTitle.setTextSize(16);
+                tvTitle.setMaxLines(2);
+                tvTitle.setEllipsize(TextUtils.TruncateAt.END);
+                tvTitleParam.leftMargin = Utils.dip2px(ct, 20);
+                tvTitleParam.topMargin = Utils.dip2px(ct, 8);
+                tvTitleParam.addRule(RelativeLayout.RIGHT_OF, ivCover.getId());
+                tvTitle.setLayoutParams(tvTitleParam);
+                rlItem.addView(tvTitle);
 
                 RelativeLayout.LayoutParams tvParamParam = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 TextView tvParam = new TextView(ct);
@@ -233,13 +238,13 @@ public class OrderListAdapter extends BaseAdapter {
                 tvParamParam.leftMargin = Utils.dip2px(ct, 20);
                 tvParamParam.topMargin = Utils.dip2px(ct, 5);
                 tvParamParam.addRule(RelativeLayout.RIGHT_OF, ivCover.getId());
-                tvParamParam.addRule(RelativeLayout.BELOW, tvTitle1.getId());
+                tvParamParam.addRule(RelativeLayout.BELOW, tvTitle.getId());
                 tvParam.setLayoutParams(tvParamParam);
                 rlItem.addView(tvParam);
 
                 RelativeLayout.LayoutParams tvCountParam = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 TextView tvCount = new TextView(ct);
-                tvCount.setText(cart.count);
+                tvCount.setText("x"+cart.count);
                 tvCount.setTextColor(ct.getColor(R.color.gray_text_2));
                 tvCount.setTextSize(12);
                 tvCountParam.rightMargin = Utils.dip2px(ct, 12);
