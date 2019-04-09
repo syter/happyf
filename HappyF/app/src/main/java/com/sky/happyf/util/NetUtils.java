@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.security.PublicKey;
 import java.util.Calendar;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
@@ -63,13 +64,17 @@ public class NetUtils {
                         builder.add(key, value);
                     }
 
-                    OkHttpClient client = new OkHttpClient();
+                    OkHttpClient client = new OkHttpClient.Builder()
+                            .connectTimeout(30, TimeUnit.SECONDS)//设置连接超时时间
+                            .readTimeout(30, TimeUnit.SECONDS)//设置读取超时时间
+                            .build();
                     RequestBody body = builder.build();
                     Request request = new Request.Builder()
                             .post(body)
                             .url(url)
                             .build();
                     request.method();
+
                     Response response = client.newCall(request).execute();
                     String bodyStr = response.body().string();
                     Logger.d("NetUtils post --- current response = " + bodyStr);

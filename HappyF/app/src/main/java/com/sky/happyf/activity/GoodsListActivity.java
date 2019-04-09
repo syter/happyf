@@ -27,9 +27,15 @@ import com.sky.happyf.adapter.GoodsListAdapter;
 import com.sky.happyf.adapter.ShopSmallTypeAdapter;
 import com.sky.happyf.manager.GoodsManager;
 import com.sky.happyf.manager.UserManager;
+import com.sky.happyf.message.MessageEvent;
+import com.sky.happyf.util.Constants;
 import com.sky.happyf.util.Utils;
 import com.sky.happyf.view.HorizontalListView;
 import com.wuhenzhizao.titlebar.statusbar.StatusBarUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -66,6 +72,8 @@ public class GoodsListActivity extends BaseActivity {
         getSupportActionBar().hide();
         StatusBarUtils.setDarkMode(getWindow());
         StatusBarUtils.setStatusBarColor(getWindow(), getColor(R.color.white), 0);
+
+        EventBus.getDefault().register(this);
 
         initView();
 
@@ -452,4 +460,19 @@ public class GoodsListActivity extends BaseActivity {
         Utils.hideKeyboard(etSearch);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent messageEvent) {
+        if (Constants.EVENT_MESSAGE_CART.equals(messageEvent.getMessage())) {
+            initCart();
+        }
+    }
 }
