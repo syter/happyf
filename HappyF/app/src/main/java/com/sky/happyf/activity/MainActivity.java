@@ -224,10 +224,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent messageEvent) {
-        if (Constants.EVENT_MESSAGE_EDIT_USER.equals(messageEvent.getMessage()) ||
-                Constants.EVENT_MESSAGE_LOGIN.equals(messageEvent.getMessage())) {
+        if (Constants.EVENT_MESSAGE_EDIT_USER.equals(messageEvent.getMessage())) {
             ((MineFragment) fragments.get(PAGE_MINE)).initData();
-        } else {
+        } else if (Constants.EVENT_MESSAGE_LOGIN.equals(messageEvent.getMessage())) {
+            ((MineFragment) fragments.get(PAGE_MINE)).initData();
+            ((ShopFragment) fragments.get(PAGE_SHOP)).initCart();
+        }
+        else {
             ((ShopFragment) fragments.get(PAGE_SHOP)).initCart();
         }
     }

@@ -471,7 +471,7 @@ public class GoodsListActivity extends BaseActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent messageEvent) {
-        if (Constants.EVENT_MESSAGE_CART.equals(messageEvent.getMessage())) {
+        if (Constants.EVENT_MESSAGE_CART.equals(messageEvent.getMessage()) || Constants.EVENT_MESSAGE_LOGIN.equals(messageEvent.getMessage())) {
             initCart();
         }
     }
